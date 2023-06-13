@@ -22,14 +22,11 @@ jobs:
         CONFIG_TARGET_x86_64_Generic=y
         CONFIG_TARGET_ROOTFS_PARTSIZE=500
         EOF
-    - name: Download package
-      run: |
-        cd openwrt && make download -j$(nproc)
 
-    - name: Build
+    - name: Build firmware
       run: |
         cd openwrt
-        make -j$(nproc) V=s
+        make -j$(nproc) download world
 
     - name: Upload firmware
       uses: actions/upload-artifact@v2
