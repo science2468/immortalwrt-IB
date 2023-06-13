@@ -23,8 +23,17 @@ jobs:
         cat >> .config <<EOF
         CONFIG_TARGET_x86=y
         CONFIG_TARGET_x86_64=y
-        CONFIG_TARGET_x86_64_Generic=y
+        CONFIG_TARGET_x86_64_DEVICE_generic=y
+        
         CONFIG_TARGET_ROOTFS_PARTSIZE=500
+        
+        CONFIG_LUCI_LANG_zh_Hans=y
+        
+        CONFIG_PACKAGE_luci=y
+        CONFIG_PACKAGE_luci-app-openvpn=y
+        CONFIG_PACKAGE_kmod-wireguard=y
+        CONFIG_PACKAGE_wireguard-tools=y
+        CONFIG_PACKAGE_luci-proto-wireguard=y
         EOF
         
         make defconfig
