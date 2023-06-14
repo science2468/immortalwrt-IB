@@ -40,4 +40,8 @@ jobs:
         
         make -j$(nproc) download world
 
-
+    - name: Upload firmware
+      uses: actions/upload-artifact@master
+      with:
+        name: openwrt-firmware
+        path: openwrt/bin/targets/
