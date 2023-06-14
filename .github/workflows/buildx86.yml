@@ -40,8 +40,4 @@ jobs:
         
         make -j$(nproc) download world
 
-    - name: Upload firmware
-      uses: actions/upload-artifact@v2
-      with:
-        name: firmware
-        path: bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined.img.gz
+
