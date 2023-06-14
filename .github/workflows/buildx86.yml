@@ -24,6 +24,7 @@ jobs:
         CONFIG_TARGET_x86=y
         CONFIG_TARGET_x86_64=y
         CONFIG_TARGET_x86_64_DEVICE_generic=y
+        CONFIG_VMDK_IMAGES=y
         
         CONFIG_TARGET_ROOTFS_PARTSIZE=500
         
