@@ -1,4 +1,4 @@
-name: Build OpenWrt
+name: Build lede-rockchip
 on: push
 jobs:
   build:
