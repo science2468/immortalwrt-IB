@@ -1,4 +1,4 @@
-name: Build lede-rockchip
+name: Build photonicat
 on: push
 jobs:
   build:
@@ -17,28 +17,17 @@ jobs:
         vim wget xmlto xxd zlib1g-dev
     - name: Clone source code
       run: |
-        git clone https://github.com/coolsnowwolf/lede.git
-        cd lede
+        git clone https://github.com/photonicat/rockchip_rk3568_openwrt.git
+        cd rockchip_rk3568_openwrt
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        cp configs/base_defconfig .config
     - name: Build 
       run: |
-        cd lede
+        cd rockchip_rk3568_openwrt
         
         cat >> .config <<EOF
-        CONFIG_TARGET_rockchip=y
-        CONFIG_TARGET_rockchip_armv8=y
-        CONFIG_TARGET_rockchip_armv8_DEVICE_ariaboard_photonicat=y
-        CONFIG_VMDK_IMAGES=y
         CONFIG_SDK=y
-        
-        CONFIG_TARGET_KERNEL_PARTSIZE=64
-        CONFIG_TARGET_ROOTFS_PARTSIZE=256
-        
-        CONFIG_LUCI_LANG_zh-cn=y
-        
-        CONFIG_PACKAGE_luci-i18n-base-zh-cn=y
-        CONFIG_PACKAGE_luci=y
         EOF
         
         make defconfig
@@ -48,5 +37,5 @@ jobs:
     - name: Upload firmware
       uses: actions/upload-artifact@master
       with:
-        name: lede-firmware
-        path: lede/bin/targets/
+        name: rockchip_rk3568_openwrt-firmware
+        path: rockchip_rk3568_openwrt/bin/targets/
