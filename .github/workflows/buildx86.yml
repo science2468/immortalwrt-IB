@@ -61,6 +61,7 @@ jobs:
         CONFIG_PACKAGE_luci-app-adbyby-plus=n
         CONFIG_PACKAGE_luci-app-unblockmusic=n
         CONFIG_PACKAGE_luci-app-accesscontrol=n
+        CONFIG_PACKAGE_kmod-alx=y
         EOF
         
         make defconfig
