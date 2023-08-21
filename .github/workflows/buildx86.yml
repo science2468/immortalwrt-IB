@@ -33,43 +33,20 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        git clone https://github.com/coolsnowwolf/lede.git
-        cd lede
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
+        wget https://downloads.immortalwrt.org/releases/23.05.0-rc3/targets/x86/64/immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        tar -J -x -f immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        
+
     - name: Build 
       run: |
-        cd lede
+        cd immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
         cat >> .config <<EOF
-        CONFIG_TARGET_x86=y
-        CONFIG_TARGET_x86_64=y
-        CONFIG_TARGET_x86_64_DEVICE_generic=y
-        CONFIG_VMDK_IMAGES=y
-        CONFIG_SDK=y
-        
-        CONFIG_TARGET_ROOTFS_PARTSIZE=500
-        
-        CONFIG_LUCI_LANG_zh_Hans=y
-        CONFIG_TARGET_ROOTFS_EXT4FS=n
-        CONFIG_PACKAGE_luci-app-wol=n
-        CONFIG_PACKAGE_luci-app-ddns=n
-        CONFIG_PACKAGE_luci-app-vlmcsd=n
-        CONFIG_PACKAGE_luci-app-xlnetacc=n
-        CONFIG_PACKAGE_luci-app-zerotier=n
-        CONFIG_PACKAGE_luci-app-wireguard=n
-        CONFIG_PACKAGE_luci-app-ipsec-vpnd=n
-        CONFIG_PACKAGE_luci-app-adbyby-plus=n
-        CONFIG_PACKAGE_luci-app-unblockmusic=n
-        CONFIG_PACKAGE_luci-app-accesscontrol=n
-        CONFIG_PACKAGE_kmod-alx=y
+        CONFIG_TARGET_DEVICE_x86_64_DEVICE_generic=y
+        CONFIG_TARGET_ROOTFS_PARTSIZE=1024
         EOF
-        
-        make defconfig
-        
-        make -j$(nproc) download world
 
     - name: Upload firmware
       uses: actions/upload-artifact@master
-      with:
-        name: lede-firmware
-        path: lede/bin/targets/
+      with: 
+        name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
+        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
