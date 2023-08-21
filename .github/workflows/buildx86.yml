@@ -56,4 +56,4 @@ jobs:
       uses: actions/upload-artifact@master
       with: 
         name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
-        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
+        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/86/64/immortalwrt-23.05.0-rc3-x86-64-generic-squashfs-combined.img.gz
