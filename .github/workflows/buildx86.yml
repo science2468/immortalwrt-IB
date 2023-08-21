@@ -42,7 +42,13 @@ jobs:
         cd immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
         cat >> .config <<EOF
         CONFIG_TARGET_DEVICE_x86_64_DEVICE_generic=y
-        CONFIG_TARGET_ROOTFS_PARTSIZE=1024
+        # CONFIG_ISO_IMAGES is not set
+        # CONFIG_QCOW2_IMAGES is not set
+        # CONFIG_SDK is not set
+        # CONFIG_VDI_IMAGES is not set
+        # CONFIG_TARGET_ROOTFS_EXT4FS is not set
+        # CONFIG_GRUB_EFI_IMAGES is not set
+        CONFIG_TARGET_ROOTFS_PARTSIZE=2048
         EOF
         make image PACKAGES="kmod-alx luci-i18n-dockerman-zh-cn"
 
