@@ -44,7 +44,7 @@ jobs:
         CONFIG_TARGET_DEVICE_x86_64_DEVICE_generic=y
         CONFIG_TARGET_ROOTFS_PARTSIZE=1024
         EOF
-        make image PACKAGES=“kmod-alx luci-i18n-dockerman-zh-cn”
+        make image PACKAGES="kmod-alx luci-i18n-dockerman-zh-cn"
 
     - name: Upload firmware
       uses: actions/upload-artifact@master
