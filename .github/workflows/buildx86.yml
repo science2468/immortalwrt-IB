@@ -41,7 +41,6 @@ jobs:
       run: |
         cd immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
         cat >> .config <<EOF
-        CONFIG_TARGET_DEVICE_x86_64_DEVICE_generic=y
         # CONFIG_ISO_IMAGES is not set
         # CONFIG_QCOW2_IMAGES is not set
         # CONFIG_SDK is not set
@@ -56,4 +55,4 @@ jobs:
       uses: actions/upload-artifact@master
       with: 
         name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
-        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/86/64/immortalwrt-23.05.0-rc3-x86-64-generic-squashfs-combined.img.gz
+        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
