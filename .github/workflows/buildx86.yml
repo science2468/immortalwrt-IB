@@ -33,13 +33,13 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.0-rc3/targets/x86/64/immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
-        tar -J -x -f immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        wget https://downloads.openwrt.org/releases/23.05.0-rc3/targets/x86/64/openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        tar -J -x -f openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
         
 
     - name: Build 
       run: |
-        cd immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
+        cd openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
         cat >> .config <<EOF
         CONFIG_TARGET_ROOTFS_PARTSIZE=1024
         EOF
@@ -48,5 +48,5 @@ jobs:
     - name: Upload firmware
       uses: actions/upload-artifact@master
       with: 
-        name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
-        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
+        name: openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
+        path: openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
