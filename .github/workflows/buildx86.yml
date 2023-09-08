@@ -43,7 +43,7 @@ jobs:
         cat >> .config <<EOF
         CONFIG_TARGET_ROOTFS_PARTSIZE=1024
         EOF
-        make image PACKAGES="luci kmod-alx luci-i18n-dockerman-zh-cn luci-i18n-base-zh-cn kmod-r8168 -kmod-8169"
+        make image PACKAGES="luci kmod-alx luci-i18n-dockerman-zh-cn luci-i18n-base-zh-cn"
 
     - name: Upload firmware
       uses: actions/upload-artifact@master
