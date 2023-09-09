@@ -33,7 +33,7 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.0-rc3/targets/x86/64/openwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/23.05.0-rc3/targets/x86/64/immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
         tar -J -x -f immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
         
 
@@ -48,7 +48,7 @@ jobs:
         #CONFIG_VHDX_IMAGES is not set
         CONFIG_TARGET_ROOTFS_PARTSIZE=2048
         EOF
-        make image PACKAGES="kmod-alx luci-i18n-dockerman-zh-cn luci-i18n-base-zh-cn"
+        make image PACKAGES="kmod-alx luci-i18n-dockerman-zh-cn luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn"
 
     - name: Upload firmware
       uses: actions/upload-artifact@master
