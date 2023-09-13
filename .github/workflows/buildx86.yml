@@ -33,13 +33,13 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/21.02.7/targets/x86/64/immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64.tar.xz
-        tar -J -x -f immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/23.05.0-rc3/targets/x86/64/immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
+        tar -J -x -f immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64.tar.xz
         
 
     - name: Build 
       run: |
-        cd immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64
+        cd immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64
         sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config
         sed -i 's/CONFIG_QCOW2_IMAGES=y/#CONFIG_QCOW2_IMAGES is not set/' .config
         sed -i 's/CONFIG_VDI_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
@@ -47,10 +47,10 @@ jobs:
         sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
         sed -i 's/CONFIG_TARGET_ROOTFS_PARTSIZE=800/CONFIG_TARGET_ROOTFS_PARTSIZE=4096/' .config
 
-        make image PACKAGES="kmod-alx luci-i18n-dockerman-zh-cn luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn fuse-overlayfs kmod-tun"
+        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn kmod-tun"
 
     - name: Upload firmware
       uses: actions/upload-artifact@master
       with: 
-        name: immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64-firmware
-        path: immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64/bin/targets/
+        name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
+        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
