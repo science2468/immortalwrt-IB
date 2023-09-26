@@ -1,5 +1,4 @@
-# x86-openwrt-automake
-自动编译openwrt（ChatGPT生成的模版+别人的模板；现在可以稳定编译了。）\
-在name：build 里面先cd openwrt  将配置用cat命令到.config后，加上 make defconfig 示图如下\
-![image](https://github.com/science2468/x86-openwrt-automake/assets/102643084/b68c189e-6878-4d25-8886-f341c617dfc3) 这个给了我解决问题的灵感。\
-配置文件暂定在.yml里面，后续会弄的话，也学大佬把配置文件放在.txt文件里面。
+GitHub Actions immortalwrt-Image-Builder 最简单的\
+https://github.com/1715173329/blog/issues/8 天灵出品IB使用教程\
+packages=" "  双引号之间是添加包的，比如 make packages="kmod-alx" 这就是增加包的;make packages="-kmod-alx"这就是去除包的。包和包之间是需要一个空格的。\
+示例命令：make image PROFILE="profile-name" PACKAGES="pkg1 pkg2 pkg3 -pkg4 -pkg5 -pkg6" FILES="files"
