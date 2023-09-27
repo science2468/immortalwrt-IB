@@ -51,8 +51,15 @@ jobs:
 
         make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-dockerman-zh-cn mdadm parted luci-i18n-qbittorrent-zh-cn"
 
-    - name: Upload firmware
+    - name: Filter and upload firmware
+      run: |
+        mkdir immortalwrt-firmware
+        find immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/ -type f -name "*squashfs-combined.img.gz" -exec cp {} immortalwrt-firmware/ \;
+      working-directory: ${{ github.workspace }}
+  
+    - name: Upload immortalwrt firmware
       uses: actions/upload-artifact@master
-      with: 
-        name: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64-firmware
-        path: immortalwrt-imagebuilder-23.05.0-rc3-x86-64.Linux-x86_64/bin/targets/
+      with:
+        name: immortalwrt-firmware
+        path: immortalwrt-firmware/
+
