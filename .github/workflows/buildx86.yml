@@ -34,41 +34,33 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        git clone https://github.com/coolsnowwolf/lede.git
-        #wget https://downloads.immortalwrt.org/releases/23.05.0/targets/x86/64/immortalwrt-imagebuilder-23.05.0-x86-64.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/23.05.1/targets/x86/64/immortalwrt-imagebuilder-23.05.1-x86-64.Linux-x86_64.tar.xz
         #wget https://downloads.immortalwrt.org/releases/21.02.7/targets/x86/64/immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64.tar.xz
-        #tar -J -x -f immortalwrt-imagebuilder-*.tar.xz
+        tar -J -x -f immortalwrt-imagebuilder-*.tar.xz
         
 
     - name: Build 
       run: |
-        cd lede
-        sed -i 's/#CONFIG_TARGET_x86 is not set/CONFIG_TARGET_x86=y/' .config
-        sed -i 's/#CONFIG_TARGET_x86_64 is not set/CONFIG_TARGET_x86_64=y/' .config
-        sed -i 's/#CONFIG_TARGET_x86_64_DEVICE_generic is not set/CONFIG_TARGET_x86_64_DEVICE_generic=y/' .config
-        sed -i 's/#CONFIG_SDK is not set/CONFIG_SDK=y/' .config
-        make defconfig
-        make
         
-        #cd immortalwrt-imagebuilder-*/
-        #sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config
-        #sed -i 's/CONFIG_QCOW2_IMAGES=y/#CONFIG_QCOW2_IMAGES is not set/' .config
-        #sed -i 's/CONFIG_VDI_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
-        #sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
-        #sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
+        cd immortalwrt-imagebuilder-*/
+        sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config
+        sed -i 's/CONFIG_QCOW2_IMAGES=y/#CONFIG_QCOW2_IMAGES is not set/' .config
+        sed -i 's/CONFIG_VDI_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
+        sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
+        sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
         
-        #make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-samba4-zh-cn" ROOTFS_PARTSIZE="500"
+        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-dockerman-zh-cn" ROOTFS_PARTSIZE="2048"
 
     - name: Filter and upload firmware
       run: |
         
-        #mkdir immortalwrt-firmware
-        #find immortalwrt-imagebuilder-*/bin/targets/ -type f -name "*squashfs-combined.img.gz" -exec cp {} immortalwrt-firmware/ \;
-      #working-directory: ${{ github.workspace }}
+        mkdir immortalwrt-firmware
+        find immortalwrt-imagebuilder-*/bin/targets/ -type f -name "*squashfs-combined.img.gz" -exec cp {} immortalwrt-firmware/ \;
+      working-directory: ${{ github.workspace }}
   
     - name: Upload immortalwrt firmware
       uses: actions/upload-artifact@master
       with:
-        name: lede-firmware
-        path: lede/bin
+        name: immortalwrt-firmware
+        path: immortalwrt-firmware/
 
