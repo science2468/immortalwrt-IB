@@ -50,7 +50,7 @@ jobs:
       run: |
         
         cd lede
-        cp $GITHUB_WORKSPACE/lede-x64 $GITHUB_WORKSPACE/lede/.config
+        cp $GITHUB_WORKSPACE/config-x64/lede-64 $GITHUB_WORKSPACE/lede/.config
 
     - name: Filter and upload firmware
       run: |
