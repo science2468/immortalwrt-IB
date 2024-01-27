@@ -64,4 +64,4 @@ jobs:
       - name: Upload lede firmware
         uses: softprops/action-gh-release@master
         with:
-          path: lede-firmware/*.*
+          files: lede-firmware/*.*
