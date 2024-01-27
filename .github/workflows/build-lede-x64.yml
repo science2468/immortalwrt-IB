@@ -37,7 +37,7 @@ jobs:
         git clone https://github.com/coolsnowwolf/lede.git
         
     - name: Cache Lede Build Dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@main
       with:
         path: |
           lede/staging_dir
