@@ -36,6 +36,15 @@ jobs:
       run: |
         git clone https://github.com/coolsnowwolf/lede.git
         
+    - name: Cache Lede Build Dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          lede/staging_dir
+          lede/build_dir
+        key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
+        restore-keys: |
+          ${{ runner.os }}-
 
     - name: Build 
       run: |
@@ -47,11 +56,15 @@ jobs:
       run: |
         
         mkdir lede-firmware
-        find lede/bin/targets/ -type f \( -name "*ext4-combined.img.gz" -o -name "*squashfs-combined.img.gz" -o -name "*imagebuilder" -o -name "*sdk" \) -exec cp {} lede-firmware/ \;
+        find lede/bin/targets/ -type f \( -name "*ext4-combined.img*" -o -name "*squashfs-combined.img*" -o -name "*imagebuilder*" -o -name "*sdk*" -o name "*vdi*" -o name "*vmdk* \) -exec cp {} lede-firmware/ \;
       working-directory: ${{ github.workspace }}
   
-    - name: Upload immortalwrt firmware
-      uses: actions/upload-artifact@master
+    - name: Upload lede firmware
+      uses: softprops/action-gh-release@master
       with:
-        name: lede-firmware
-        path: lede-firmware/
+        path: lede-firmware/*ext4-combined.img*
+        path: lede-firmware/*squashfs-combined.img*
+        path: lede-firmware/*vdi*
+        path: lede-firmware/*vmdk*
+        path: lede-firmware/*imagebuilder*
+        path: lede-freware/*sdk*
