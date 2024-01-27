@@ -5,64 +5,63 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Projects
+        uses: actions/checkout@main
+      - name: Delete Files
+        run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
 
+      - name: Show system
+        run: |
+          lscpu
+          free -h
+          df -Th
+          uname -a
 
-    - name: Delete Files
-      run: |
-        docker rmi `docker images -q`
-        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
-        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
-        sudo -E apt-get -y autoremove --purge
-        sudo -E apt-get clean
-
-    - name: Show system
-      run: |
-        lscpu
-        free -h
-        df -Th
-        uname -a
-
-    - name: Installation depends
-      run: |
-        sudo -E apt update -y
-        sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-        bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
-        git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
-        libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
-        mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools \
-        libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
-        vim wget xmlto xxd zlib1g-dev python3-setuptools
-    - name: Clone source code
-      run: |
-        git clone https://github.com/coolsnowwolf/lede.git
+      - name: Installation depends
+        run: |
+          sudo -E apt update -y
+          sudo -E apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+          bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
+          git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
+          libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
+          mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools \
+          libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
+          vim wget xmlto xxd zlib1g-dev python3-setuptools
+      - name: Clone source code
+        run: |
+          git clone https://github.com/coolsnowwolf/lede.git
         
-    - name: Cache Lede Build Dependencies
-      uses: actions/cache@main
-      with:
-        path: |
-          lede/staging_dir
-          lede/build_dir
-        key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
-        restore-keys: |
-          ${{ runner.os }}-
+      - name: Cache Lede Build Dependencies
+        uses: actions/cache@main
+        with:
+          path: |
+            lede/staging_dir
+            lede/build_dir
+          key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
-    - name: Build 
-      run: |
-        ls -a $GITHUB_WORKSPACE
-        cp $GITHUB_WORKSPACE/config-x64/lede-x64 $GITHUB_WORKSPACE/lede/.config
-        cd lede
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-        make defconfig
-        make -j $(nproc) download world
-    - name: Filter and upload firmware
-      run: |
-        
-        mkdir lede-firmware
-        find lede/bin/targets/ -type f \( -name "*ext4-combined.img*" -o -name "*squashfs-combined.img*" -o -name "*imagebuilder*" -o -name "*sdk*" -o name "*vdi*" -o name "*vmdk* \) -exec cp {} lede-firmware/ \;
-      working-directory: ${{ github.workspace }}
+      - name: Build 
+        run: |
+          ls -a $GITHUB_WORKSPACE
+          cp config-x64/lede-x64 $GITHUB_WORKSPACE/lede/.config
+          cd lede
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          make defconfig
+          make -j $(nproc) download world
+      - name: Filter and upload firmware
+        run: |
+          mkdir lede-firmware
+          find lede/bin/targets/ -type f \( -name "*ext4-combined.img*" -o -name "*squashfs-combined.img*" -o -name "*imagebuilder*" -o -name "*sdk*" -o name "*vdi*" -o name "*vmdk* \) -exec cp {} lede-firmware/ \;
+        working-directory: ${{ github.workspace }}
   
-    - name: Upload lede firmware
-      uses: softprops/action-gh-release@master
-      with:
-        path: lede-firmware/*.*
+      - name: Upload lede firmware
+        uses: softprops/action-gh-release@master
+        with:
+          path: lede-firmware/*.*
