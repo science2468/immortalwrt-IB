@@ -48,10 +48,12 @@ jobs:
 
     - name: Build 
       run: |
-        
-        cd lede
         cp $GITHUB_WORKSPACE/config-x64/lede-64 $GITHUB_WORKSPACE/lede/.config
-
+        cd lede
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        make defconfig
+        make -j $(nproc) download world
     - name: Filter and upload firmware
       run: |
         
