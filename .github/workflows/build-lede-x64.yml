@@ -62,9 +62,4 @@ jobs:
     - name: Upload lede firmware
       uses: softprops/action-gh-release@master
       with:
-        path: lede-firmware/*ext4-combined.img*
-        path: lede-firmware/*squashfs-combined.img*
-        path: lede-firmware/*vdi*
-        path: lede-firmware/*vmdk*
-        path: lede-firmware/*imagebuilder*
-        path: lede-freware/*sdk*
+        path: lede-firmware/*.*
