@@ -50,17 +50,16 @@ jobs:
           ls -a $GITHUB_WORKSPACE
           cp config-x64/lede-x64 $GITHUB_WORKSPACE/lede/.config
           cd lede
+          make defconfig
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          
-          make defconfig
           make -j $(nproc) download world
       - name: Filter and upload firmware
         run: |
           mkdir lede-firmware
-          find lede/ -type f -name "*-squashfs-combined.*" -exec cp {} lede-firmware/ \;
-          find lede/ -type f -name "*-imagebuilder-*" -exec cp {} lede-firmware/ \;
-          find lede/ -type f -name "*-sdk-*" -exec cp {} lede-firmware/ \;
+          find lede/bin/ -type f -name "*-squashfs-combined.*" -exec cp {} lede-firmware/ \;
+          find lede/bin/ -type f -name "*-imagebuilder-*" -exec cp {} lede-firmware/ \;
+          find lede/bin/ -type f -name "*-sdk-*" -exec cp {} lede-firmware/ \;
         working-directory: ${{ github.workspace }}
   
       - name: Upload lede firmware
