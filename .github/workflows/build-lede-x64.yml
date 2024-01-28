@@ -39,15 +39,13 @@ jobs:
           git clone https://github.com/coolsnowwolf/lede.git
         
       - name: Cache Lede Build Dependencies
-        uses: actions/cache@main
+        uses: actions/cache@v2
         with:
           path: |
-            lede/staging_dir
-            lede/build_dir
+            lede/staging_dir/host*
+            lede/staging_dir/tool*
           key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
+          
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
@@ -60,7 +58,11 @@ jobs:
       - name: Filter and upload firmware
         run: |
           mkdir lede-firmware
-          find lede/bin/targets/ -type f \( -o -name '*-combined.img.gz' -o -name '*imagebuilder*' -o -name '*sdk*' -o -name '*.vdi' -o -name '*.vmdk' \) -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f -name '*-combined.img.gz' -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f -name '*imagebuilder*' -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f -name '*sdk*' -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f -name '*.vdi' -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f -name '*.vmdk' -exec cp {} lede-firmware/ \;
         working-directory: ${{ github.workspace }}
   
       - name: Upload lede firmware
