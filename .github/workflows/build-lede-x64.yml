@@ -64,4 +64,5 @@ jobs:
       - name: Upload lede firmware
         uses: softprops/action-gh-release@master
         with:
+          tag_name: lede-x64
           files: lede-firmware/*.*
