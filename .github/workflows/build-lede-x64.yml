@@ -60,7 +60,7 @@ jobs:
       - name: Filter and upload firmware
         run: |
           mkdir lede-firmware
-          find lede/bin/targets/ -type f \( -name '*ext4-combined.img*' -o -name '*squashfs-combined.img*' -o -name '*imagebuilder*' -o -name '*sdk*' -o -name '*vdi*' -o -name '*vmdk*' \) -exec cp {} lede-firmware/ \;
+          find lede/bin/targets/ -type f \( -o -name '*-combined.img.gz' -o -name '*imagebuilder*' -o -name '*sdk*' -o -name '*.vdi' -o -name '*.vmdk' \) -exec cp {} lede-firmware/ \;
         working-directory: ${{ github.workspace }}
   
       - name: Upload lede firmware
