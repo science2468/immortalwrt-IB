@@ -4,6 +4,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Projects
         uses: actions/checkout@main
@@ -66,3 +68,4 @@ jobs:
         with:
           tag_name: lede-x64
           files: lede-firmware/*.*
+          
