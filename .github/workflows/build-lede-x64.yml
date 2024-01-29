@@ -37,10 +37,9 @@ jobs:
           uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
       - name: Clone source code
         run: |
-          git clone https://github.com/coolsnowwolf/lede.git
-        
-
-          
+          wget https://github.com/coolsnowwolf/lede/archive/refs/tags/20230609.zip
+          unzip 20230609.zip
+          mv lede-20230609 lede
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
