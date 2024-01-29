@@ -36,9 +36,7 @@ jobs:
           python3-distutils file
       - name: Clone source code
         run: |
-          wget https://github.com/coolsnowwolf/lede/archive/refs/tags/20230609.zip
-          unzip 20230609.zip
-          mv lede-20230609 lede
+          git clone --depth=1 --single-branch --branch X64 https://github.com/coolsnowwolf/lede.git
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
@@ -47,7 +45,8 @@ jobs:
           make defconfig
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          make -j $(nproc) download world V=s
+          make download
+          make -j $(($(nproc)+1))
           
       - name: Cache Lede Build Dependencies
         uses: actions/cache@v2
