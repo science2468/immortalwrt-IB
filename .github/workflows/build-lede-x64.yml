@@ -36,7 +36,7 @@ jobs:
           python3-distutils file
       - name: Clone source code
         run: |
-          git clone --depth=1 --single-branch --branch X64 https://github.com/coolsnowwolf/lede.git
+          git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
