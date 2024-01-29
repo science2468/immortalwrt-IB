@@ -44,7 +44,7 @@ jobs:
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
-          cp config-x64/lede-x64 $GITHUB_WORKSPACE/lede/.config
+          cp config-x64/lede-x64 lede/.config
           cd lede
           make defconfig
           ./scripts/feeds update -a
