@@ -36,43 +36,39 @@ jobs:
           python3-distutils file
       - name: Clone source code
         run: |
-          git clone --depth=1 --single-branch --branch openwrt-23.05 https://github.com/immortalwrt/immortalwrt.git
+          git clone --depth=1 --single-branch --branch openwrt-23.05 https://github.com/openwrt/openwrt.git
       - name: Build 
         run: |
           ls -a $GITHUB_WORKSPACE
-          wget https://downloads.immortalwrt.org/releases/23.05.1/targets/x86/64/config.buildinfo -O immortalwrt/.config
-          cd immortalwrt
-          sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config
-          sed -i 's/CONFIG_QCOW2_IMAGES=y/#CONFIG_QCOW2_IMAGES is not set/' .config
-          sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
-          sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
-          git clone https://github.com/fw876/helloworld.git immortalwrt/package
+          wget https://downloads.openwrt.org/releases/23.05.2/targets/x86/64/config.buildinfo -O openwrt/.config
+          cd openwrt
+          git clone https://github.com/fw876/helloworld.git openwrt/package
           make defconfig
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make download
           make -j $(($(nproc)+1))
           
-      - name: Cache immortalwrt Build Dependencies
+      - name: Cache openwrt Build Dependencies
         uses: actions/cache@v2
         with:
           path: |
-            immortalwrt/.ccache
+            openwrt/.ccache
           key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
           
       - name: Filter and upload firmware
         run: |
-          mkdir immortalwrt-firmware
-          find immortalwrt/bin/ -type f -name "*-squashfs-combined.*" -exec cp {} immortalwrt-firmware/ \;
+          mkdir openwrt-firmware
+          find openwrt/bin/ -type f -name "*-squashfs-combined.*" -exec cp {} openwrt-firmware/ \;
         working-directory: ${{ github.workspace }}
   
       - name: Set Date and Time
         id: datetime
         run: echo "::set-output name=datetime::$(date +'%Y%m%d%H%M%S')"
 
-      - name: Upload immortalwrt firmware
+      - name: Upload openwrt firmware
         uses: softprops/action-gh-release@master
         with:
-          tag_name: immortalwrt-x64-${{ steps.datetime.outputs.datetime }}
-          files: immortalwrt-firmware/*.*
+          tag_name: openwrt-x64-${{ steps.datetime.outputs.datetime }}
+          files: openwrt-firmware/*.*
           
