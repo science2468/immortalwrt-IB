@@ -1,4 +1,4 @@
-name: Build openwrt
+name: Build immortalwrt
 on: 
   workflow_dispatch:
 jobs:
