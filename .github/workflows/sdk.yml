@@ -46,7 +46,7 @@ jobs:
     - name: Filter and upload firmware
       run: |
         mkdir immortalwrt-sdk
-        find immortalwrt-*/bin/ -type f -name "*xray*" -exec cp {} immortalwrt-sdk/ \;
+        find immortalwrt-*/bin/ -type f -name "*luci-app-ssr-plus*" -exec cp {} immortalwrt-sdk/ \;
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
