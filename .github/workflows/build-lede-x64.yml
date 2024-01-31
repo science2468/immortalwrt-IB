@@ -32,15 +32,21 @@ jobs:
           python3-distutils rsync unzip zlib1g-dev file wget
       - name: Clone source code
         run: |
-          git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
-      - name: Build 
+          git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git+
+      - name: feeds
         run: |
-          ls -a $GITHUB_WORKSPACE
           cd lede
           make defconfig
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+      - name: download 
+        run: |
+          ls -a $GITHUB_WORKSPACE
+          cd lede
           make download
+      - name: build
+        run: |
+          cd lede
           make -j $(($(nproc)+1))
           
       - name: Cache Lede Build Dependencies
