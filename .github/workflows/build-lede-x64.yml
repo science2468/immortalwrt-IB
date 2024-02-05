@@ -50,7 +50,7 @@ jobs:
       - name: build
         run: |
           cd lede
-          make -j $(($(nproc)+1))
+          make -j1 V=s
           
       - name: Cache Lede Build Dependencies
         uses: actions/cache@v2
