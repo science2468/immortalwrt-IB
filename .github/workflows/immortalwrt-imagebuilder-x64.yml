@@ -49,7 +49,7 @@ jobs:
         sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
         sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
         
-        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-docker-zh-cn" ROOTFS_PARTSIZE="300"
+        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-dockerman-zh-cn kmod-tun" ROOTFS_PARTSIZE="800"
 
     - name: Filter and upload firmware
       run: |
