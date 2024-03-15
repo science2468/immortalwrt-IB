@@ -5,8 +5,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-
     - name: Delete Files
       run: |
         docker rmi `docker images -q`
@@ -43,18 +41,20 @@ jobs:
       run: |
         
         cd immortalwrt-imagebuilder-*/
-        sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config
+        #下面的命令是不生成iso、qcow2、vdi、vmdk、vhdx后缀类型的固件
+        sed -i 's/CONFIG_ISO_IMAGES=y/#CONFIG_ISO_IMAGES is not set/' .config   
         sed -i 's/CONFIG_QCOW2_IMAGES=y/#CONFIG_QCOW2_IMAGES is not set/' .config
         sed -i 's/CONFIG_VDI_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
         sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
         sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
-        
-        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-dockerman-zh-cn kmod-tun" ROOTFS_PARTSIZE="800"
+        #"luci-i18n-base-zh-cn"这样是添加插件，"-luci-i18n-base-zh-cn"这样是删除插件。ROOTFS_PARTSIZE="800"这表示overlay（不严谨，供小白理解）分区容量是800MB
+        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn" ROOTFS_PARTSIZE="800"
 
     - name: Filter and upload firmware
       run: |
         
         mkdir immortalwrt-firmware
+        #squashfs-combined带efi：squashfs-combined-efi.img.gz；squashfs-combined不带efi：squashfs-combined.img.gz 替换到双引号内。
         find immortalwrt-imagebuilder-*/bin/targets/ -type f -name "*squashfs-combined.img.gz" -exec cp {} immortalwrt-firmware/ \;
       working-directory: ${{ github.workspace }}
   
