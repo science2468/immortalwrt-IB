@@ -50,6 +50,8 @@ jobs:
         run: |
           ls -a $GITHUB_WORKSPACE
           cd lede
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
           make download
       - name: build
         run: |
