@@ -38,20 +38,22 @@ jobs:
           git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
       - name: feeds
         run: |
+          ls -a
           cd lede
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
           make defconfig
           sed -i 's/CONFIG_SDK is not set/#CONFIG_SDK=y/' .config
           sed -i 's/CONFIG_IB is not set/#CONFIG_IB=y/' .config
           make defconfig
-          cat .config
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
+          cp .config config-64/lede-x64.txt
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
           cd lede
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
+
           make download
       - name: build
         run: |
