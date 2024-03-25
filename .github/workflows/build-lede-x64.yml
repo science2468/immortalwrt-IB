@@ -54,7 +54,7 @@ jobs:
 
       - name: copy .config
         run: |
-          cp $GITHUB_WORKSPACE/lede/.config $GITHUB_WORKSPACE/config-x64/
+          cp lede/.config config-x64/
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
