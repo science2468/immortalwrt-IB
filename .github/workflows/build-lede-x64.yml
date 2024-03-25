@@ -40,6 +40,9 @@ jobs:
         run: |
           cd lede
           make defconfig
+          sed -i 's/CONFIG_SDK is not set/#CONFIG_SDK=y/' .config
+          sed -i 's/CONFIG_IB is not set/#CONFIG_IB=y/' .config
+          make defconfig
           ./scripts/feeds update -a
           ./scripts/feeds install -a
       - name: download 
@@ -50,14 +53,7 @@ jobs:
       - name: build
         run: |
           cd lede
-          make -j1 V=s
-          
-      - name: Cache Lede Build Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            lede/.ccache
-          key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
+          make -j5 V=s
           
       - name: Filter and upload firmware
         run: |
@@ -66,14 +62,10 @@ jobs:
           find lede/bin/ -type f -name "*-imagebuilder-*" -exec cp {} lede-firmware/ \;
           find lede/bin/ -type f -name "*-sdk-*" -exec cp {} lede-firmware/ \;
         working-directory: ${{ github.workspace }}
-  
-      - name: Set Date and Time
-        id: datetime
-        run: echo "::set-output name=datetime::$(date +'%Y%m%d%H%M%S')"
 
       - name: Upload lede firmware
-        uses: softprops/action-gh-release@master
+        uses: actions/upload-artifact@master
         with:
-          tag_name: lede-x64-${{ steps.datetime.outputs.datetime }}
-          files: lede-firmware/*.*
+          name: lede-firmware
+          path: lede-firmware/
           
