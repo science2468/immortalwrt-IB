@@ -8,7 +8,9 @@ jobs:
       contents: write
     steps:
       - name: Checkout Projects
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
+        
+        
       - name: Delete Files
         run: |
           docker rmi `docker images -q`
@@ -48,8 +50,11 @@ jobs:
           make defconfig
           sed -i 's/CONFIG_SDK is not set/#CONFIG_SDK=y/' .config
           sed -i 's/CONFIG_IB is not set/#CONFIG_IB=y/' .config
-          make defconfig
-          cp .config config-x64/
+          
+
+      - name: copy .config
+        run: |
+          cp $GITHUB_WORKSPACE/lede/.config $GITHUB_WORKSPACE/config-x64/
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
