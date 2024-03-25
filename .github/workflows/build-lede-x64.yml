@@ -42,13 +42,14 @@ jobs:
           cd lede
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+          
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make defconfig
           sed -i 's/CONFIG_SDK is not set/#CONFIG_SDK=y/' .config
           sed -i 's/CONFIG_IB is not set/#CONFIG_IB=y/' .config
           make defconfig
-          cp .config config-64/lede-x64.txt
+          cp .config config-x64/lede-x64.txt
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
