@@ -48,9 +48,9 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make defconfig
-          sed -i '516i CONFIG_IB=y\n' .config  
-          sed -i '518i CONFIG_SDK=y\n' .config
-          sed -i '228i CONFIG_GRUB_IMAGES=y\n' .config
+          sed -i 's/#CONFIG_IB is not set/CONFIG_IB=y/' .config
+          sed -i 's/#CONFIG_SDK is not set/CONFIG_GRUB_IMAGES=y/' .config
+          sed -i 's/#CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           
 
       - name: cat .config
