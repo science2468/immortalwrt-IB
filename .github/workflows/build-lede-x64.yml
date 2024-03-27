@@ -48,11 +48,15 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make defconfig
-          sed -i 's/#CONFIG_IB is not set/CONFIG_IB=y/' .config
-          sed -i 's/#CONFIG_SDK is not set/CONFIG_GRUB_IMAGES=y/' .config
-          sed -i 's/#CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
+      - name: custom .config
+        run: |
+          cd lede
+          sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
+          sed -i 's/# CONFIG_SDK is not set/CONFIG_GRUB_IMAGES=y/' .config
+          sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
+          sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
+          sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
           
-
       - name: cat .config
         run: |
           cat lede/.config
@@ -67,17 +71,10 @@ jobs:
           cd lede
           make -j5 V=s
           
-      - name: Filter and upload firmware
-        run: |
-          mkdir lede-firmware
-          find lede/bin/ -type f -name "*-squashfs-combined.*" -exec cp {} lede-firmware/ \;
-          find lede/bin/ -type f -name "*-imagebuilder-*" -exec cp {} lede-firmware/ \;
-          find lede/bin/ -type f -name "*-sdk-*" -exec cp {} lede-firmware/ \;
-        working-directory: ${{ github.workspace }}
 
       - name: Upload lede firmware
         uses: actions/upload-artifact@master
         with:
           name: lede-firmware
-          path: lede-firmware/
+          path: lede/bin/
           
