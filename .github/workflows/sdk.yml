@@ -7,12 +7,7 @@ jobs:
     steps:
     - name: Checkout Projects
       uses: actions/checkout@v2
-    - name: Show system
-      run: |
-        lscpu
-        free -h
-        df -Th
-        uname -a
+      
     - name: Installation depends
       run: |
         sudo -E apt update -y
@@ -23,10 +18,12 @@ jobs:
         mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools \
         libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
         vim wget xmlto xxd zlib1g-dev python3-setuptools
+        
     - name: Clone source code
       run: |
         wget https://downloads.immortalwrt.org/releases/23.05.2/targets/x86/64/immortalwrt-sdk-23.05.2-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
         tar -Jxf immortalwrt-sdk-*.tar.xz
+        
     - name: add custom package
       run: |
         ls
