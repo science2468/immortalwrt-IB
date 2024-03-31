@@ -29,23 +29,28 @@ jobs:
         tar -J -x -f immortalwrt-sdk-*.tar.xz
     - name: add custom package
       run: |
+        ls
         cd immortalwrt-*/package
-        git clone https://github.com/destan19/OpenAppFilter.git
+        git clone --depth=1 https://github.com/destan19/OpenAppFilter.git
+        
     - name: update feed
       run: |
         cd immortalwrt-*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
+        
     - name: cat .config
       run: |
         cat immortalwrt-*/.config
+        
     - name: build
       run: |
         cd immortalwrt-*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
+        
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
