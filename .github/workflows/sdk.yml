@@ -5,13 +5,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Delete Files
-      run: |
-        docker rmi `docker images -q`
-        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
-        sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
-        sudo -E apt-get -y autoremove --purge
-        sudo -E apt-get clean
     - name: Show system
       run: |
         lscpu
@@ -30,25 +23,26 @@ jobs:
         vim wget xmlto xxd zlib1g-dev python3-setuptools
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.1/targets/x86/64/immortalwrt-sdk-23.05.1-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/23.05.1/targets/x86/64/immortalwrt-sdk-23.05.2-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
         tar -J -x -f immortalwrt-sdk-*.tar.xz
-    - name: Clone source code
+    - name: add custom package
       run: |
         cd immortalwrt*/package
-        git clone https://github.com/fw876/helloworld.git
-    - name: config ipk
+        https://github.com/destan19/OpenAppFilter.git
+    - name: feeds
       run: |
         cd immortalwrt*/
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
-        make package/luci-app-ssr-plus/compile
-    - name: Filter and upload firmware
+    - name: cat .config
       run: |
-        mkdir immortalwrt-sdk
-        find immortalwrt-*/bin/ -type f -name "*luci-app-ssr-plus*" -exec cp {} immortalwrt-sdk/ \;
+        cat immortalwrt*/.config
+    - name: build
+      run: |
+        make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
         name: immortalwrt-sdk
-        path: immortalwrt-sdk/
+        path: immortalwrt-*/bin/
