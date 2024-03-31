@@ -30,23 +30,23 @@ jobs:
     - name: add custom package
       run: |
         ls
-        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64/package
+        cd immortalwrt*64/package
         git clone --depth=1 https://github.com/destan19/OpenAppFilter.git
         
     - name: update feed
       run: |
-        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64
+        cd immortalwrt*64
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
         
     - name: cat .config
       run: |
-        cat immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64/.config
+        cat immortalwrt*64/.config
         
     - name: build
       run: |
-        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64
+        cd immortalwrt*64
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
