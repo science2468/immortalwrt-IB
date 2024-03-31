@@ -40,6 +40,8 @@ jobs:
         cat immortalwrt*/.config
     - name: build
       run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
         make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
