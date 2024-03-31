@@ -26,33 +26,34 @@ jobs:
     - name: Clone source code
       run: |
         wget https://downloads.immortalwrt.org/releases/23.05.2/targets/x86/64/immortalwrt-sdk-23.05.2-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
-        tar -Jxf immortalwrt-sdk-*.tar.xz --remove-files
+        tar -Jxf immortalwrt-sdk-*.tar.xz
     - name: add custom package
       run: |
         ls
-        cd immortalwrt-*/package
+        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64/package
         git clone --depth=1 https://github.com/destan19/OpenAppFilter.git
         
     - name: update feed
       run: |
-        cd immortalwrt-*
+        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
         
     - name: cat .config
       run: |
-        cat immortalwrt-*/.config
+        cat immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64/.config
         
     - name: build
       run: |
-        cd immortalwrt-*
+        cd immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        make defconfig
         make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
         name: immortalwrt-sdk
-        path: immortalwrt-*/bin/
+        path: immortalwrt-sdk-*-x86-64_gcc-*-musl.Linux-x86_64/bin/
