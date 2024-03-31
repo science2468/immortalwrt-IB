@@ -29,7 +29,7 @@ jobs:
       run: |
         cd immortalwrt-*/package
         git clone https://github.com/destan19/OpenAppFilter.git
-    - name: feeds
+    - name: update feed
       run: |
         cd immortalwrt-*
         ./scripts/feeds update -a
