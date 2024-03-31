@@ -27,20 +27,20 @@ jobs:
         tar -J -x -f immortalwrt-sdk-*.tar.xz
     - name: add custom package
       run: |
-        cd immortalwrt*/package
+        cd immortalwrt-*/package
         git clone https://github.com/destan19/OpenAppFilter.git
     - name: feeds
       run: |
-        cd immortalwrt*
+        cd immortalwrt-*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
     - name: cat .config
       run: |
-        cat immortalwrt*/.config
+        cat immortalwrt-*/.config
     - name: build
       run: |
-        cd immortalwrt*
+        cd immortalwrt-*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
