@@ -31,7 +31,7 @@ jobs:
         git clone https://github.com/destan19/OpenAppFilter.git
     - name: feeds
       run: |
-        cd immortalwrt*/
+        cd immortalwrt*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
@@ -40,6 +40,7 @@ jobs:
         cat immortalwrt*/.config
     - name: build
       run: |
+        cd immortalwrt*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make -j5 package/OpenAppFilter/luci-app-oaf/compile V=s
