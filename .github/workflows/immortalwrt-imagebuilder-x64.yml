@@ -24,7 +24,7 @@ jobs:
         sed -i 's/CONFIG_VMDK_IMAGES=y/#CONFIG_VDI_IMAGES is not set/' .config
         sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
         #"luci-i18n-base-zh-cn"这样是添加插件，"-luci-i18n-base-zh-cn"这样是删除插件。ROOTFS_PARTSIZE="800"这表示overlay（不严谨，供小白理解）分区容量是800MB
-        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn" ROOTFS_PARTSIZE="800"
+        make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-passwall-zh-cn -kmod-r8125 -kmod-r8101 -kmod-8139cp -kmod-8139too -kmod-usb-net-rtl8150 -kmod-usb-net-rtl8152-vendor" ROOTFS_PARTSIZE="800"
 
     - name: Filter and upload firmware
       run: |
