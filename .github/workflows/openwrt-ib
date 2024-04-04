@@ -1,0 +1,32 @@
+name: Build openwrt-ib
+on: 
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Installation depends
+      run: |
+        sudo apt install build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils
+    - name: Clone source code
+      run: |
+        wget https://downloads.openwrt.org/releases/23.05.3/targets/x86/64/openwrt-imagebuilder-23.05.3-x86-64.Linux-x86_64.tar.xz
+        tar -J -x -f openwrt-imagebuilder-*.tar.xz
+        
+    - name: Build 
+      run: |
+        cd openwrt-imagebuilder-*64/
+        make image PACKAGES="kmod-alx dnsmasq-full luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn -dnsmasq" ROOTFS_PARTSIZE="500"
+
+    - name: Filter and upload firmware
+      run: |
+        mkdir openwrt-firmware
+        #squashfs-combined带efi：squashfs-combined-efi.img.gz；squashfs-combined不带efi：squashfs-combined.img.gz 替换到双引号内。
+        find openwrt-imagebuilder-*64/bin/targets/ -type f -name "*squashfs-combined.img.gz" -exec cp {} openwrt-firmware/ \;
+      working-directory: ${{ github.workspace }}
+  
+    - name: Upload immortalwrt firmware
+      uses: actions/upload-artifact@master
+      with:
+        name: openwrt-firmware
+        path: openwrt-firmware/
