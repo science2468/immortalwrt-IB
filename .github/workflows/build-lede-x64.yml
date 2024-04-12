@@ -17,7 +17,16 @@ jobs:
           sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* adoptopenjdk* mysql* php* mongodb* dotnet* moby* snapd* || true
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
-
+          
+      # Add caching step
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: lede/build_dir   # 缓存的目录
+          key: ${{ runner.os }}-lede-${{ hashFiles('**/Makefile') }}
+          restore-keys: |
+            ${{ runner.os }}-lede-
+            
       - name: Show system
         run: |
           lscpu
@@ -59,8 +68,6 @@ jobs:
           sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
-          sed -i 's/# CONFIG_CCACHE is not set/CONFIG_CCACHE=y/' .config
-          sed -i 's/# CONFIG_DEVEL is not set/CONFIG_DEVEL=y/' .config
           
       - name: cat .config
         run: |
