@@ -9,6 +9,17 @@ jobs:
     steps:
       - name: Checkout Projects
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: cache
+        uses: klever1988/cachewrtbuild@main
+        with:
+          #是否一并缓存.ccache目录，如果你启用了ccache。这是唯一的常用参数，其他三个用于除错，一般不需要调整
+          ccache: true
+          toolchain: true
+          skip: true
+          clean: false
+          
         
         
       - name: Delete Files
@@ -57,6 +68,8 @@ jobs:
           sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
+          sed -i 's/# CONFIG_CCACHE is not set/CONFIG_CCACHE=y/' .config
+          sed -i 's/# CONFIG_DEVEL is not set/CONFIG_DEVEL=y/' .config
           
       - name: cat .config
         run: |
@@ -65,7 +78,7 @@ jobs:
         run: |
           ls -a $GITHUB_WORKSPACE
           cd lede
-
+          make defconfig
           make download
       - name: build
         run: |
