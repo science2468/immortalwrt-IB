@@ -84,7 +84,25 @@ jobs:
         run: |
           cd lede
           make -j5 V=s
-          
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.LEDE }}
+        run: |
+          TAG_NAME=$(date +'%Y-%m-%d')
+          RELEASE_NAME="Release $(date +'%Y-%m-%d')"
+          echo "::set-output name=tag_name::$TAG_NAME"
+          echo "::set-output name=release_name::$RELEASE_NAME"
+        with:
+          tag_name: ${{ steps.create_release.outputs.tag_name }}
+          release_name: ${{ steps.create_release.outputs.release_name }}
+          body: |
+            lede-x64  # Description of the release
+          draft: false
+          prerelease: false
+
       - name: Upload lede firmware
         uses: actions/upload-release-asset@v1
         with:
