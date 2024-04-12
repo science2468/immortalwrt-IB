@@ -9,13 +9,7 @@ jobs:
     steps:
       - name: Checkout Projects
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      - name: cache
-        uses: klever1988/cachewrtbuild@main
-        with:
-          ccache: 'true'
-          
+
       - name: Delete Files
         run: |
           docker rmi `docker images -q`
@@ -40,9 +34,11 @@ jobs:
           libyaml-dev libz-dev lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2 python3 python3-docutils python3-pip python3-ply python3-pyelftools \
           python3-setuptools qemu-utils quilt re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev clang g++ libncurses-dev \
           python3-distutils file
+          
       - name: Clone source code
         run: |
           git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
+          
       - name: feeds
         run: |
           ls -a
@@ -53,6 +49,7 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make defconfig
+          
       - name: custom .config
         run: |
           cd lede
@@ -68,18 +65,19 @@ jobs:
       - name: cat .config
         run: |
           cat lede/.config
+          
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
           cd lede
           make defconfig
           make download
+          
       - name: build
         run: |
           cd lede
           make -j5 V=s
           
-
       - name: Upload lede firmware
         uses: actions/upload-release-asset@v1
         with:
