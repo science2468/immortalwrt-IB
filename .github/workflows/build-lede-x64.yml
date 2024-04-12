@@ -86,27 +86,12 @@ jobs:
           make -j5 V=s
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.LEDE }}
-        run: |
-          TAG_NAME=$(date +'%Y-%m-%d')
-          RELEASE_NAME="Release $(date +'%Y-%m-%d')"
-          echo "::set-output name=tag_name::$TAG_NAME"
-          echo "::set-output name=release_name::$RELEASE_NAME"
-        with:
-          tag_name: ${{ steps.create_release.outputs.tag_name }}
-          release_name: ${{ steps.create_release.outputs.release_name }}
-          body: |
-            lede-x64  # Description of the release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with: 
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          body: LEDE-x64
           draft: false
           prerelease: false
-
-      - name: Upload lede firmware
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: lede/bin/targets/x86/64/openwrt-*  # 替换为您实际的固件文件路径或通配符
-          asset_content_type: application/octet-stream
-          token: ${{ secrets.LEDE }}
+          files: lede/bin/targets/x86/64/openwrt-*
