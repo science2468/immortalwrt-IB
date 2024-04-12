@@ -10,7 +10,7 @@ jobs:
       - name: Checkout Projects
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: cache
         uses: klever1988/cachewrtbuild@main
         with:
