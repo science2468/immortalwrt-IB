@@ -79,4 +79,4 @@ jobs:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: lede/bin/targets/x86/64/openwrt-*  # 替换为您实际的固件文件路径或通配符
           asset_content_type: application/octet-stream
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.LEDE }}
