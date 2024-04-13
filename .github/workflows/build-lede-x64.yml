@@ -75,7 +75,7 @@ jobs:
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
-          # cd lede && make download
+          
           cd lede && ./scripts/ext-toolchain.sh --toolchain openwrt-toolchain*/toolchain-*/ --config x86/64
           
       - name: build
