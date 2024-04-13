@@ -41,6 +41,11 @@ jobs:
       - name: Clone source code
         run: |
           git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
+          wget https://github.com/science2468/immortalwrt-IB/releases/download/lede-x64/openwrt-toolchain-x86-64_gcc-11.3.0_musl.Linux-x86_64.tar.xz
+          
+      - name: tar toolchain
+        run: |
+          tar -xf openwrt-toolchain*.tar.xz && rm openwrt-toolchaiin*.tar.xz
           
       - name: feeds
         run: |
@@ -70,8 +75,8 @@ jobs:
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
-          cd lede
-          make download
+          # cd lede && make download
+          cd lede && ./scripts/ext-toolchain.sh --toolchain openwrt-toolchain*/toolchain-*/ --config x86/64
           
       - name: build
         run: |
