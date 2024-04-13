@@ -1,6 +1,8 @@
 name: Build lede
 on: 
   workflow_dispatch:
+env:
+  builddate: $(date +%Y-%m-%d)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,14 +20,6 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           
-      # Add caching step
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: lede/build_dir   # 缓存的目录
-          key: ${{ runner.os }}-lede-${{ hashFiles('**/Makefile') }}
-          restore-keys: |
-            ${{ runner.os }}-lede-
             
       - name: Show system
         run: |
@@ -94,8 +88,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with: 
-          tag_name: ${{ github.run_id }}
-          name: Release $(date +"%Y-%m-%d")
+          tag_name: ${{ env.builddate }}
+          name: Release ${{ env.builddate }}
           body: LEDE-x64
           draft: false
           prerelease: false
