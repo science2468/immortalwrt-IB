@@ -1,6 +1,8 @@
 name: Build lede
 on: 
   workflow_dispatch:
+    tags:
+      - "v*.*.*"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -85,6 +87,12 @@ jobs:
           cd lede
           make -j5 V=s
 
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: LEDE-X64
+          path: lede/bin/targets/x86/64/openwrt-*
+          
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
