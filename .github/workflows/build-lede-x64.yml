@@ -71,13 +71,12 @@ jobs:
         run: |
           ls -a $GITHUB_WORKSPACE
           cd lede
-          make defconfig
           make download
           
       - name: build
         run: |
           cd lede
-          make -j5 V=s
+          make -j$(nproc) V=s
 
       - name: upload artifacts
         uses: actions/upload-artifact@v2
