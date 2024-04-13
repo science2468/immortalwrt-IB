@@ -87,8 +87,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with: 
           tag_name: lede-x64
-          name: Release LEDE-X64
-          body: LEDE-x64默认配置
+          name: Release LEDE-X64-V1
+          body: 使用toolchain加速编译LEDE-x64
           draft: false
           prerelease: false
           files: lede/bin/targets/x86/64/openwrt-*
