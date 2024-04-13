@@ -75,7 +75,8 @@ jobs:
         run: |
           ls -a $GITHUB_WORKSPACE
           
-          cd lede && ./scripts/ext-toolchain.sh --toolchain openwrt-toolchain*/toolchain-*/ --config x86/64
+          cd lede 
+          ./scripts/ext-toolchain.sh --toolchain $GITHUB_WORKSPACE/openwrt-*/toolchain-*/ --config x86/64
           
       - name: build
         run: |
