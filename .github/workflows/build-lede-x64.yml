@@ -55,6 +55,8 @@ jobs:
           
           ./scripts/feeds update -a
           ./scripts/feeds install -a
+          
+          ./scripts/ext-toolchain.sh --toolchain $GITHUB_WORKSPACE/openwrt-*/toolchain-*/ --config x86/64
           make defconfig
           
       - name: custom .config
@@ -74,9 +76,6 @@ jobs:
       - name: download 
         run: |
           ls -a $GITHUB_WORKSPACE
-          
-          cd lede 
-          ./scripts/ext-toolchain.sh --toolchain $GITHUB_WORKSPACE/openwrt-*/toolchain-*/ --config x86/64
           
       - name: build
         run: |
