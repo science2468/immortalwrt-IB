@@ -66,6 +66,7 @@ jobs:
       - name: download 
         run: |
           ls $GITHUB_WORKSPACE
+          cd lede
           make download
           
       - name: build
