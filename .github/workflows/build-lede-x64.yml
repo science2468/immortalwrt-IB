@@ -75,17 +75,17 @@ jobs:
           
       - name: download 
         run: |
-          ls -a $GITHUB_WORKSPACE
+          ls $GITHUB_WORKSPACE
           
       - name: build
         run: |
           cd lede
-          make -j$(nproc) V=s
+          make -j$(nproc) 
           
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with: 
-          tag_name: lede-x64
+          tag_name: lede-x64-V1
           name: Release LEDE-X64-V1
           body: 使用toolchain加速编译LEDE-x64
           draft: false
