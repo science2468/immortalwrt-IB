@@ -1,5 +1,7 @@
 name: Build lede
 on: 
+  schedule:
+    - cron: '0 6 * * *'  # 每天凌晨 4 点触发
   workflow_dispatch:
 jobs:
   build:
@@ -18,7 +20,6 @@ jobs:
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
           
-            
       - name: Show system
         run: |
           lscpu
@@ -64,11 +65,11 @@ jobs:
           cd lede
           sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
           sed -i 's/# CONFIG_SDK is not set/CONFIG_GRUB_IMAGES=y/' .config
-          sed -i '508i CONFIG_SDK=y\n' .config
           sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
-          sed -i 's/# CONFIG_MAKE_TOOLCHAIN is not set/CONFIG_MAKE_TOOLCHAIN=y/' .config
+          sed -i '508i CONFIG_SDK=y\n' .config
+          sed -i '509i CONFIG_IB=y\n' .config
       - name: cat .config
         run: |
           cat lede/.config
