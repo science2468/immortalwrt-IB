@@ -23,6 +23,7 @@ jobs:
             
       - name: Show system
         run: |
+          date
           lscpu
           free -h
           df -Th
