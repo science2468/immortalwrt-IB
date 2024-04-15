@@ -87,7 +87,5 @@ jobs:
           body: 每天4点生成toolchain
           draft: false
           prerelease: false
-          files: lede/bin/targets/x86/64/openwrt-toolchain*
-                 lede/bin/targets/x86/64/openwrt-image*
-                 lede/bin/targets/x86/64/openwrt-sdk-x86-64_gcc*
+          files: lede/bin/targets/x86/64/openwrt*
                   
