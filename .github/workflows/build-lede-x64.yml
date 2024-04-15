@@ -64,13 +64,9 @@ jobs:
       - name: custom .config
         run: |
           cd lede
-          sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
-          sed -i 's/# CONFIG_SDK is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
-          sed -i '508i CONFIG_SDK=y\n' .config
-          sed -i '509i CONFIG_IB=y\n' .config
       - name: cat .config
         run: |
           cat lede/.config
