@@ -38,10 +38,12 @@ jobs:
           libyaml-dev libz-dev lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2 python3 python3-docutils python3-pip python3-ply python3-pyelftools \
           python3-setuptools qemu-utils quilt re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs unzip upx-ucl vim wget xmlto xxd zlib1g-dev clang g++ libncurses-dev \
           python3-distutils file
+          
       - name: Get Current Time
         run: |
           LEDE_TIME=$(date +"%Y-%m-%d %H:%M:%S")
           echo "LEDE_TIME=$LEDE_TIME" >> $GITHUB_ENV
+          
       - name: Clone source code
         run: |
           git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede.git
