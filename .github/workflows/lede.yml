@@ -93,7 +93,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with: 
           tag_name: lede-x64-${{ env.LEDE_TIME }}
-          name: LEDE-X64
           body: 每天4点
           draft: false
           prerelease: false
