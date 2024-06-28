@@ -41,7 +41,7 @@ jobs:
           
       - name: Get Current Time
         run: |
-          LEDE_TIME=$(date +"%Y-%m-%d %H:%M:%S")
+          LEDE_TIME=$(date +"%Y-%m-%d)
           echo "LEDE_TIME=$LEDE_TIME" >> $GITHUB_ENV
           
       - name: Clone source code
