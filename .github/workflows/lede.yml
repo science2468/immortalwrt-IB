@@ -1,13 +1,15 @@
 name: Build lede
 on: 
   schedule:
-    - cron: '0 20 * * *' #每天4点
+    - cron: '0 4 * * *' #每天4点
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      TZ: Asia/Shanghai
     steps:
       - name: Checkout Projects
         uses: actions/checkout@v2
