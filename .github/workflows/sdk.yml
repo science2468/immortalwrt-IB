@@ -21,29 +21,29 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.2/targets/x86/64/immortalwrt-sdk-23.05.2-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/23.05.4/targets/x86/64/immortalwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
         tar -Jxf immortalwrt-sdk-*.tar.xz
-        
+        rm -rf immortalwrt-sdk-*
+
     - name: add custom package
       run: |
         ls
-        cd immortalwrt*64/package
-        git clone --depth=1 https://github.com/destan19/OpenAppFilter.git
+        git clone --depth=1 https://github.com/destan19/OpenAppFilter.git immortalwrt-sdk*/package
         
     - name: update feed
       run: |
-        cd immortalwrt*64
+        cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
         
     - name: cat .config
       run: |
-        cat immortalwrt*64/.config
+        cat immortalwrt-sdk*/.config
         
     - name: build
       run: |
-        cd immortalwrt*64
+        cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
