@@ -27,14 +27,14 @@ jobs:
 
     - name: add custom package
       run: |
-        git clone --depth=1 https://github.com/science2468/luci-qbt.git immortalwrt-sdk*/package
-        ls immortalwrt-sdk*/package
+        cd immortalwrt-sdk*/package
+        git clone --depth=1 https://github.com/science2468/luci-qbt.git
+        ls
     - name: update feed
       run: |
         cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-        make defconfig
         
     - name: cat .config
       run: |
