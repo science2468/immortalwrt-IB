@@ -23,7 +23,7 @@ jobs:
       run: |
         wget https://downloads.immortalwrt.org/releases/23.05.4/targets/x86/64/immortalwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
         tar -Jxf immortalwrt-sdk-*.tar.xz
-        rm -rf immortalwrt-sdk-*
+        rm -rf immortalwrt-sdk*.xz
 
     - name: add custom package
       run: |
