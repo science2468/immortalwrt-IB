@@ -35,6 +35,7 @@ jobs:
         cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+        make defconfig
         
     - name: cat .config
       run: |
