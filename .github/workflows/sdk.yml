@@ -35,8 +35,11 @@ jobs:
         cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
+
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
         make defconfig
-        
     - name: cat .config
       run: |
         cat immortalwrt-sdk*/.config
@@ -44,13 +47,11 @@ jobs:
     - name: build
       run: |
         cd immortalwrt-sdk*
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-        make defconfig
-        make -j1 package/luci-app-qbittorrent/luci-app-qbittorrent-sc/compile V=s
+        make -j$(nproc) package/luci-app-qbittorrent/luci-app-qbittorrent-sc/compile
+        make -j$(nproc) package/luci-app-qbittorrent/qbittorrent-sc/compile
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
         name: immortalwrt-sdk
-        path: immortalwrt*64/bin/
+        path: immortalwrt-sdk*/bin/
