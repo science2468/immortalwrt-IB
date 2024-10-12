@@ -47,7 +47,7 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         make defconfig
-        make -j$(nproc) package/luci-app-qbittorrent/compile V=s
+        make -j$(nproc) package/luci-app-qbittorrent/luci-app-qbittorrent/compile
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
