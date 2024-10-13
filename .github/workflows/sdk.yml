@@ -17,7 +17,7 @@ jobs:
         libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
         mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools \
         libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
-        vim wget xmlto xxd zlib1g-dev python3-setuptools
+        vim wget xmlto xxd zlib1g-dev python3-setuptools tree
         
     - name: Clone source code
       run: |
@@ -43,7 +43,11 @@ jobs:
     - name: cat .config
       run: |
         cat immortalwrt-sdk*/.config
-        
+    - name: download
+      run: |
+        cd immortalwrt-sdk*
+        make download -j$(nproc)
+        tree build_dir/target-x86_64_musl/qbittorrent-sc-release-5.0.0
     - name: build
       run: |
         cd immortalwrt-sdk*
