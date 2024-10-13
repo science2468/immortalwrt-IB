@@ -47,8 +47,7 @@ jobs:
     - name: build
       run: |
         cd immortalwrt-sdk*
-        make -j$(nproc) package/luci-app-qbittorrent/luci-app-qbittorrent-sc/compile
-        make -j$(nproc) package/luci-app-qbittorrent/qbittorrent-sc/compile
+        make -j$(nproc) package/luci-app-qbittorrent/luci-app-qbittorrent-sc/compile V=99
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
