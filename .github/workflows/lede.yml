@@ -1,7 +1,7 @@
 name: Build lede
 on: 
   schedule:
-    - cron: '0 20 * * *' #每天4点
+    - cron: '0 20 1 * *' #每天4点
   workflow_dispatch:
 jobs:
   build:
