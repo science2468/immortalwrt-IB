@@ -25,7 +25,7 @@ jobs:
         sed -i 's/CONFIG_VHDX_IMAGES=y/#CONFIG_VHDX_IMAGES is not set/' .config
         #"luci-i18n-base-zh-cn"这样是添加插件，"-luci-i18n-base-zh-cn"这样是删除插件。ROOTFS_PARTSIZE="800"这表示overlay（不严谨，供小白理解）分区容量是800MB
         make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-diskman-zh-cn luci-i18n-pbr-zh-cn \
-        luci-i18n-openvpn-zh-cn openvpn-openssl mdadm luci-i18n-ddns-zh-cn ddns-scripts_aliyun drill curl" ROOTFS_PARTSIZE="300"
+        luci-i18n-openvpn-zh-cn openvpn-openssl mdadm luci-i18n-smartdns-zh-cn luci-i18n-ddns-zh-cn ddns-scripts_aliyun drill curl" ROOTFS_PARTSIZE="300"
 
     - name: Filter and upload firmware
       run: |
