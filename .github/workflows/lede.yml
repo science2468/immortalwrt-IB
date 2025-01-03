@@ -1,7 +1,7 @@
 name: Build lede
 on: 
   schedule:
-    - cron: '0 20 1 * *' #每天4点
+    - cron: '0 20 1 * *' #每月1号4点
   workflow_dispatch:
 jobs:
   build:
@@ -73,7 +73,8 @@ jobs:
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
           
-          sed -i 's/CONFIG_GRUB_IMAGES is not set/# CONFIG_GRUB_IMAGES=y/' .config
+          sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
+          sed -i 's/CONFIG_GRUB_EFI_IMAGES=y/# CONFIG_GRUB_EFI_IMAGES is not set/' .config
           sed -i 's/# CONFIG_MAKE_TOOLCHAIN is not set/CONFIG_MAKE_TOOLCHAIN=y/' .config
           
       - name: cat .config
@@ -95,7 +96,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with: 
           tag_name: lede-x64-${{ env.LEDE_TIME }}
-          body: 每天4点
+          body: 每月1号4点
           draft: false
           prerelease: false
           files: lede/bin/targets/x86/64/openwrt*
