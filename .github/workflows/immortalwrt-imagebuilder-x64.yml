@@ -16,7 +16,7 @@ jobs:
         #tar -J -x -f immortalwrt-imagebuilder-*.tar.xz
 
         zstd -d immortalwrt-imagebuilder-24*.zst
-        tar -J -x -f immortalwrt-imagebuilder-*.tar
+        tar -x -f immortalwrt-imagebuilder-*.tar
         
     - name: Build 
       run: |
