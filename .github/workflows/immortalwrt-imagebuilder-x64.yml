@@ -7,12 +7,14 @@ jobs:
     steps:
     - name: Installation depends
       run: |
-        sudo apt install build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils
+        sudo apt install build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils zstd
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.4/targets/x86/64/immortalwrt-imagebuilder-23.05.4-x86-64.Linux-x86_64.tar.xz
+        wget https://downloads.immortalwrt.org/releases/24.10.0-rc3/targets/x86/64/immortalwrt-imagebuilder-24.10.0-rc3-x86-64.Linux-x86_64.tar.zst
+        #wget https://downloads.immortalwrt.org/releases/23.05.4/targets/x86/64/immortalwrt-imagebuilder-23.05.4-x86-64.Linux-x86_64.tar.xz
         #wget https://downloads.immortalwrt.org/releases/21.02.7/targets/x86/64/immortalwrt-imagebuilder-21.02.7-x86-64.Linux-x86_64.tar.xz
-        tar -J -x -f immortalwrt-imagebuilder-*.tar.xz
+        #tar -J -x -f immortalwrt-imagebuilder-*.tar.xz
+        tar -J -x -f immortalwrt-imagebuilder-*.tar
         
     - name: Build 
       run: |
@@ -26,7 +28,7 @@ jobs:
         #"luci-i18n-base-zh-cn"这样是添加插件，"-luci-i18n-base-zh-cn"这样是删除插件。ROOTFS_PARTSIZE="800"这表示overlay（不严谨，供小白理解）分区容量是800MB
         make image PACKAGES="kmod-alx luci-i18n-base-zh-cn luci-i18n-opkg-zh-cn luci-i18n-firewall-zh-cn luci-i18n-diskman-zh-cn luci-i18n-pbr-zh-cn \
         luci-i18n-openvpn-zh-cn openvpn-openssl mdadm luci-i18n-smartdns-zh-cn \
-        luci-i18n-ddns-zh-cn ddns-scripts_aliyun drill curl luci-proto-wireguard" ROOTFS_PARTSIZE="300"
+        luci-i18n-ddns-zh-cn ddns-scripts_aliyun drill curl luci-proto-wireguard" ROOTFS_PARTSIZE="500"
 
     - name: Filter and upload firmware
       run: |
