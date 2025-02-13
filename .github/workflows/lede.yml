@@ -66,18 +66,13 @@ jobs:
           # 生成jdc_re-sp-01b固件
           echo "CONFIG_TARGET_ramips=y" >> .config
           echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
-          echo "CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y" >> .config
-          echo "CONFIG_TARGET_DEVICE_PACKAGES_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=\"\"" >> .config
           # 生成配置文件
           make defconfig
+          sed -i 's/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b is not set/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y/' .config
           
           sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
           sed -i 's/# CONFIG_SDK is not set/CONFIG_SDK=y/' .config
-          # sed -i '508i\CONFIG_SDK=y' .config
-          
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
-          # sed -i 's/# CONFIG_VDI_IMAGES is not set/CONFIG_VDI_IMAGES=y/' .config
-          
           sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           sed -i 's/CONFIG_GRUB_EFI_IMAGES=y/# CONFIG_GRUB_EFI_IMAGES is not set/' .config
           sed -i 's/# CONFIG_MAKE_TOOLCHAIN is not set/CONFIG_MAKE_TOOLCHAIN=y/' .config
