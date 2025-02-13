@@ -63,11 +63,13 @@ jobs:
       - name: custom .config
         run: |
           cd lede
-          make defconfig
           # 生成jdc_re-sp-01b固件
-          sed -i 's/CONFIG_TARGET_ramips is not set/CONFIG_TARGET_ramips=y/' .config
-          sed -i 's/CONFIG_TARGET_ramips_mt7621 is not set/CONFIG_TARGET_ramips_mt7621=y/' .config
-          sed -i 's/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b is not set/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y/' .config
+          echo "CONFIG_TARGET_ramips=y" >> .config
+          echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
+          echo "CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y" >> .config
+          echo "CONFIG_TARGET_DEVICE_PACKAGES_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=\"\"" >> .config
+          # 生成配置文件
+          make defconfig
           
           sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
           sed -i 's/# CONFIG_SDK is not set/CONFIG_SDK=y/' .config
