@@ -71,7 +71,7 @@ jobs:
           make defconfig
           # 生成idc_re-sp-01b固件
           sed -i 's/# CONFIG_TARGET_ramips_mt7621_DEVICE_jdcloud_re-sp-01b is not set/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y/' .config
-          sed -i 's/CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7=y/# CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7 is not set/' /config
+          sed -i 's/CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7=y/# CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7 is not set/' .config
           sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
           sed -i 's/# CONFIG_SDK is not set/CONFIG_SDK=y/' .config
           sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
