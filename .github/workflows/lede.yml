@@ -63,6 +63,7 @@ jobs:
       - name: custom .config
         run: |
           cd lede
+          make defconfig
           # 生成jdc_re-sp-01b固件
           sed -i 's/CONFIG_TARGET_ramips is not set/CONFIG_TARGET_ramips=y/' .config
           sed -i 's/CONFIG_TARGET_ramips_mt7621 is not set/CONFIG_TARGET_ramips_mt7621=y/' .config
