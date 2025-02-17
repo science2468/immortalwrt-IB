@@ -33,7 +33,7 @@ jobs:
                   luci-i18n-diskman-zh-cn \
                   luci-i18n-pbr-zh-cn \
                   luci-i18n-openvpn-zh-cn \
-                  luci-i18n-vsftpd-zh-cn
+                  luci-i18n-vsftpd-zh-cn \
                   openvpn-openssl \
                   mdadm \
                   luci-i18n-smartdns-zh-cn \
