@@ -91,7 +91,7 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with: 
-          tag_name: lede-re-sp-01b-${{ env.LEDE_TIME }}
+          tag_name: lede-x64-${{ env.LEDE_TIME }}
           body: 每月1号4点
           draft: false
           prerelease: false
