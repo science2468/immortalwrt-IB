@@ -67,7 +67,7 @@ jobs:
           echo "CONFIG_TARGET_ramips=y" >> .config
           echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
           echo "CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y" >> .config
-          make defconfig
+          make olddefconfig
           # 生成idc_re-sp-01b固件
           # sed -i 's/# CONFIG_TARGET_ramips_mt7621_DEVICE_jdcloud_re-sp-01b is not set/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y/' .config
           # sed -i 's/CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7=y/# CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7 is not set/' .config
