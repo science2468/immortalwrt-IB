@@ -63,20 +63,15 @@ jobs:
       - name: custom .config
         run: |
           cd lede
-          # 生成m7621的配置文件
-          echo "CONFIG_TARGET_ramips=y" >> .config
-          echo "CONFIG_TARGET_ramips_mt7621=y" >> .config
-          echo "CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y" >> .config
-          
-          # 生成idc_re-sp-01b固件
+          make defconfig
           # sed -i 's/# CONFIG_TARGET_ramips_mt7621_DEVICE_jdcloud_re-sp-01b is not set/CONFIG_TARGET_DEVICE_ramips_mt7621_DEVICE_jdcloud_re-sp-01b=y/' .config
           # sed -i 's/CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7=y/# CONFIG_TARGET_ramips_mt7621_DEVICE_adslr_g7 is not set/' .config
-          # sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
-          # sed -i 's/# CONFIG_SDK is not set/CONFIG_SDK=y/' .config
+          sed -i 's/# CONFIG_IB is not set/CONFIG_IB=y/' .config
+          sed -i 's/# CONFIG_SDK is not set/CONFIG_SDK=y/' .config
           # sed -i 's/CONFIG_VMDK_IMAGES=y/# CONFIG_VMDK_IMAGES is not set/' .config
           # sed -i 's/# CONFIG_GRUB_IMAGES is not set/CONFIG_GRUB_IMAGES=y/' .config
           # sed -i 's/CONFIG_GRUB_EFI_IMAGES=y/# CONFIG_GRUB_EFI_IMAGES is not set/' .config
-          # sed -i 's/# CONFIG_MAKE_TOOLCHAIN is not set/CONFIG_MAKE_TOOLCHAIN=y/' .config
+          sed -i 's/# CONFIG_MAKE_TOOLCHAIN is not set/CONFIG_MAKE_TOOLCHAIN=y/' .config
 
       - name: cat .config
         run: |
@@ -100,5 +95,5 @@ jobs:
           body: 每月1号4点
           draft: false
           prerelease: false
-          files: lede/bin/targets/ramips/m7621/openwrt*
+          files: lede/bin/targets/x86/64/*
                   
