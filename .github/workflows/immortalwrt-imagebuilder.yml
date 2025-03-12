@@ -45,16 +45,10 @@ jobs:
                   luci-proto-wireguard \
                   kmod-sdhci-mt7620 \
                   -kmod-mmc-mtk"
-
-    - name: Filter and upload firmware
-      run: |
-        mkdir immortalwrt-firmware
-        find immortalwrt-imagebuilder-*64/ -type f -name "*img.gz" -exec cp {} immortalwrt-firmware/ \;
-      working-directory: ${{ github.workspace }}
   
     - name: Upload immortalwrt firmware
       uses: actions/upload-artifact@master
       with:
-        name: immortalwrt-firmware
-        path: immortalwrt-firmware/
+        name: immortalwrt
+        path: immortalwrt*64/bin/targets/ramips/mt7621/
 
