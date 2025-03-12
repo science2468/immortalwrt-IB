@@ -49,8 +49,7 @@ jobs:
     - name: Filter and upload firmware
       run: |
         mkdir immortalwrt-firmware
-        #squashfs-combined带efi：squashfs-combined-efi.img.gz；squashfs-combined不带efi：squashfs-combined.img.gz 替换到双引号内。
-        find immortalwrt-imagebuilder-*64/bin/targets/ -type f -name "*squashfs" -exec cp {} immortalwrt-firmware/ \;
+        find immortalwrt-imagebuilder-*64/ -type f \( -name "*squashfs*" -o -name "*.img.gz" \) -exec cp {} immortalwrt-firmware/ \;
       working-directory: ${{ github.workspace }}
   
     - name: Upload immortalwrt firmware
