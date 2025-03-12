@@ -34,10 +34,11 @@ jobs:
                   luci-i18n-pbr-zh-cn \
                   luci-i18n-openvpn-zh-cn \
                   luci-i18n-vsftpd-zh-cn \
+                  luci-i18n-aria2-zh-cn \
+                  luci-i18n-udp2raw-zh-cn \
+                  luci-i18n-ddns-zh-cn \
                   openvpn-openssl \
                   mdadm \
-                  luci-i18n-smartdns-zh-cn \
-                  luci-i18n-ddns-zh-cn \
                   ddns-scripts_aliyun \
                   drill \
                   curl \
