@@ -49,7 +49,7 @@ jobs:
     - name: Filter and upload firmware
       run: |
         mkdir immortalwrt-firmware
-        find immortalwrt-imagebuilder-*64/ -type f -name "*squashfs" -exec cp {} immortalwrt-firmware/ \;
+        find immortalwrt-imagebuilder-*64/ -type f -name "*img.gz" -exec cp {} immortalwrt-firmware/ \;
       working-directory: ${{ github.workspace }}
   
     - name: Upload immortalwrt firmware
