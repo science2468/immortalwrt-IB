@@ -21,14 +21,13 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/23.05.4/targets/x86/64/immortalwrt-sdk-23.05.4-x86-64_gcc-12.3.0_musl.Linux-x86_64.tar.xz
-        tar -Jxf immortalwrt-sdk-*.tar.xz
-        rm -rf immortalwrt-sdk*.xz
+        wget https://downloads.immortalwrt.org/releases/24.10.0/targets/ramips/mt7621/immortalwrt-sdk-24.10.0-ramips-mt7621_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+        tar -I zstd -xvf immortalwrt-sdk-*.zst && rm -r immortalwrt-sdk-*.zst
 
     - name: add custom package
       run: |
         cd immortalwrt-sdk*/package
-        git clone --depth=1 https://github.com/science2468/luci-app-qbittorrent.git
+        git clone --depth=1 https://github.com/science2468/luci-app-hev-socks5-tunnel.git
         ls
     - name: update feed
       run: |
@@ -39,19 +38,15 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-        make defconfig
-    - name: cat .config
-      run: |
-        cat immortalwrt-sdk*/.config
     - name: download
       run: |
         cd immortalwrt-sdk*
         make download -j$(nproc)
-        tree build_dir/target-x86_64_musl/qbittorrent-sc-release-5.0.0
+        
     - name: build
       run: |
         cd immortalwrt-sdk*
-        make -j$(nproc) package/luci-app-qbittorrent/luci-app-qbittorrent-sc/compile V=99
+        make -j$(nproc) package/luci-app-qbittorrent/luci-app-hev-socks5-tunnel/compile V=99
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
