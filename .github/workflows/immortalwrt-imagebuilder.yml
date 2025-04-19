@@ -10,10 +10,10 @@ jobs:
         sudo apt install build-essential libncurses-dev zlib1g-dev gawk git gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils zstd
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/24.10.0/targets/ramips/mt7621/immortalwrt-imagebuilder-24.10.0-ramips-mt7621.Linux-x86_64.tar.zst
+        wget https://downloads.immortalwrt.org/releases/24.10.1/targets/ramips/mt7621/immortalwrt-imagebuilder-24.10.1-ramips-mt7621.Linux-x86_64.tar.zst
 
-        zstd -d immortalwrt-imagebuilder-24*.zst
-        tar -x -f immortalwrt-imagebuilder-*.tar
+        tar -I zstd -xf immortalwrt-imagebuilder-*.tar.zst
+        rm -rf imm*.zst
         
     - name: Build 
       run: |
@@ -44,12 +44,11 @@ jobs:
                   drill \
                   curl \
                   luci-proto-wireguard \
-                  kmod-sdhci-mt7620 \
-                  -kmod-mmc-mtk"
+                  kmod-sdhci-mt7620"
   
     - name: Upload immortalwrt firmware
       uses: actions/upload-artifact@master
       with:
         name: immortalwrt
-        path: immortalwrt*64/bin/targets/ramips/mt7621/
+        path: immortalwrt*64/bin/targets/ramips/mt7621/immortalwrt-*-ramips-mt7621-jdcloud_re-sp-01b-squashfs-sysupgrade.bin
 
