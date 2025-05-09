@@ -35,9 +35,8 @@ jobs:
                   luci-i18n-openvpn-zh-cn \
                   luci-i18n-vsftpd-zh-cn \
                   luci-i18n-aria2-zh-cn \
-                  luci-i18n-udp2raw-zh-cn \
                   luci-i18n-ddns-zh-cn \
-                  luci-i18n-smartdns-zh-cn \
+                  hev-socks5-tunnel \
                   openvpn-openssl \
                   mdadm \
                   ddns-scripts_aliyun \
