@@ -18,6 +18,7 @@ jobs:
       - name: Disable protectSockets
         run: |
           cd wireguard-go
+          sed -i '10d' conn/bind_std.go
           sed -i '134,137 s/^/\/\//' conn/bind_std.go
           sed -i '142,164 s/^/\/\//' conn/bind_std.go
 
