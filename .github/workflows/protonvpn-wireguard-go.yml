@@ -21,6 +21,7 @@ jobs:
           sed -i '10d' conn/bind_std.go
           sed -i '133,136 s/^/\/\//' conn/bind_std.go
           sed -i '141,163 s/^/\/\//' conn/bind_std.go
+          sed -i 's/device\.NewDevice(tun, conn\.NewDefaultBind(), logger)/device.NewDevice(tun, conn.NewDefaultBind(), logger, nil, interfaceName)/' main.go
 
       - name: Prepare artifacts folder
         run: mkdir -p artifacts
