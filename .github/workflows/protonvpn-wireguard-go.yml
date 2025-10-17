@@ -1,0 +1,50 @@
+name: Build wireguard-go
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        run: git clone https://github.com/protonvpn/wireguard-go.git
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Prepare artifacts folder
+        run: mkdir -p artifacts
+
+      - name: Build linux/amd64
+        working-directory: wireguard-go
+        env:
+          GOOS: linux
+          GOARCH: amd64
+          CGO_ENABLED: '0'
+        run: |
+          go build -v -o ../artifacts/wireguard-go-linux-amd64
+
+      - name: Build linux/arm64
+        working-directory: wireguard-go
+        env:
+          GOOS: linux
+          GOARCH: arm64
+          CGO_ENABLED: '0'
+        run: |
+          go build -v -o ../artifacts/wireguard-go-linux-arm64
+
+      - name: Make archives
+        run: |
+          cd artifacts
+          tar -czvf wireguard-go-linux-amd64.tar.gz wireguard-go-linux-amd64
+          tar -czvf wireguard-go-linux-arm64.tar.gz wireguard-go-linux-arm64
+          ls -lh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wireguard-go-binaries
+          path: artifacts/*.tar.gz
