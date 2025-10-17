@@ -15,6 +15,12 @@ jobs:
         with:
           go-version: '1.21'
 
+      - name: Disable protectSockets
+        run: |
+          cd wireguard-go
+          sed -i '134,137 s/^/\/\//' conn/bind_std.go
+          sed -i '142,164 s/^/\/\//' conn/bind_std.go
+
       - name: Prepare artifacts folder
         run: mkdir -p artifacts
 
