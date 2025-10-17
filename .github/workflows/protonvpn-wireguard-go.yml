@@ -19,8 +19,8 @@ jobs:
         run: |
           cd wireguard-go
           sed -i '10d' conn/bind_std.go
-          sed -i '134,137 s/^/\/\//' conn/bind_std.go
-          sed -i '142,164 s/^/\/\//' conn/bind_std.go
+          sed -i '133,136 s/^/\/\//' conn/bind_std.go
+          sed -i '141,163 s/^/\/\//' conn/bind_std.go
 
       - name: Prepare artifacts folder
         run: mkdir -p artifacts
