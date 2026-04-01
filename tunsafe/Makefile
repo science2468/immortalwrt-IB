@@ -22,7 +22,7 @@ define Package/tunsafe
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=+librt +libstdcpp +libatomic
+	DEPENDS:=+libstdcpp +libatomic
 	TITLE:=TunSafe
 	URL:=https://www.tunsafe.com/
 	MAINTAINER:=
@@ -82,8 +82,8 @@ define Package/tunsafe/conffiles
 endef
 
 define Package/tunsafe/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tunsafe $(1)/usr/sbin
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tunsafe $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/etc/tunsafe
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/installer/TunSafe.conf \
 		$(1)/etc/tunsafe/tunsafe.conf
