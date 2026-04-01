@@ -22,7 +22,7 @@ define Package/tunsafe
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=VPN
-	DEPENDS:=+librt +libstdcpp +libatomic
+	DEPENDS:=+librt +libstdcpp +@(TARGET_armv5_3_2||TARGET_x86_2_6||TARGET_mips_3_4||TARGET_mipsel_3_4):libatomic
 	TITLE:=TunSafe
 	URL:=https://www.tunsafe.com/
 	MAINTAINER:=
