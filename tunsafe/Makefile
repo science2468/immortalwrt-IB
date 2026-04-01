@@ -3,7 +3,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=tunsafe
-PKG_VERSION:=1.5rc2
+PKG_VERSION:=1.5.0
 PKG_RELEASE:=1
 
 
