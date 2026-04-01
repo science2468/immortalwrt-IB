@@ -27,6 +27,7 @@ jobs:
         ls
         cp -r tunsafe/openwrt package/
         cd package && mv openwrt tunsafe
+        ls
     - name: update feed
       run: |
         cd openwrt-sdk*
@@ -39,6 +40,7 @@ jobs:
     - name: download
       run: |
         cd openwrt-sdk*
+        make defconfig
         make download -j$(nproc)
         
     - name: build
