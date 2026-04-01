@@ -23,10 +23,10 @@ jobs:
 
     - name: add custom package
       run: |
-        cp -r tunsafe package/
+        cp -r tunsafe openwrt-sdk*/package
         cd openwrt-sdk*
         ls package
-        
+
     - name: update feed
       run: |
         cd openwrt-sdk*
