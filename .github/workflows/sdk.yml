@@ -25,8 +25,8 @@ jobs:
         cd openwrt-sdk*
         git clone --depth=1 https://github.com/lmq8267/tunsafe.git
         ls
-        mv openwrt tunsafe
-        cp -r tunsafe package/
+        cp -r tunsafe/openwrt package/
+        cd package && mv openwrt tunsafe
     - name: update feed
       run: |
         cd openwrt-sdk*
