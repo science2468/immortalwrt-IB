@@ -18,7 +18,7 @@ jobs:
     - name: Clone source code
       run: |
         wget https://downloads.openwrt.org/releases/25.12.2/targets/ramips/mt7621/openwrt-sdk-25.12.2-ramips-mt7621_gcc-14.3.0_musl.Linux-x86_64.tar.zst
-        tar -I zstd -xvf openwrt-sdk-*.zst && rm -r openwrt-sdk-*.zst
+        tar -I zstd -xf openwrt-sdk-*.zst && rm -r openwrt-sdk-*.zst
         ls
 
     - name: add custom package
