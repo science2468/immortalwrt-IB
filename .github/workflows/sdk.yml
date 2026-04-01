@@ -41,7 +41,7 @@ jobs:
       run: |
         cd openwrt-sdk*
         make defconfig
-        make download -j$(nproc)
+        make package/tunsafe/download -j$(nproc)
         
     - name: build
       run: |
