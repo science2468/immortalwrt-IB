@@ -21,17 +21,19 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://downloads.immortalwrt.org/releases/24.10.0/targets/ramips/mt7621/immortalwrt-sdk-24.10.0-ramips-mt7621_gcc-13.3.0_musl.Linux-x86_64.tar.zst
-        tar -I zstd -xvf immortalwrt-sdk-*.zst && rm -r immortalwrt-sdk-*.zst
+        wget https://downloads.openwrt.org/releases/25.12.2/targets/ramips/mt7621/openwrt-sdk-25.12.2-ramips-mt7621_gcc-14.3.0_musl.Linux-x86_64.tar.zst
+        tar -I zstd -xvf openwrt-sdk-*.zst && rm -r openwrt-sdk-*.zst
 
     - name: add custom package
       run: |
-        cd immortalwrt-sdk*/package
-        git clone --depth=1 https://github.com/science2468/luci-app-hev-socks5-tunnel.git
+        cd openwrt-sdk*
+        git clone --depth=1 https://github.com/lmq8267/tunsafe.git
         ls
+        mv openwrt tunsafe
+        cp -r tunsafe package/
     - name: update feed
       run: |
-        cd immortalwrt-sdk*
+        cd openwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
@@ -40,16 +42,16 @@ jobs:
 
     - name: download
       run: |
-        cd immortalwrt-sdk*
+        cd openwrt-sdk*
         make download -j$(nproc)
         
     - name: build
       run: |
-        cd immortalwrt-sdk*
-        make -j$(nproc) package/luci-app-qbittorrent/luci-app-hev-socks5-tunnel/compile V=99
+        cd openwrt-sdk*
+        make -j$(nproc) package/tunsafe/compile V=99
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
-        name: immortalwrt-sdk
-        path: immortalwrt-sdk*/bin/
+        name: openwrt-sdk
+        path: openwrt-sdk*/bin/**/*tunsafe*
