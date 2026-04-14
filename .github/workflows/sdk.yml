@@ -40,12 +40,12 @@ jobs:
       run: |
         cd openwrt-sdk*
         make defconfig
-        make package/tunsafe/download -j$(nproc)
+        make package/tunsafe/download V=s
         
     - name: build
       run: |
         cd openwrt-sdk*
-        make -j$(nproc) package/tunsafe/compile V=99
+        make -j$(nproc) package/tunsafe/compile V=s
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
