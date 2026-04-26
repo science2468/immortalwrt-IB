@@ -36,6 +36,10 @@ jobs:
 
           cd openwrt
 
+          git checkout v25.12.2
+          ./scripts/getver.sh
+
+
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -50,9 +54,12 @@ jobs:
           make defconfig
 
           make download
+
       - name: Build
         run: |
           cd openwrt/
+          ./scripts/getver.sh
+          
           make -j $(nproc) V=s
           
       - name: Filter and upload firmware
