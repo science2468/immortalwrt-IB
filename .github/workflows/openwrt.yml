@@ -36,7 +36,7 @@ jobs:
 
           cd openwrt
 
-          git tag
+          git tag v25.12.2
           git checkout v25.12.2
           ./scripts/getver.sh
 
