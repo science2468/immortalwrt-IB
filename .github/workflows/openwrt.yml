@@ -41,9 +41,9 @@ jobs:
 
 
 
-          cat > .config << EOF \
-          CONFIG_TARGET_airoha=y \
-          CONFIG_TARGET_airoha_an7581=y \
+          cat > .config << EOF
+          CONFIG_TARGET_airoha=y
+          CONFIG_TARGET_airoha_an7581=y
           CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-140g-md=y
           EOF
 
