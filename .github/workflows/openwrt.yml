@@ -36,6 +36,7 @@ jobs:
 
           cd openwrt
 
+          git tag
           git checkout v25.12.2
           ./scripts/getver.sh
 
@@ -59,7 +60,7 @@ jobs:
         run: |
           cd openwrt/
           ./scripts/getver.sh
-          
+
           make -j $(nproc) V=s
           
       - name: Filter and upload firmware
