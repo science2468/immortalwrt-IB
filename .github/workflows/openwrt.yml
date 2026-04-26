@@ -64,17 +64,10 @@ jobs:
 
           make -j $(($(nproc)+1))
           
-      - name: Cache openwrt Build Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            openwrt/.ccache
-          key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
-          
       - name: Filter and upload firmware
         run: |
           mkdir openwrt-firmware
-          find openwrt/bin/ -type f -name "*-squashfs-combined.*" -exec cp {} openwrt-firmware/ \;
+          find openwrt/bin/ -type f -name "*xg-140g-md*.itb" -exec cp {} openwrt-firmware/ \;
         working-directory: ${{ github.workspace }}
   
       - name: Set Date and Time
