@@ -22,7 +22,7 @@ jobs:
       - name: Clone source code
         run: |
           git clone --depth=1 --branch openwrt-25.12 https://github.com/openwrt/openwrt.git
-      - name: Build 
+      - name: Download
         run: |
           ls -a $GITHUB_WORKSPACE
 
@@ -49,9 +49,11 @@ jobs:
 
           make defconfig
 
-          make download -j $(($(nproc)+1))
-
-          make -j $(($(nproc)+1))
+          make download
+      - name: Build
+        run: |
+          cd openwrt/
+          make -j $(nproc) V=s
           
       - name: Filter and upload firmware
         run: |
