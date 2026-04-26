@@ -12,23 +12,8 @@ jobs:
       - name: Checkout Projects
         uses: actions/checkout@v2
 
-      - name: Show system
-        run: |
-          lscpu
-          free -h
-          df -Th
-          uname -a
-
       - name: Installation depends
         run: |
-
-          sudo tee /etc/apt/sources.list << EOF \
-          deb http://archive.ubuntu.com/ubuntu noble main restricted universe multiverse \
-          deb http://archive.ubuntu.com/ubuntu noble-updates main restricted universe multiverse \
-          deb http://archive.ubuntu.com/ubuntu noble-backports main restricted universe multiverse \
-          deb http://security.ubuntu.com/ubuntu noble-security main restricted universe multiverse \
-          EOF
-
           sudo apt update -y
           sudo apt install -y build-essential clang flex bison g++ gawk \
           gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
