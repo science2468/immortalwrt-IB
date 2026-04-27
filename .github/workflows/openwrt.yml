@@ -22,6 +22,9 @@ jobs:
       - name: Clone source code
         run: |
           git clone --depth=1 --branch openwrt-25.12 https://github.com/openwrt/openwrt.git
+
+          cd openwrt/ && ./scripts/getver.sh
+
       - name: Download
         run: |
           ls -a $GITHUB_WORKSPACE
@@ -32,17 +35,11 @@ jobs:
           mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
           mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
 
-          cd openwrt
-          git tag v25.12.2
-          git checkout v25.12.2
+          rm -rf openwrt/target/linux/airoha/patches-6.12/910-0*
 
-          ./scripts/getver.sh
+          cd openwrt/
 
-
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
-
-
+          ./scripts/feeds update -a && ./scripts/feeds install -a
 
           cat > .config << EOF
           CONFIG_TARGET_airoha=y
@@ -50,16 +47,12 @@ jobs:
           CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-140g-md=y
           EOF
 
-          make defconfig
+          make defconfig && make j $(nproc) download
 
-          make download
-
-      - name: target/linux compile
+      - name: target/linux prepare compile
         run: |
           cd openwrt/
-          make -j $(nproc) V=s target/linux/compile
-
-          cat build_dir/target-aarch64_cortex-a53_musl/linux-airoha_an7581/linux-6.12.74/drivers/net/ethernet/airoha/airoha_npu.c.rej
+          make -j $(nproc) target/linux/{clean,prepare} V=s
 
       - name: Build
         run: |
