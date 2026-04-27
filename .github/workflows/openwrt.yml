@@ -54,6 +54,11 @@ jobs:
 
           make download
 
+      - name: target/linux compile
+        run: |
+          cd openwrt/
+          make -j $(nproc) V=s target/linux/compile
+
       - name: Build
         run: |
           cd openwrt/
