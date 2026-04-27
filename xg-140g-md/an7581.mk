@@ -70,7 +70,7 @@ define Device/airoha_an7581-evb-emmc
 endef
 TARGET_DEVICES += airoha_an7581-evb-emmc
 
-define Device/nokia_xg-040g-md
+define Device/nokia_xg-140g-md
   $(call Device/FitImageLzma)
   DEVICE_VENDOR := Nokia
   DEVICE_MODEL := Bell XG-140G-MD
