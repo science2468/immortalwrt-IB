@@ -7,7 +7,7 @@
 +static int fm25g02b_ooblayout_ecc(struct mtd_info *mtd, int section,
 +				  struct mtd_oob_region *region)
 +{
-+	if (setion >= 8)
++	if (section >= 8)
 +		return -ERANGE;
 +	region->offset = 64 + section * 8;
 +	region->length = 8;
