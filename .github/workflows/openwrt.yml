@@ -47,7 +47,7 @@ jobs:
           CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-140g-md=y
           EOF
 
-          make defconfig && make j $(nproc) download
+          make defconfig && make -j $(nproc) download
 
       - name: target/linux prepare compile
         run: |
