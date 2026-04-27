@@ -59,6 +59,8 @@ jobs:
           cd openwrt/
           make -j $(nproc) V=s target/linux/compile
 
+          cat build_dir/target-aarch64_cortex-a53_musl/linux-airoha_an7581/linux-6.12.74/drivers/net/ethernet/airoha/airoha_npu.c.rej
+
       - name: Build
         run: |
           cd openwrt/
