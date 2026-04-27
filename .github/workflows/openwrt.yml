@@ -67,12 +67,6 @@ jobs:
           ./scripts/getver.sh
 
           make -j $(nproc) V=s
-          
-      - name: Filter and upload firmware
-        run: |
-          mkdir openwrt-firmware
-          find openwrt/ -type f -name "*xg-140g-md*.itb" -exec cp {} openwrt-firmware/ \;
-        working-directory: ${{ github.workspace }}
   
       - name: Set Date and Time
         id: datetime
@@ -82,5 +76,5 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           tag_name: openwrt-xg-140g-md-${{ steps.datetime.outputs.datetime }}
-          files: openwrt-firmware/*.*
+          files: openwrt/bin/targets/airoha/an7581/*
           
