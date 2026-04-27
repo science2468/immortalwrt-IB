@@ -28,16 +28,14 @@ jobs:
 
           mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
           mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/330-snand-mtk-bmt-support.patch openwrt/target/linux/mediatek/patches-6.12/
-          mv -f xg-140g-md/501-mtd-spinand-FudanMicro-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
-          mv -f xg-140g-md/901-snand-mtk-bmt-support.patch openwrt/target/linux/airoha/patches-6.12/
+          mv -f xg-140g-md/495-mtd-spinand-FudanMicro-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
           mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
           mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
 
           cd openwrt
-
           git tag v25.12.2
           git checkout v25.12.2
+
           ./scripts/getver.sh
 
 
