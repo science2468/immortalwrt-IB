@@ -52,3 +52,27 @@ podman-compose ps
 ```
 
 配套的firmware-selector-openwrt-org 仓库最要紧的是default -> nginx的配置文件在 `/etc/nginx/sites-enabled/`
+
+
+
+
+
+```shell
+
+./scripts/feeds update -a && ./scripts/feeds install -a
+
+cat > .config << EOF
+          CONFIG_TARGET_airoha=y
+          CONFIG_TARGET_airoha_an7581=y
+          CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-140g-md=y
+          EOF
+
+./scripts/getver.sh
+
+nohup make -j $(nproc) V=s > /tmp/make.log 2>&1 &
+
+
+#测试patch
+make -j $(nproc) target/linux/{clean,prepare} V=s
+
+```
