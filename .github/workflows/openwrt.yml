@@ -31,6 +31,17 @@ jobs:
           git clone -b openwrt-25.12 https://github.com/openwrt/openwrt.git
 
           cd openwrt/ && ./scripts/getver.sh
+          
+      - name: Cache OpenWrt build
+        uses: actions/cache@v4
+        with:
+        path: |
+          openwrt/dl
+          openwrt/build_dir
+          openwrt/staging_dir
+        key: openwrt-${{ runner.os }}-${{ hashFiles('openwrt/feeds.conf.default', 'openwrt/.config') }}
+        restore-keys: |
+          openwrt-${{ runner.os }}-
 
       - name: Download
         run: |
