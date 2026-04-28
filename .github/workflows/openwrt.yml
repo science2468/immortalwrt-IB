@@ -28,7 +28,7 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone --depth=1 --branch openwrt-25.12 https://github.com/openwrt/openwrt.git
+          git clone -b openwrt-25.12 https://github.com/openwrt/openwrt.git
 
           cd openwrt/ && ./scripts/getver.sh
 
