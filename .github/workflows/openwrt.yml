@@ -28,28 +28,26 @@ jobs:
 
       - name: Clone source code
         run: |
-          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.2.tar.gz
-          tar -xzf v25.12.2.tar.gz && mv openwrt-25.12.2 openwrt
+#          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.2.tar.gz
+#          tar -xzf v25.12.2.tar.gz && mv openwrt-25.12.2 openwrt
+          git clone httsp://git.openwrt.org/openwrt/openwrt.git
           cd openwrt/ && ./scripts/getver.sh
 
       - name: move .config
         run: |
-          mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
-          mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
-          mv -f xg-140g-md/.config openwrt/
+#          mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
+#          mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
+#          mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
+#          mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
+#          mv -f xg-140g-md/.config openwrt/
 
-          mv -f xg-140g-md/121-hack-spi-nand-1b-bbm.patch openwrt/target/linux/airoha/patches-6.12/
-          mv -f xg-140g-md/432-drivers-spi-Add-support-for-dynamic-calibration.patch openwrt/target/linux/airoha/patches-6.12/
-          mv -f xg-140g-md/433-drivers-spi-mem-Add-spi-calibration-hook.patch openwrt/target/linux/airoha/patches-6.12/
-          mv -f xg-140g-md/435-drivers-mtd-spinand-Add-calibration-support-for-spin.patch openwrt/target/linux/airoha/patches-6.12/
-          mv -f xg-140g-md/436-drivers-mtd-spi-nor-Add-calibration-support-for-spi-.patch openwrt/target/linux/airoha/patches-6.12/
-          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
-          mv -f xg-140g-md/960-asus-hack-u-boot-ignore-mtdparts.patch openwrt/target/linux/airoha/patches-6.12/
+#          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
+
 
           cd openwrt/
-
+          git fetch origin pull/21896/head:pr-21896
+          git checkout pr-21896
+          ./scripts/getver.sh
           ls -l openwrt/.config || echo ".config NOT FOUND" && make defconfig
 
       - name: Cache OpenWrt build
