@@ -30,7 +30,7 @@ jobs:
         run: |
           #wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.2.tar.gz
           #tar -xzf v25.12.2.tar.gz && mv openwrt-25.12.2 openwrt
-          git clone httsp://git.openwrt.org/openwrt/openwrt.git
+          git clone https://git.openwrt.org/openwrt/openwrt.git
           cd openwrt/ && ./scripts/getver.sh
 
       - name: move .config
