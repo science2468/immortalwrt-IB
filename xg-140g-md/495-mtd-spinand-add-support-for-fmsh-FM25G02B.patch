@@ -1,5 +1,5 @@
---- drivers/mtd/nand/spi/fmsh.c
-+++ drivers/mtd/nand/spi/fmsh.c
+--- a/drivers/mtd/nand/spi/fmsh.c
++++ b/drivers/mtd/nand/spi/fmsh.c
 @@ -52,6 +52,30 @@
  	return 0;
  }
