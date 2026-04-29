@@ -123,9 +123,6 @@
 };
 
 &spi_nand {
-	nand-ecc-strength = <4>;
-	nand-ecc-step-size = <512>;
-
 	partitions {
 		compatible = "fixed-partitions";
 		#address-cells = <1>;
