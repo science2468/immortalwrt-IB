@@ -1,16 +1,27 @@
 --- a/drivers/mtd/nand/spi/fmsh.c
 +++ b/drivers/mtd/nand/spi/fmsh.c
-@@ -52,6 +52,30 @@
+@@ -52,6 +52,41 @@
  	return 0;
  }
  
++#define STATUS_FMSH_ECC_MASK		(7 << 4)
++#define STATUS_FMSH_ECC_NONE		(0 << 4)
++#define STATUS_FMSH_ECC_1BIT		(1 << 4)
++#define STATUS_FMSH_ECC_2BIT		(2 << 4)
++#define STATUS_FMSH_ECC_3BIT		(3 << 4)
++#define STATUS_FMSH_ECC_4BIT		(4 << 4)
++#define STATUS_FMSH_ECC_5BIT		(5 << 4)
++#define STATUS_FMSH_ECC_6BIT		(6 << 4)
++#define STATUS_FMSH_ECC_7BIT		(7 << 4)
++#define STATUS_FMSH_ECC_UNCORRECTABLE	(7 << 4)
++
 +static int fm25g02b_ooblayout_ecc(struct mtd_info *mtd, int section,
 +				  struct mtd_oob_region *region)
 +{
 +	if (section > 8)
 +		return -ERANGE;
 +
-+	region->offset = 64 + section * 8;
++	region->offset = 64 + (8 * section);
 +	region->length = 8;
 +
 +	return 0;
@@ -31,7 +42,7 @@
  static int fm25s01bi3_ecc_get_status(struct spinand_device *spinand,
  				     u8 status)
  {
-@@ -107,6 +131,11 @@
+@@ -107,6 +142,11 @@
  	.free = fm25s01a_ooblayout_free,
  };
  
@@ -43,14 +54,14 @@
  static const struct mtd_ooblayout_ops fm25s01bi3_ooblayout = {
  	.ecc = fm25s01bi3_ooblayout_ecc,
  	.free = fm25s01bi3_ooblayout_free,
-@@ -122,6 +151,15 @@
+@@ -122,6 +162,15 @@
  					      &update_cache_variants),
  		     0,
  		     SPINAND_ECCINFO(&fm25s01a_ooblayout, NULL)),
 +	SPINAND_INFO("FM25G02B",
 +		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD2),
-+		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-+		     NAND_ECCREQ(8, 528),
++		     NAND_MEMORG(1, 2048, 128, 64, 2048, 20, 1, 1, 1),
++		     NAND_ECCREQ(8, 518),
 +		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
 +					      &write_cache_variants,
 +					      &update_cache_variants),
