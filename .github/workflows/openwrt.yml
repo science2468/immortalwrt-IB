@@ -43,6 +43,8 @@ jobs:
           mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
           mv -f xg-140g-md/121-hack-spi-nand-1b-bbm.patch openwrt/target/linux/airoha/patches-6.12/
           mv -f xg-140g-md/340-mtd-spinand-Add-support-for-the-Fidelix-FM35X1GA.patch openwrt/target/linux/airoha/patches-6.12/
+          mv -f xg-140g-md/432-drivers-spi-Add-support-for-dynamic-calibration.patch openwrt/target/linux/airoha/patches-6.12/
+          mv -f xg-140g-md/433-drivers-spi-mem-Add-spi-calibration-hook.patch openwrt/target/linux/airoha/patches-6.12/
           mv -f xg-140g-md/435-drivers-mtd-spinand-Add-calibration-support-for-spin.patch openwrt/target/linux/airoha/patches-6.12/
           mv -f xg-140g-md/436-drivers-mtd-spi-nor-Add-calibration-support-for-spi-.patch openwrt/target/linux/airoha/patches-6.12/
           mv -f xg-140g-md/960-asus-hack-u-boot-ignore-mtdparts.patch openwrt/target/linux/airoha/patches-6.12/
