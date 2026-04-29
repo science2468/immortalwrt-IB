@@ -28,8 +28,8 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone -b openwrt-25.12 https://github.com/openwrt/openwrt.git
-
+          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.2.tar.gz
+          tar -xzf v25.12.2.tar.gz && mv openwrt-25.12.2 openwrt
           cd openwrt/ && ./scripts/getver.sh
 
       - name: Cache OpenWrt build
@@ -49,24 +49,20 @@ jobs:
 
           mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
           mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/403-mtd-spinand-add-support-for-FudanMicr-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
-          mv -f xg-140g-md/901-snand-mtk-bmt-support.patch openwrt/target/linux/airoha/patches-6.12/
+          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
           mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
           mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
-
-          rm -rf openwrt/target/linux/airoha/patches-6.12/910-0*
+          mv -f xg-140g-md/.config openwrt/
 
           cd openwrt/
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
-          cat > .config << EOF
-          CONFIG_TARGET_airoha=y
-          CONFIG_TARGET_airoha_an7581=y
-          CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-140g-md=y
-          EOF
-
           make defconfig && make -j $(nproc) download
+
+      - name: Show config
+        run: |
+          cat openwrt/.config
 
       - name: target/linux prepare compile
         run: |

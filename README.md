@@ -4,3 +4,20 @@
 下载到本地使用之前先看下[openwrt的源代码](https://github.com/openwrt/firmware-selector-openwrt-org)或者[immortalwrt的源代码](https://github.com/immortalwrt/firmware-selector-immortalwrt-org)，下载后将`www`文件夹内的文件替换下就可以用了
 ### tunsafe在openwrt25.10-re-sp-01b上编译成功
 ### usque masque-port： 443 500 1701 4500 4443 8443 8095
+
+
+```
+git clone -b openwrt-25.12 https://github.com/openwrt/openwrt.git
+```
+cd openwrt/ && ./scripts/getver.sh
+```
+./scripts/feeds update -a && ./scripts/feeds install -a
+```
+git switch -c v25.12.2-xg-040g-md
+```
+git fetch origin pull/21896/head:pr-21896
+```
+git checkout pr-21896
+```
+git show db150718c3 --stat
+```
