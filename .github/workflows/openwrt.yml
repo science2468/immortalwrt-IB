@@ -32,6 +32,17 @@ jobs:
           tar -xzf v25.12.2.tar.gz && mv openwrt-25.12.2 openwrt
           cd openwrt/ && ./scripts/getver.sh
 
+      - name: move .config
+        run: |
+          mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
+          mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
+          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
+          mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
+          mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
+          mv -f xg-140g-md/.config openwrt/
+
+          cd openwrt/ && make defconfig
+
       - name: Cache OpenWrt build
         uses: actions/cache@v4
         with:
@@ -47,18 +58,11 @@ jobs:
         run: |
           ls -a $GITHUB_WORKSPACE
 
-          mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
-          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
-          mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
-          mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
-          mv -f xg-140g-md/.config openwrt/
-
           cd openwrt/
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
-          make defconfig && make -j $(nproc) download
+          make -j $(nproc) download
 
       - name: Show config
         run: |
