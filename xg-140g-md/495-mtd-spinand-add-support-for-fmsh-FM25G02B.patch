@@ -1,6 +1,6 @@
 --- a/drivers/mtd/nand/spi/fmsh.c
 +++ b/drivers/mtd/nand/spi/fmsh.c
-@@ -52,6 +52,41 @@
+@@ -52,6 +52,68 @@
  	return 0;
  }
  
@@ -39,10 +39,37 @@
 +	return 0;
 +}
 +
++static int fm25g02b_ecc_get_status(struct spinand_device *spinand, u8 status)
++{
++	u8 ecc_bits = (status & STATUS_FMSH_ECC_MASK) >> 4;
++
++	switch (ecc_bits) {
++	case 0x00:
++		return 0;
++	case 0x01:
++		return 1;
++	case 0x02:
++		return 2;
++	case 0x03:
++		return 3;
++	case 0x04:
++		return 4;
++	case 0x05:
++		return 5;
++	case 0x06:
++		return 6;
++	case 0x07:
++		return -EBADMSG;
++	default:
++		break;
++	}
++	return -EINVAL;
++}
++
  static int fm25s01bi3_ecc_get_status(struct spinand_device *spinand,
  				     u8 status)
  {
-@@ -107,6 +142,11 @@
+@@ -107,6 +169,11 @@
  	.free = fm25s01a_ooblayout_free,
  };
  
@@ -54,7 +81,7 @@
  static const struct mtd_ooblayout_ops fm25s01bi3_ooblayout = {
  	.ecc = fm25s01bi3_ooblayout_ecc,
  	.free = fm25s01bi3_ooblayout_free,
-@@ -122,6 +162,15 @@
+@@ -122,6 +189,15 @@
  					      &update_cache_variants),
  		     0,
  		     SPINAND_ECCINFO(&fm25s01a_ooblayout, NULL)),
