@@ -21,3 +21,5 @@ git checkout pr-21896
 ```
 git show db150718c3 --stat
 ```
+make target/linux/prepare V=s > /tmp/make_prepare.log 2>&1
+```

@@ -60,6 +60,6 @@ define Device/nokia_xg-140g-md
   IMAGES := factory.bin sysupgrade.bin
   IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-  DEVICE_PACKAGES := kmod-phy-airoha-en8811h kmod-i2c-an7581 ubi-utils usbutils kmod-usb2 kmod-usb3 kmod-usb-storage-uas
+  DEVICE_PACKAGES := kmod-phy-airoha-en8811h kmod-i2c-an7581 kmod-leds-gpio kmod-gpio-button-hotplug ubi-utils usbutils kmod-usb2 kmod-usb3 kmod-usb-storage-uas
 endef
 TARGET_DEVICES += nokia_xg-140g-md
