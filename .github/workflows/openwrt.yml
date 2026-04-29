@@ -41,14 +41,15 @@ jobs:
           mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
           mv -f xg-140g-md/.config openwrt/
 
-          cd openwrt/ && make defconfig
+          cd openwrt/
+
+          ls -l openwrt/.config || echo ".config NOT FOUND" && make defconfig
 
       - name: Cache OpenWrt build
         uses: actions/cache@v4
         with:
           path: |
             openwrt/dl
-            openwrt/build_dir
             openwrt/staging_dir
           key: openwrt-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: |
