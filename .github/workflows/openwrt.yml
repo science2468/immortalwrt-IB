@@ -68,6 +68,8 @@ jobs:
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
+          ./scripts/feeds update -a && ./scripts/feeds install -a
+
           make -j $(nproc) download
 
       - name: Show config
