@@ -85,7 +85,7 @@
  static const struct mtd_ooblayout_ops fm25s01a_ooblayout = {
  	.ecc = fm25s01a_ooblayout_ecc,
  	.free = fm25s01a_ooblayout_free,
-@@ -113,6 +188,16 @@
+@@ -113,6 +184,16 @@
  };
  
  static const struct spinand_info fmsh_spinand_table[] = {
