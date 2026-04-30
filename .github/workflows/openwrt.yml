@@ -47,7 +47,8 @@ jobs:
           cd openwrt/
           #git fetch origin pull/21896/head:pr-21896
           #git checkout pr-21896
-          ./scripts/getver.sh
+          #./scripts/getver.sh
+          sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
           ls -l openwrt/.config || echo ".config NOT FOUND" && make defconfig
 
       - name: Cache OpenWrt build
