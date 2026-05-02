@@ -134,13 +134,8 @@
 		};
 
 		partition@80000 {
-			label = "bosa";
-			reg = <0x00080000 0x00040000>;
-		};
-
-		partition@c0000 {
-			label = "ri";
-			reg = <0x000c0000 0x00040000>;
+			label = "env";
+			reg = <0x00080000 0x00080000>;
 		};
 
 		partition@100000 {
