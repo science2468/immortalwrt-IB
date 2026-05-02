@@ -35,13 +35,15 @@ jobs:
 
       - name: move .config
         run: |
+          rm -rf openwrt/target/linux/generic/backport-6.12/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
+          
           mv -f xg-140g-md/01_leds openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
           mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
           mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
           mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
           mv -f xg-140g-md/.config openwrt/
 
-          mv -f xg-140g-md/495-mtd-spinand-add-support-for-fmsh-FM25G02B.patch openwrt/target/linux/generic/pending-6.12/
+          mv -f xg-140g-md/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/
 
 
           cd openwrt/
