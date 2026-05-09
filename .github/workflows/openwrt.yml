@@ -10,7 +10,7 @@ jobs:
       TZ: Asia/Shanghai
     steps:
       - name: Checkout Projects
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Clean up the system
         run: |
@@ -44,7 +44,7 @@ jobs:
           #mv -f xg-140g-md/.config openwrt/
           #mv -f xg-140g-md/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/
 
-          mv patch-25.12 openwrt/
+          mv -f xg-140g-md/patch-25.12 openwrt/
 
           cd openwrt/
           ./patch-25.12/patch.sh
