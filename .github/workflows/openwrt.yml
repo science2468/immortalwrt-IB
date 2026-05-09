@@ -47,6 +47,7 @@ jobs:
           mv -f xg-140g-md/patch-25.12 openwrt/
 
           cd openwrt/
+          chmod +x patch-25.12/patch.sh
           ./patch-25.12/patch.sh
           #git fetch origin pull/21896/head:pr-21896
           #git checkout pr-21896
