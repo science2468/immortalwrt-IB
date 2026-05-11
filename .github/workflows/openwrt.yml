@@ -47,6 +47,7 @@ jobs:
           mv -f xg-140g-md/patch-25.12 openwrt/
 
           cd openwrt/
+          ./scripts/feeds update -a && ./scripts/feeds install -a
           chmod +x patch-25.12/patch.sh
           ./patch-25.12/patch.sh
           #git fetch origin pull/21896/head:pr-21896
@@ -70,8 +71,6 @@ jobs:
           ls -a $GITHUB_WORKSPACE
 
           cd openwrt/
-
-          ./scripts/feeds update -a && ./scripts/feeds install -a
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
 
