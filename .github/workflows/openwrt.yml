@@ -61,7 +61,7 @@ jobs:
           restore-keys: |
             openwrt-${{ runner.os }}-
 
-      -name: feeds
+      - name: feeds
         run: |
             cd openwrt/
             ./scripts/feeds update -a && ./scripts/feeds install -a
