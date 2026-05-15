@@ -54,13 +54,11 @@ jobs:
           #git checkout pr-21896
           #./scripts/getver.sh
           sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
-          ls -l openwrt/.config || echo ".config NOT FOUND" && make defconfig
 
       - name: Cache OpenWrt build
         uses: actions/cache@v4
         with:
           path: |
-            openwrt/dl
             openwrt/staging_dir
           key: openwrt-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: |
@@ -73,14 +71,14 @@ jobs:
           cd openwrt/
 
           ./scripts/feeds update -a && ./scripts/feeds install -a
-
+          make defconfig
           make -j $(nproc) download
 
       - name: Show config
         run: |
           cat openwrt/.config
 
-      - name: target/linux prepare compile
+      - name: target/linux prepare
         run: |
           cd openwrt/
           make -j $(nproc) target/linux/{clean,prepare} V=s
