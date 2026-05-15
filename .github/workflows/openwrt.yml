@@ -28,8 +28,8 @@ jobs:
 
       - name: Clone source code
         run: |
-          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.3.tar.gz
-          tar -xzf v25.12.3.tar.gz && mv openwrt-25.12.3 openwrt
+          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.4.tar.gz
+          tar -xzf v25.12.*.tar.gz && mv openwrt-25.12.* openwrt
           #git clone https://github.com/openwrt/openwrt.git
           cd openwrt/ && ./scripts/getver.sh
 
