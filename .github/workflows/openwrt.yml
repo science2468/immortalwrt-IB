@@ -61,13 +61,15 @@ jobs:
           restore-keys: |
             openwrt-${{ runner.os }}-
 
+      -name: feeds
+        run: |
+            cd openwrt/
+            ./scripts/feeds update -a && ./scripts/feeds install -a
+
       - name: Download
         run: |
-          ls -a $GITHUB_WORKSPACE
-
+          ls
           cd openwrt/
-
-          ./scripts/feeds update -a && ./scripts/feeds install -a
           make defconfig
           make -j $(nproc) download
 
