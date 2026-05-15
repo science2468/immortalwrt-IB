@@ -80,6 +80,11 @@ jobs:
           cd openwrt/
           make -j $(nproc) target/linux/{clean,prepare} V=s
 
+      - name: Build ccache
+        run: |
+          make -j $(nproc) tools/ccache/compile
+          ccache -s
+
       - name: Build
         run: |
           cd openwrt/
