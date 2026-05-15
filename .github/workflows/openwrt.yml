@@ -84,8 +84,8 @@ jobs:
 
       - name: Build ccache
         run: |
-          make -j $(nproc) tools/ccache/compile
-          ccache -s
+          cd openwrt/
+          make -j $(nproc) tools/ccache/compile V=s
 
       - name: Build
         run: |
