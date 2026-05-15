@@ -59,7 +59,7 @@ jobs:
 
       - name: Download
         run: |
-          lss
+          ls
           cd openwrt/
           make defconfig
           make -j $(nproc) download
