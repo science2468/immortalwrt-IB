@@ -41,17 +41,14 @@ jobs:
           #mv -f xg-140g-md/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/
           #mv -f xg-140g-md/an7581-nokia_xg-140g-md.dts openwrt/target/linux/airoha/dts/
           #mv -f xg-140g-md/an7581.mk openwrt/target/linux/airoha/image/
-          mv -f xg-140g-md/.config openwrt/
           #mv -f xg-140g-md/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/
 
           mv -f xg-140g-md/patch-25.12 openwrt/
+          mv -f xg-140g-md/.config openwrt/
 
           cd openwrt/
-          ./scripts/feeds update -a && ./scripts/feeds install -a
           chmod +x patch-25.12/patch.sh
           ./patch-25.12/patch.sh
-          #git fetch origin pull/21896/head:pr-21896
-          #git checkout pr-21896
           #./scripts/getver.sh
           sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
 
