@@ -2,6 +2,7 @@ name: Build xg-140g-md
 on: workflow_dispatch
 jobs:
   build:
+    name: ${{ matrix.source.tag_prefix }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
