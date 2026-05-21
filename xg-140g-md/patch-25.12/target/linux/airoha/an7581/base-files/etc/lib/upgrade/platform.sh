@@ -5,10 +5,7 @@ platform_do_upgrade() {
 	local board=$(board_name)
 
 	case "$board" in
-		gemtek,w1700k-ubi)
-			fit_do_upgrade "$1"
-			;;
-        bell_xg-040g-md)
+        bell,xg-040g-md)
             CI_UBIPART="ubi"
             nand_do_upgrade "$1"
             ;;
