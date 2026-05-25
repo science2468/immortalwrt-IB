@@ -53,6 +53,7 @@ jobs:
           cp -af xg-140g-md/package/kernel/linux/files/sysctl-nf-conntrack.conf openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf
           cp -af xg-140g-md/package/kernel/linux/modules/netdevices.mk openwrt/package/kernel/linux/modules/netdevices.mk
           cp -af xg-140g-md/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
+          cp -af xg-140g-md/package/base-files/files/etc/lib/upgrade/platform.sh openwrt/package/base-files/files/etc/lib/upgrade/platform.sh
           cp -af xg-140g-md/package/luci-app-airoha-npu/ openwrt/package/luci-app-airoha-npu/
 
           cp -af xg-140g-md/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
@@ -70,6 +71,9 @@ jobs:
           cp -af xg-140g-md/target/linux/airoha/patches-6.12/999-dsa-01-add-mt7531-netlink-support.patch openwrt/target/linux/airoha/patches-6.12/999-dsa-01-add-mt7531-netlink-support.patch
 
           cp -af xg-140g-md/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch
+          cp -af xg-140g-md/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch openwrt/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch
+          cp -af xg-140g-md/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch openwrt/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch
+          cp -af xg-140g-md/target/linux/generic/hack-6.12/600-mtd-spinand-add-skyhigh-robust-read-workaround.patch openwrt/target/linux/generic/hack-6.12/600-mtd-spinand-add-skyhigh-robust-read-workaround.patch
 
           cd openwrt
           sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
