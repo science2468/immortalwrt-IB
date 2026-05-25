@@ -56,6 +56,7 @@ jobs:
           cp -af xg-140g-md/patch-25.12/package/luci-app-airoha-npu/ openwrt/package/luci-app-airoha-npu/
 
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+          mkdir -p openwrt/target/linux/airoha/an7581/base-files/etc/lib/upgrade/
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/lib/upgrade/platform.sh openwrt/target/linux/airoha/an7581/base-files/etc/lib/upgrade/platform.sh
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/config-6.12 openwrt/target/linux/airoha/an7581/config-6.12
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/target.mk openwrt/target/linux/airoha/an7581/target.mk
