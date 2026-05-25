@@ -45,7 +45,7 @@ jobs:
 
       - name: Prepare config and patches
         run: |
-          rm -f openwrt/target/linux/generic/backport-6.12/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
+          rm -rf openwrt/target/linux/generic/backport-6.12/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
 
           mv -f xg-140g-md/.config openwrt/
 
