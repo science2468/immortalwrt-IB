@@ -17,7 +17,7 @@ jobs:
             tag_prefix: openwrt-xg-140g-md
             cache_key: openwrt
           - name: immortalwrt
-            url: https://github.com/immortalwrt/immortalwrt/archive/refs/tags/v25.12.0-rc2.tar.gz
+            url: https://github.com/immortalwrt/immortalwrt/archive/refs/tags/v25.12.0.tar.gz
             tag_prefix: immortalwrt-xg-140g-md
             cache_key: immortalwrt
     steps:
