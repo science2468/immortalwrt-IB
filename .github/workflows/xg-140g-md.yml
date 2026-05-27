@@ -8,6 +8,7 @@ jobs:
       contents: write
     env:
       TZ: Asia/Shanghai
+      CCACHE_DIR: ${{ github.workspace }}/openwrt/.ccache
     strategy:
       fail-fast: false
       matrix:
@@ -77,10 +78,10 @@ jobs:
 
           sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
 
-      - name: Cache staging_dir
+      - name: Cache staging_dir and ccache
         uses: actions/cache@v4
         with:
-          path: openwrt/staging_dir
+          path: openwrt/staging_dir openwrt/.ccache
           key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: ${{ matrix.source.cache_key }}-${{ runner.os }}-
 
