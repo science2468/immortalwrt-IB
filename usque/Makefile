@@ -38,11 +38,11 @@ define Package/usque/description
 endef
 
 define Package/usque/install
-        $(INSTALL_DIR) $(1)/usr/sbin
-        $(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/usque $(1)/usr/sbin/
-        $(INSTALL_DIR) $(1)/etc/init.d
-        $(INSTALL_BIN) ./files/usque.init $(1)/etc/init.d/usque
-        $(INSTALL_DIR) $(1)/etc/usque
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/usque $(1)/usr/sbin/
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/usque.init $(1)/etc/init.d/usque
+	$(INSTALL_DIR) $(1)/etc/usque
 endef
 
 $(eval $(call GoBinPackage,usque))

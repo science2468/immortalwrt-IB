@@ -17,38 +17,46 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://downloads.openwrt.org/releases/25.12.2/targets/ramips/mt7621/openwrt-sdk-25.12.2-ramips-mt7621_gcc-14.3.0_musl.Linux-x86_64.tar.zst
-        tar -I zstd -xf openwrt-sdk-*.zst && rm -r openwrt-sdk-*.zst
+        wget https://github.com/science2468/immortalwrt-IB/releases/download/immortalwrt-xg-140g-md-20260527232731/immortalwrt-sdk-airoha-an7581_gcc-14.3.0_musl.Linux-x86_64.tar.zst
+        tar -I zstd -xf immortalwrt-sdk-*.zst && rm -r immortalwrt-sdk-*.zst
         ls
 
     - name: add custom package
       run: |
-        cp -r tunsafe openwrt-sdk*/package
-        cd openwrt-sdk*
+        cp -r tunsafe immortalwrt-sdk*/package
+        cp -r usque immortalwrt-sdk*/package
+        cd immortalwrt-sdk*
         ls package
 
     - name: update feed
       run: |
-        cd openwrt-sdk*
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-
+        cd immortalwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
     - name: download
       run: |
-        cd openwrt-sdk*
+        cd immortalwrt-sdk*
+        cat > .config <<EOF
+        CONFIG_USE_APK=y
+        CONFIG_PACKAGE_apk-mbedtls=y
+        CONFIG_DEFAULT_openwrt-keyring=y
+        EOF
+
         make defconfig
-        make package/tunsafe/download V=s
+        make package/tunsafe/download
+        make package/usque/download
         
     - name: build
       run: |
-        cd openwrt-sdk*
-        make -j$(nproc) package/tunsafe/compile V=s
+        cd immortalwrt-sdk*
+        make -j$(nproc) package/tunsafe/{clean,compile} V=s
+        make -j$(nproc) package/usque/{clean,compile} V=s
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
       with:
-        name: openwrt-sdk
-        path: openwrt-sdk*/bin/**/*tunsafe*
+        name: immortalwrt-sdk
+        path: |
+          immortalwrt-sdk*/bin/**/*tunsafe*
+          immortalwrt-sdk*/bin/**/*usque*
