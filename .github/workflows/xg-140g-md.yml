@@ -78,13 +78,6 @@ jobs:
 
           sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
 
-      - name: Cache staging_dir and ccache
-        uses: actions/cache@v4
-        with:
-          path: openwrt/staging_dir openwrt/.ccache
-          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
-          restore-keys: ${{ matrix.source.cache_key }}-${{ runner.os }}-
-
       - name: Update feeds and add luci-app-airoha-npu
         run: |
           cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -92,8 +85,7 @@ jobs:
           sed -i 's|../../luci.mk|$(TOPDIR)/feeds/luci/luci.mk|' package/luci-app-airoha-npu/Makefile
           ls package/luci-app-airoha-npu && cat package/luci-app-airoha-npu/Makefile
 
-      - name: Download sources
-        run: cd openwrt && make defconfig && make -j $(nproc) download
+          make defconfig
 
       - name: Enable LuCI and WireGuard
         run: |
@@ -108,10 +100,21 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_default-settings-chn is not set/CONFIG_PACKAGE_default-settings-chn=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci-app-cpufreq is not set/CONFIG_PACKAGE_luci-app-cpufreq=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci-app-airoha-npu is not set/CONFIG_PACKAGE_luci-app-airoha-npu=y/g' openwrt/.config
+
           cd openwrt && make defconfig
 
       - name: Show config
         run: cat openwrt/.config
+
+      - name: Cache staging_dir and ccache
+        uses: actions/cache@v4
+        with:
+          path: openwrt/staging_dir openwrt/.ccache
+          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
+          restore-keys: ${{ matrix.source.cache_key }}-${{ runner.os }}-
+
+      - name: Download sources
+        run: cd openwrt && make -j $(nproc) download
 
       - name: Prepare target/linux
         run: cd openwrt && make -j $(nproc) target/linux/{clean,prepare} V=s
