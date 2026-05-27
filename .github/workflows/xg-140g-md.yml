@@ -41,7 +41,11 @@ jobs:
           wget ${{ matrix.source.url }}
           tar -xzf *.tar.gz
           mv $(find . -maxdepth 1 -type d -name openwrt-* -o -name immortalwrt-* | head -1) openwrt
-          cd openwrt && ./scripts/getver.sh
+
+          ./openwrt/scripts/getver.sh
+
+          cd openwrt/package/ && git clone https://github.com/rchen14b/luci-app-airoha-npu.git
+          ls
 
       - name: Prepare config and patches
         run: |
@@ -53,8 +57,6 @@ jobs:
           cp -af xg-140g-md/patch-25.12/package/kernel/linux/files/sysctl-nf-conntrack.conf openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf
           cp -af xg-140g-md/patch-25.12/package/kernel/linux/modules/netdevices.mk openwrt/package/kernel/linux/modules/netdevices.mk
           cp -af xg-140g-md/patch-25.12/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
-
-          git clone https://github.com/rchen14b/luci-app-airoha-npu.git openwrt/package/luci-app-airoha-npu
 
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
           mkdir -p openwrt/target/linux/airoha/an7581/base-files/lib/upgrade/
