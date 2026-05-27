@@ -101,7 +101,13 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_kmod-wireguard is not set/CONFIG_PACKAGE_kmod-wireguard=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' openwrt/.config
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' openwrt/.config
+          sed -i 's/# CONFIG_PACKAGE_default-settings-chn is not set/CONFIG_PACKAGE_default-settings-chn=y/g' openwrt/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-app-cpufreq is not set/CONFIG_PACKAGE_luci-app-cpufreq=y/g' openwrt/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-app-airoha-npu is not set/CONFIG_PACKAGE_luci-app-airoha-npu=y/g' openwrt/.config
           cd openwrt && make defconfig
+
+      - name: Show config
+        run: cat openwrt/.config
 
       - name: Prepare target/linux
         run: cd openwrt && make -j $(nproc) target/linux/{clean,prepare} V=s
