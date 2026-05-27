@@ -44,9 +44,6 @@ jobs:
 
           ./openwrt/scripts/getver.sh
 
-          cd openwrt/package/ && git clone https://github.com/rchen14b/luci-app-airoha-npu.git
-          ls
-
       - name: Prepare config and patches
         run: |
           rm -rf openwrt/target/linux/generic/backport-6.12/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
@@ -87,8 +84,11 @@ jobs:
           key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: ${{ matrix.source.cache_key }}-${{ runner.os }}-
 
-      - name: Update feeds
-        run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
+      - name: Update feeds and add luci-app-airoha-npu
+        run: |
+          cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
+          git clone https://github.com/rchen14b/luci-app-airoha-npu.git feeds/luci/applications/luci-app-airoha-npu
+          ls feeds/luci/applications/luci-app-airoha-npu
 
       - name: Download sources
         run: cd openwrt && make defconfig && make -j $(nproc) download
