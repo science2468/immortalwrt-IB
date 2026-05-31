@@ -9,8 +9,7 @@ DEFAULT_PACKAGES += \
 	airoha-en7581-mt7996-npu-firmware \
 	uboot-envtools \
 	kmod-airoha-eth \
-	kmod-airoha-npu \
-	kmod-br-netfilter
+	kmod-airoha-npu
 
 define Target/Description
 	Build firmware images for Airoha an7581 ARM based boards.
