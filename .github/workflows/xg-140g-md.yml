@@ -57,14 +57,22 @@ jobs:
           cp -af xg-140g-md/patch-25.12/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+          mkdir -p openwrt/target/linux/airoha/an7581/base-files/etc/hotplug.d/net/
+          cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/hotplug.d/net/50-nf-bridge-call.txt openwrt/target/linux/airoha/an7581/base-files/etc/hotplug.d/net/50-nf-bridge-call.txt
+          mkdir -p openwrt/target/linux/airoha/an7581/base-files/etc/uci-defaults/
+          cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/etc/uci-defaults/15-w1700k-flow-offload.txt openwrt/target/linux/airoha/an7581/base-files/etc/uci-defaults/15-w1700k-flow-offload.txt
           mkdir -p openwrt/target/linux/airoha/an7581/base-files/lib/upgrade/
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/base-files/lib/upgrade/platform.sh openwrt/target/linux/airoha/an7581/base-files/lib/upgrade/platform.sh
+
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/config-6.12 openwrt/target/linux/airoha/an7581/config-6.12
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/an7581/target.mk openwrt/target/linux/airoha/an7581/target.mk
+
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/dts/an7581.dtsi openwrt/target/linux/airoha/dts/an7581.dtsi
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/dts/an7581-npu-mt7996.dtsi openwrt/target/linux/airoha/dts/an7581-npu-mt7996.dtsi
-          cp -af xg-140g-md/patch-25.12/target/linux/airoha/image/an7581.mk openwrt/target/linux/airoha/image/an7581.mk
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts openwrt/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
+
+          cp -af xg-140g-md/patch-25.12/target/linux/airoha/image/an7581.mk openwrt/target/linux/airoha/image/an7581.mk
+
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/117-03-airoha_npu_eagle_add_ser.patch openwrt/target/linux/airoha/patches-6.12/117-03-airoha_npu_eagle_add_ser.patch
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/620-net-pcs-airoha-fix-USXGMII-rate-adaptation-on-speed.patch openwrt/target/linux/airoha/patches-6.12/620-net-pcs-airoha-fix-USXGMII-rate-adaptation-on-speed.patch
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/621-net-pcs-airoha-AN7581-add-global-digital-reset-for.patch openwrt/target/linux/airoha/patches-6.12/621-net-pcs-airoha-AN7581-add-global-digital-reset-for.patch
@@ -73,10 +81,17 @@ jobs:
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/039-v6.14-cpufreq-airoha-Add-EN7581-CPUFreq-SMCCC-driver.patch openwrt/target/linux/airoha/patches-6.12/039-v6.14-cpufreq-airoha-Add-EN7581-CPUFreq-SMCCC-driver.patch
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/040-v6.14-pmdomain-airoha-Add-Airoha-CPU-PM-Domain-support.patch openwrt/target/linux/airoha/patches-6.12/040-v6.14-pmdomain-airoha-Add-Airoha-CPU-PM-Domain-support.patch
 
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-01-net-export-__dev_fill_forward_path-and-br_fdb_find_rcu.patch openwrt/target/linux/generic/pending-6.12/675-01-net-export-__dev_fill_forward_path-and-br_fdb_find_rcu.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-02-nft_flow_offload-add-bridging-support.patch openwrt/target/linux/generic/pending-6.12/675-02-nft_flow_offload-add-bridging-support.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-03-nft_flow_offload-add-DEV_PATH_MTK_WDMA-path.patch openwrt/target/linux/generic/pending-6.12/675-03-nft_flow_offload-add-DEV_PATH_MTK_WDMA-path.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-04-nft_flow_offload-add-vlan-passthrough-support.patch openwrt/target/linux/generic/pending-6.12/675-04-nft_flow_offload-add-vlan-passthrough-support.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/700-netfilter-nft_flow_offload-handle-netdevice-events-f.patch openwrt/target/linux/generic/pending-6.12/700-netfilter-nft_flow_offload-handle-netdevice-events-f.patch
+
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch openwrt/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch openwrt/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/600-mtd-spinand-add-skyhigh-robust-read-workaround.patch openwrt/target/linux/generic/hack-6.12/600-mtd-spinand-add-skyhigh-robust-read-workaround.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/721-net-add-packet-mangeling.patch openwrt/target/linux/generic/hack-6.12/721-net-add-packet-mangeling.patch
 
           sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
 
