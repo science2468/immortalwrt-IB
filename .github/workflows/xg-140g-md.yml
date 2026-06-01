@@ -77,6 +77,15 @@ jobs:
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/039-v6.14-cpufreq-airoha-Add-EN7581-CPUFreq-SMCCC-driver.patch openwrt/target/linux/airoha/patches-6.12/039-v6.14-cpufreq-airoha-Add-EN7581-CPUFreq-SMCCC-driver.patch
           cp -af xg-140g-md/patch-25.12/target/linux/airoha/patches-6.12/040-v6.14-pmdomain-airoha-Add-Airoha-CPU-PM-Domain-support.patch openwrt/target/linux/airoha/patches-6.12/040-v6.14-pmdomain-airoha-Add-Airoha-CPU-PM-Domain-support.patch
 
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-01-net-export-__dev_fill_forward_path-and-br_fdb_find_rcu.patch openwrt/target/linux/generic/pending-6.12/675-01-net-export-__dev_fill_forward_path-and-br_fdb_find_rcu.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-02-nft_flow_offload-add-bridging-support.patch openwrt/target/linux/generic/pending-6.12/675-02-nft_flow_offload-add-bridging-support.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-03-nft_flow_offload-add-DEV_PATH_MTK_WDMA-path.patch openwrt/target/linux/generic/pending-6.12/675-03-nft_flow_offload-add-DEV_PATH_MTK_WDMA-path.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-04-nft_flow_offload-add-vlan-passthrough-support.patch openwrt/target/linux/generic/pending-6.12/675-04-nft_flow_offload-add-vlan-passthrough-support.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-05-nft_flow_offload-bridge-dst-on-master.patch openwrt/target/linux/generic/pending-6.12/675-05-nft_flow_offload-bridge-dst-on-master.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-06-nft_flow_offload-review-follow-up-comments.patch openwrt/target/linux/generic/pending-6.12/675-06-nft_flow_offload-review-follow-up-comments.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/675-07-netfilter-nft_flow_offload-fix-l2-bridge-leaks.patch openwrt/target/linux/generic/pending-6.12/675-07-netfilter-nft_flow_offload-fix-l2-bridge-leaks.patch
+          cp -af xg-140g-md/patch-25.12/target/linux/generic/pending-6.12/700-netfilter-nft_flow_offload-handle-netdevice-events-f.patch openwrt/target/linux/generic/pending-6.12/700-netfilter-nft_flow_offload-handle-netdevice-events-f.patch
+          
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch openwrt/target/linux/generic/hack-6.12/400-mtd-spinand-Support-fmsh.patch
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch openwrt/target/linux/generic/hack-6.12/430-v6.14-mtd-spinand-Introduce-a-way-to-avoid-raw-access.patch
           cp -af xg-140g-md/patch-25.12/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch openwrt/target/linux/generic/hack-6.12/431-v6.14-mtd-spinand-Add-support-for-SkyHigh-S35ML-3-family.patch
