@@ -104,4 +104,6 @@ deb-src http://ftp.cn.debian.org/debian/ trixie-updates main contrib non-free no
 ```
 #apt命令
 sudo apt clean && sudo apt update
+sudo apt autoclean
+sudo apt autoremove
 ```
