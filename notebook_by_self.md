@@ -101,3 +101,7 @@ deb-src http://ftp.cn.debian.org/debian/ trixie-updates main contrib non-free no
 # see the sources.list(5) manual.
 
 ```
+```
+#apt命令
+sudo apt clean && sudo apt update
+```
