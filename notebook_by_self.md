@@ -76,9 +76,8 @@ nohup make -j $(nproc) V=s > /tmp/make.log 2>&1 &
 make -j $(nproc) target/linux/{clean,prepare} V=s
 
 ```
-
-```APT源
 ```
+#APT源
 #deb cdrom:[Debian GNU/Linux 13.5.0 _Trixie_ - Official amd64 NETINST with firmware 20260516-10:08]/ trixie contrib main non-free-firmware
 
 deb http://ftp.cn.debian.org/debian/ trixie-backports main non-free-firmware contrib non-free
