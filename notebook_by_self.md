@@ -107,3 +107,9 @@ sudo apt clean && sudo apt update
 sudo apt autoclean
 sudo apt autoremove
 ```
+```
+#git 使用记录
+git config --global user.name "你的用户名"
+git config --global user.email "你的邮箱"
+git config --global credential.helper store			#执行后，第一次 push 时输入用户名和密码/Token，之后会永久保存在本地文件中（/home/xxx/.git-credentials）。
+```
