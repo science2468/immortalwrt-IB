@@ -39,6 +39,8 @@ sudo dnf install steam telegram-desktop -y
 ```
 #ibus输入法：如果 ibus.conf 不存在，手动创建
 ```
+sudo dnf install ibus-panel -y
+
 sudo tee /etc/X11/xinit/xinput.d/ibus.conf << 'EOF'
 XIM=ibus
 XIM_PROGRAM=/usr/bin/ibus-daemon
@@ -47,4 +49,6 @@ GTK_IM_MODULE=ibus
 QT_IM_MODULE=ibus
 XMODIFIERS=@im=ibus
 EOF
+
+imsettings-boot.sh
 ```
