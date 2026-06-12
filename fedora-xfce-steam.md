@@ -52,3 +52,7 @@ EOF
 
 imsettings-boot.sh
 ```
+### 卸载旧内核
+```
+sudo dnf remove kernel*x.x.x*
+```
