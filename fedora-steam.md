@@ -39,7 +39,8 @@ sudo dnf install steam telegram-desktop -y
 ```
 sudo dnf remove kernel*x.x.x*
 ```
-### cs2 修复视角锁定，cs2.sh里面用的x11图形平台，在cs2启动项里面用wayland就可以解决（XFCE桌面不需要）
+## cs2
+### 修复视角锁定，cs2.sh里面用的x11图形平台，在cs2启动项里面用wayland就可以解决（XFCE桌面不需要）
 ```
 SDL_VIDEO_DRIVER=wayland
 ```
