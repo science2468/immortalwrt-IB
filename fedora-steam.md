@@ -1,8 +1,9 @@
-#更新,重启
+## Fedora 44 GNOME桌面和KDE桌面
+### 更新,重启
 ```
 sudo dnf upgrade --refresh
 ```
-#nvidia驱动签名
+### nvidia驱动签名
 ```
 sudo dnf install kmodtool akmods mokutil openssl
 ```
@@ -15,29 +16,30 @@ sudo mokutil --import /etc/pki/akmods/certs/public_key.der
 ```
 systemctl reboot
 ```
-#安装rpm源
+### 安装rpm源
 ```
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
 ```
-
-#安装nvidia驱动
+### 安装nvidia驱动
 ```
 sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda -y
 ```
-
-#检测驱动
+### 检测驱动
 ```
 modinfo -F version nvidia
 ```
 ```
 sudo reboot
 ```
-
-#安装steam、telegram
+### 安装steam、telegram
 ```
 sudo dnf install steam telegram-desktop -y
 ```
 ### 卸载旧内核
 ```
 sudo dnf remove kernel*x.x.x*
+```
+### cs2 修复视角锁定，cs2.sh里面用的x11图形平台，在cs2启动项里面用wayland就可以解决（XFCE桌面不需要）
+```
+SDL_VIDEO_DRIVER=wayland
 ```
