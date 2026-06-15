@@ -56,7 +56,7 @@ jobs:
             openwrt/.ccache
           key: openwrt-main-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: |
-            openwrt-${{ runner.os }}-
+            openwrt-main-${{ runner.os }}-
 
       - name: feeds
         run: |
