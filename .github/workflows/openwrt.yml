@@ -65,6 +65,7 @@ jobs:
 
       - name: Show config and enable luci wireguard
         run: |
+          sed -i 's/CONFIG_LINUX_6_12=y/CONFIG_LINUX_6_18=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci is not set/CONFIG_PACKAGE_luci=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci-app-package-manager is not set/CONFIG_PACKAGE_luci-app-package-manager=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci-light is not set/CONFIG_PACKAGE_luci-light=y/g' openwrt/.config
