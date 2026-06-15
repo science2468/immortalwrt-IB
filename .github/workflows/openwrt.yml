@@ -54,7 +54,7 @@ jobs:
           path: |
             openwrt/staging_dir
             openwrt/.ccache
-          key: openwrt-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
+          key: openwrt-main-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: |
             openwrt-${{ runner.os }}-
 
