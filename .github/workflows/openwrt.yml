@@ -33,10 +33,21 @@ jobs:
 
       - name: move .config
         run: |
-          rm -rf openwrt/target/linux/generic/backport-6.18/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
-          
+          cp -af xg-140g-md/.config openwrt/
+          cp -af xg-140g-md/patch-main/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic openwrt/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic
+          cp -af xg-140g-md/patch-main/package/kernel/linux/files/sysctl-nf-conntrack.conf openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf
+          cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
-      - name: Cache OpenWrt build
+          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+
+          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581.dtsi openwrt/target/linux/airoha/dts/an7581.dtsi
+          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-npu-mt7996.dtsi openwrt/target/linux/airoha/dts/an7581-npu-mt7996.dtsi
+          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts openwrt/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
+
+          cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk openwrt/target/linux/airoha/image/an7581.mk
+
+          cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
+
         uses: actions/cache@v4
         with:
           path: |
@@ -50,13 +61,7 @@ jobs:
         run: |
             cd openwrt/
             ./scripts/feeds update -a && ./scripts/feeds install -a
-
-      - name: Download
-        run: |
-          ls
-          cd openwrt/
-          make defconfig
-          make -j $(nproc) download
+            make defconfig
 
       - name: Show config and enable luci wireguard
         run: |
@@ -71,20 +76,22 @@ jobs:
           cd openwrt && make defconfig
           cat .config
 
+      - name: Download
+        run: |
+          ls
+          cd openwrt/ && make -j $(nproc) download
+
       - name: target/linux prepare
         run: |
-          cd openwrt/
-          make -j $(nproc) target/linux/{clean,prepare} V=s
+          cd openwrt/ && make -j $(nproc) target/linux/{clean,prepare} V=s
 
       - name: Build ccache
         run: |
-          cd openwrt/
-          make -j $(nproc) tools/ccache/compile V=s
+          cd openwrt/ && make -j $(nproc) tools/ccache/compile V=s
 
       - name: Build
         run: |
-          cd openwrt/
-          make -j $(nproc) V=s
+          cd openwrt/ && make -j $(nproc) V=s
   
       - name: Set Date and Time
         id: datetime
