@@ -29,9 +29,9 @@ jobs:
       - name: Clone source code
         run: |
           git clone https://github.com/openwrt/openwrt.git
-          cd openwrt/ && ./scripts/getver.sh
+          cd openwrt && ./scripts/getver.sh
 
-      - name: move .config
+      - name: move config
         run: |
           cp -af xg-140g-md/.config openwrt/
           cp -af xg-140g-md/patch-main/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic openwrt/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic
@@ -48,6 +48,7 @@ jobs:
 
           cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
 
+      - name: Cache staging_dir and ccache
         uses: actions/cache@v4
         with:
           path: |
@@ -59,8 +60,7 @@ jobs:
 
       - name: feeds
         run: |
-            cd openwrt/
-            ./scripts/feeds update -a && ./scripts/feeds install -a
+            cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
             make defconfig
 
       - name: Show config and enable luci wireguard
@@ -76,22 +76,24 @@ jobs:
           cd openwrt && make defconfig
           cat .config
 
+      - name: Show config
+        run: cat openwrt/.config
+
       - name: Download
         run: |
-          ls
-          cd openwrt/ && make -j $(nproc) download
+          cd openwrt && make -j $(nproc) download
 
       - name: target/linux prepare
         run: |
-          cd openwrt/ && make -j $(nproc) target/linux/{clean,prepare} V=s
+          cd openwrt && make -j $(nproc) target/linux/{clean,prepare} V=s
 
       - name: Build ccache
         run: |
-          cd openwrt/ && make -j $(nproc) tools/ccache/compile V=s
+          cd openwrt && make -j $(nproc) tools/ccache/compile V=s
 
       - name: Build
         run: |
-          cd openwrt/ && make -j $(nproc) V=s
+          cd openwrt && make -j $(nproc) V=s
   
       - name: Set Date and Time
         id: datetime
