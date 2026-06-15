@@ -1,4 +1,4 @@
-name: Build xg-140g-md
+name: Build xg-140g-md for openwrt main
 on: 
   workflow_dispatch:
 jobs:
@@ -28,26 +28,20 @@ jobs:
 
       - name: Clone source code
         run: |
-          wget https://github.com/openwrt/openwrt/archive/refs/tags/v25.12.4.tar.gz
-          tar -xzf v25.12.*.tar.gz && mv openwrt-25.12.* openwrt
+          git clone https://github.com/openwrt/openwrt.git
           cd openwrt/ && ./scripts/getver.sh
 
       - name: move .config
         run: |
-          rm -rf openwrt/target/linux/generic/backport-6.12/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
-          mv -f xg-140g-md/patch-25.12 openwrt/
-          mv -f xg-140g-md/.config openwrt/
-
-          cd openwrt/
-          chmod +x patch-25.12/patch.sh
-          ./patch-25.12/patch.sh
-          sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
+          rm -rf openwrt/target/linux/generic/backport-6.18/435-v6.19-mtd-spinand-add-support-for-FudanMicro-FM25S01BI3.patch
+          
 
       - name: Cache OpenWrt build
         uses: actions/cache@v4
         with:
           path: |
             openwrt/staging_dir
+            openwrt/.ccache
           key: openwrt-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
           restore-keys: |
             openwrt-${{ runner.os }}-
@@ -90,8 +84,6 @@ jobs:
       - name: Build
         run: |
           cd openwrt/
-          ./scripts/getver.sh
-
           make -j $(nproc) V=s
   
       - name: Set Date and Time
@@ -101,6 +93,6 @@ jobs:
       - name: Upload openwrt firmware
         uses: softprops/action-gh-release@master
         with:
-          tag_name: openwrt-xg-140g-md-${{ steps.datetime.outputs.datetime }}
+          tag_name: openwrt-main-xg-140g-md-${{ steps.datetime.outputs.datetime }}
           files: openwrt/bin/targets/airoha/an7581/*
           
