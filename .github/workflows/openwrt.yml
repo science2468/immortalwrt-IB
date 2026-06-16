@@ -34,8 +34,6 @@ jobs:
       - name: move config
         run: |
           cp -af xg-140g-md/.config openwrt/
-          cp -af xg-140g-md/patch-main/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic openwrt/package/boot/uboot-tools/uboot-envtools/files/mediatek_filogic
-          cp -af xg-140g-md/patch-main/package/kernel/linux/files/sysctl-nf-conntrack.conf openwrt/package/kernel/linux/files/sysctl-nf-conntrack.conf
           cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
