@@ -7,6 +7,14 @@
 ### RIPE Docs
 使用(RIPEstatAPI)[https://stat.ripe.net/docs/data-api/ripestat-data-api] 查询
 
+域名解析，`=`后面可以是域名或IP
+```
+curl --location --request GET "https://stat.ripe.net/data/dns-chain/data.json?resource=" | jq
+```
+IP地理位置查询
+```
+curl --location --request GET "https://stat.ripe.net/data/rir-geo/data.json?resource=" | jq
+```
 ### asu本地部署：
 用debian13或者是Ubuntu24的非root用户
 1
