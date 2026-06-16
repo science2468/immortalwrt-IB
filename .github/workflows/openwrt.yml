@@ -39,6 +39,7 @@ jobs:
           cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/target.mk openwrt/target/linux/airoha/an7581/target.mk
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581.dtsi openwrt/target/linux/airoha/dts/an7581.dtsi
           cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-npu-mt7996.dtsi openwrt/target/linux/airoha/dts/an7581-npu-mt7996.dtsi
