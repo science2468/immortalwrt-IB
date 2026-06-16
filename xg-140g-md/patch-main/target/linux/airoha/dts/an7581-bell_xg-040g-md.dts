@@ -13,10 +13,10 @@
 	aliases {
 		label-mac-device = &gdm1;
 
-		led-boot = &led_power_green;
-		led-failsafe = &led_power_green;
-		led-running = &led_power_green;
-		led-upgrade = &led_power_green;
+		led-boot = &pwr_led;
+		led-failsafe = &pwr_led;
+		led-running = &pwr_led;
+		led-upgrade = &pwr_led;
 
 		serial0 = &uart1;
 	};
@@ -160,6 +160,10 @@
 };
 
 &eth {
+	status = "okay";
+};
+
+&eth_pcs {
 	status = "okay";
 };
 
