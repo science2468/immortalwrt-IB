@@ -85,7 +85,7 @@ define Package/tunsafe/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tunsafe $(1)/usr/sbin
 	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/tunsafe.init $(1)/etc/init.d/tunsafe
+	$(INSTALL_BIN) ./files/tunsafe $(1)/etc/init.d/tunsafe
 	$(INSTALL_DIR) $(1)/etc/tunsafe
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/installer/TunSafe.conf $(1)/etc/tunsafe/tunsafe.conf
 endef
