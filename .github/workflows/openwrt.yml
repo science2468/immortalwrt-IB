@@ -44,6 +44,8 @@ jobs:
 
           cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
 
+          cp -r tunsafe openwrt/package/tunsafe
+
       - name: Cache staging_dir and ccache
         uses: actions/cache@v4
         with:
@@ -70,6 +72,7 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_kmod-wireguard is not set/CONFIG_PACKAGE_kmod-wireguard=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' openwrt/.config
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' openwrt/.config
+          sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' openwrt/.config
           cd openwrt && make defconfig
 
       - name: Show config
