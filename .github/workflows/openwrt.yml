@@ -44,8 +44,6 @@ jobs:
 
           cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
 
-          cp -r tunsafe openwrt/package/tunsafe
-
       - name: Cache staging_dir and ccache
         uses: actions/cache@v5
         with:
