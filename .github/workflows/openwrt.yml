@@ -47,7 +47,7 @@ jobs:
 
       - name: move config
         run: |
-          cp -af xg-140g-md/.config openwrt/
+          cp -af xg-140g-md/.config ${{ matrix.source.name }}/
 
           cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
@@ -61,7 +61,7 @@ jobs:
             cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
           if
 
-          sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
+          sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
 
       - name: feeds
         run: |
