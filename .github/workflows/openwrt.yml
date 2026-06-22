@@ -3,11 +3,25 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    name: ${{ matrix.source.tag_prefix }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
       TZ: Asia/Shanghai
+      CCACHE_DIR: ${{ github.workspace }}/openwrt/.ccache
+    strategy:
+      fail-fast: false
+      matrix:
+        source:
+          - name: openwrt-main
+            url: https://github.com/openwrt/openwrt.git
+            tag_prefix: openwrt-main-xg-140g-md
+            cache_key: openwrt-main
+          - name: immortalwrt-main
+            url: https://github.com/immortalwrt/immortalwrt.git
+            tag_prefix: immortalwrt-main-xg-140g-md
+            cache_key: immortalwrt-main
     steps:
       - name: Checkout Projects
         uses: actions/checkout@v5
@@ -28,7 +42,7 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone https://github.com/openwrt/openwrt.git
+          git clone --depth 1 ${{ matrix.source.url }} openwrt
           cd openwrt && ./scripts/getver.sh
 
       - name: move config
@@ -44,15 +58,7 @@ jobs:
 
           cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
 
-      - name: Cache staging_dir and ccache
-        uses: actions/cache@v5
-        with:
-          path: |
-            openwrt/staging_dir
-            openwrt/.ccache
-          key: openwrt-main-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
-          restore-keys: |
-            openwrt-main-${{ runner.os }}-
+          sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
 
       - name: feeds
         run: |
@@ -72,6 +78,16 @@ jobs:
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' openwrt/.config
           cd openwrt && make defconfig
+          
+      - name: Cache staging_dir and ccache
+        uses: actions/cache@v5
+        with:
+          path: |
+            openwrt/staging_dir
+            openwrt/.ccache
+          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
+          restore-keys: |
+            ${{ matrix.source.cache_key }}-${{ runner.os }}-
 
       - name: Show config
         run: cat openwrt/.config
@@ -99,6 +115,6 @@ jobs:
       - name: Upload openwrt firmware
         uses: softprops/action-gh-release@master
         with:
-          tag_name: openwrt-main-xg-140g-md-${{ steps.datetime.outputs.datetime }}
+          tag_name: ${{ matrix.source.tag_prefix }}-${{ steps.datetime.outputs.datetime }}
           files: openwrt/bin/targets/airoha/an7581/*
           
