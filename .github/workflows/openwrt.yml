@@ -48,6 +48,7 @@ jobs:
       - name: move config
         run: |
           cp -af xg-140g-md/.config openwrt/
+
           cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
@@ -65,7 +66,7 @@ jobs:
             cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
             make defconfig
 
-      - name: Show config and enable luci wireguard
+      - name: custom configuration
         run: |
           sed -i 's/CONFIG_LINUX_6_12=y/CONFIG_LINUX_6_18=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_luci is not set/CONFIG_PACKAGE_luci=y/g' openwrt/.config
@@ -78,6 +79,11 @@ jobs:
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' openwrt/.config
           sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' openwrt/.config
           cd openwrt && make defconfig
+          
+          mkdir -p files/usr/bin files/etc/init.d files/etc/tunsafe
+          touch files/etc/tunsafe/tunsafe.conf
+          wget -O files/usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_aarch64-linux
+          cp -af $GITHUB_WORKSPACE/tunsafe/files/tunsafe openwrt/files/etc/init.d/
           
       - name: Cache staging_dir and ccache
         uses: actions/cache@v5
