@@ -9,7 +9,7 @@ jobs:
       contents: write
     env:
       TZ: Asia/Shanghai
-      CCACHE_DIR: ${{ github.workspace }}/openwrt/.ccache
+      CCACHE_DIR: ${{ github.workspace }}/${{ matrix.source.name }}/.ccache
     strategy:
       fail-fast: false
       matrix:
@@ -42,77 +42,81 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone --depth 1 ${{ matrix.source.url }} openwrt
-          cd openwrt && ./scripts/getver.sh
+          git clone --depth 1 ${{ matrix.source.url }} ${{ matrix.source.name }}
+          cd ${{ matrix.source.name }} && ./scripts/getver.sh
 
       - name: move config
         run: |
           cp -af xg-140g-md/.config openwrt/
 
-          cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac openwrt/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
+          cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
-          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network openwrt/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network ${{ matrix.source.name }}/target/linux/airoha/an7581/base-files/etc/board.d/02_network
 
-          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts openwrt/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
+          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts ${{ matrix.source.name }}/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
 
-          cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk openwrt/target/linux/airoha/image/an7581.mk
+          cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
 
-          cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch openwrt/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
+          if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
+            cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
+          if
 
           sed -i 's/dnsmasq/dnsmasq-full/g' openwrt/include/target.mk
 
       - name: feeds
         run: |
-            cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install -a
+            cd ${{ matrix.source.name }} && ./scripts/feeds update -a && ./scripts/feeds install -a
             make defconfig
 
       - name: custom configuration
         run: |
-          sed -i 's/CONFIG_LINUX_6_12=y/CONFIG_LINUX_6_18=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_luci is not set/CONFIG_PACKAGE_luci=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_luci-app-package-manager is not set/CONFIG_PACKAGE_luci-app-package-manager=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_luci-light is not set/CONFIG_PACKAGE_luci-light=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_luci-theme-bootstrap is not set/CONFIG_PACKAGE_luci-theme-bootstrap=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_luci-proto-wireguard is not set/CONFIG_PACKAGE_luci-proto-wireguard=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_kmod-wireguard is not set/CONFIG_PACKAGE_kmod-wireguard=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' openwrt/.config
-          sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' openwrt/.config
-          sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' openwrt/.config
-          cd openwrt && make defconfig
+          sed -i 's/CONFIG_LINUX_6_12=y/CONFIG_LINUX_6_18=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_luci is not set/CONFIG_PACKAGE_luci=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-app-package-manager is not set/CONFIG_PACKAGE_luci-app-package-manager=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-light is not set/CONFIG_PACKAGE_luci-light=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-theme-bootstrap is not set/CONFIG_PACKAGE_luci-theme-bootstrap=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_luci-proto-wireguard is not set/CONFIG_PACKAGE_luci-proto-wireguard=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_kmod-wireguard is not set/CONFIG_PACKAGE_kmod-wireguard=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' ${{ matrix.source.name }}/.config
+          cd ${{ matrix.source.name }} && make defconfig
           
           mkdir -p files/usr/bin files/etc/init.d files/etc/tunsafe
           touch files/etc/tunsafe/tunsafe.conf
           wget -O files/usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_aarch64-linux
-          cp -af $GITHUB_WORKSPACE/tunsafe/files/tunsafe openwrt/files/etc/init.d/
+          cp -af $GITHUB_WORKSPACE/tunsafe/files/tunsafe files/etc/init.d/
+
+          ls -R files/
           
       - name: Cache staging_dir and ccache
         uses: actions/cache@v5
         with:
           path: |
-            openwrt/staging_dir
-            openwrt/.ccache
-          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('openwrt/.config') }}
+            ${{ matrix.source.name }}/staging_dir
+            ${{ matrix.source.name }}/.ccache
+          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('${{ matrix.source.name }}/.config') }}
           restore-keys: |
             ${{ matrix.source.cache_key }}-${{ runner.os }}-
 
       - name: Show config
-        run: cat openwrt/.config
+        run: cat ${{ matrix.source.name }}/.config
 
       - name: Download
         run: |
-          cd openwrt && make -j $(nproc) download
+          cd ${{ matrix.source.name }} && make -j $(nproc) download
 
       - name: target/linux prepare
         run: |
-          cd openwrt && make -j $(nproc) target/linux/{clean,prepare} V=s
+          cd ${{ matrix.source.name }} && make -j $(nproc) target/linux/{clean,prepare} V=s
 
       - name: Build ccache
         run: |
-          cd openwrt && make -j $(nproc) tools/ccache/compile V=s
+          cd ${{ matrix.source.name }} && make -j $(nproc) tools/ccache/compile V=s
 
       - name: Build
         run: |
-          cd openwrt && make -j $(nproc) V=s
+          cd ${{ matrix.source.name }} && make -j $(nproc) V=s
   
       - name: Set Date and Time
         id: datetime
@@ -122,5 +126,5 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ matrix.source.tag_prefix }}-${{ steps.datetime.outputs.datetime }}
-          files: openwrt/bin/targets/airoha/an7581/*
+          files: ${{ matrix.source.name }}/bin/targets/airoha/an7581/*
           
