@@ -57,9 +57,9 @@ jobs:
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
 
-          if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
-            cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
-          fi
+          #if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
+          #  cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
+          #fi
 
           sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
 
