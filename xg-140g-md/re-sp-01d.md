@@ -66,7 +66,7 @@ if [ -n "$pppoe_username" -a "$pppoe_password" ]; then
   set network.wan.proto=pppoe
   set network.wan.username="$pppoe_username"
   set network.wan.password="$pppoe_password"
-  add network.route
+  add network route
   set network.@route[-1].interface='protonvpn'
   set network.@route[-1].target='8.8.8.8/32'
   commit network
