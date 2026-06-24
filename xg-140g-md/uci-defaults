@@ -25,42 +25,47 @@ fi
 # Configure LAN
 # More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
 if [ -n "$lan_ip_address" ]; then
-  uci set network.lan.ipaddr="$lan_ip_address"
-  uci commit network
+  uci -q batch << EOI
+  set network.lan.ipaddr="$lan_ip_address"
+  commit network
+  EOI
 fi
 
 # Configure WLAN
 # More options: https://openwrt.org/docs/guide-user/network/wifi/basic#wi-fi_interfaces
 if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
-  uci set wireless.radio0.disabled='0'
-  uci set wireless.radio0.disabled='0'
-  uci set wireless.radio0.htmode='HT20'
-  uci set wireless.radio0.channel='auto'
-  uci set wireless.radio0.country='CN'
-  uci set wireless.radio0.encryption='psk2'
-  uci set wireless.radio0.ssid="$wlan_name"
-  uci set wireless.radio0.key="$wlan_password"
-  uci set wireless.radio1.disabled='0'
-  uci set wireless.radio1.disabled='0'
-  uci set wireless.radio1.htmode='VHT80'
-  uci set wireless.radio1.channel='auto'
-  uci set wireless.radio1.country=''CN
-  uci set wireless.radio1.encryption='psk2'
-  uci set wireless.radio1.ssid="$wlan_name"
-  uci set wireless.radio1.key="$wlan_password"
-  uci commit wireless
+  uci -q batch << EOI
+  set wireless.@wifi-device[0].disabled='0'
+  set wireless.@wifi-device[0].channel='auto'
+  set wireless.@wifi-device[0].country='CN'
+  set wireless.@wifi-iface[0].disabled='0'
+  set wireless.@wifi-iface[0].encryption='psk2'
+  set wireless.@wifi-iface[0].ssid="$wlan_name"
+  set wireless.@wifi-iface[0].key="$wlan_password"
+  set wireless.@wifi-device[1].disabled='0'
+  set wireless.@wifi-device[1].htmode='VHT80'
+  set wireless.@wifi-device[1].channel='auto'
+  set wireless.@wifi-device[1].country=''CN
+  set wireless.@wifi-iface[1].disabled='0'
+  set wireless.@wifi-iface[1].encryption='psk2'
+  set wireless.@wifi-iface[1].ssid="$wlan_name"
+  set wireless.@wifi-iface[1].key="$wlan_password"
+  commit wireless
+  EOI
 fi
 
 # Configure PPPoE and route
 # More options: https://openwrt.org/docs/guide-user/network/wan/wan_interface_protocols#protocol_pppoe_ppp_over_ethernet
 if [ -n "$pppoe_username" -a "$pppoe_password" ]; then
-  uci set network.wan.proto=pppoe
-  uci set network.wan.username="$pppoe_username"
-  uci set network.wan.password="$pppoe_password"
-  uci set network.@route[0]=route
-  uci set network.@route[0].interface='protonvpn'
-  uci set network.@route[0].target='8.8.8.8/32'
-  uci commit network
+  uci -q batch << EOI
+  set network.wan.proto=pppoe
+  set network.wan.username="$pppoe_username"
+  set network.wan.password="$pppoe_password"
+  add network.route
+  set network.@route[-1].interface='protonvpn'
+  set network.@route[-1].target='8.8.8.8/32'
+  commit network
+  EOI
 fi
 
 # Configure dhcp
@@ -95,8 +100,10 @@ server=/redd.it/8.8.8.8
 server=/steamcommunity.com/8.8.8.8
 EOF
 
-uci set dhcp.@dnsmasq[0].serversfile='/etc/dnsmasq.servers'
-uci commit dhcp
+uci -q batch << EOI
+set dhcp.@dnsmasq[0].serversfile='/etc/dnsmasq.servers'
+commit dhcp
+EOI
 
 # Configure timezone
 uci -q batch << EOI
@@ -108,7 +115,7 @@ EOI
 # Configure tunsafe
 mkdir -p /etc/tunsafe
 touch /etc/tunsafe/tunsafe.conf
-wget -O /usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_mipsel-linux
+wget -O /usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_mipsel-linux && chmod +x /usr/bin/tunsafe
 
 cat > /etc/init.d/tunsafe << 'EOF'
 #!/bin/sh /etc/rc.common
@@ -148,16 +155,19 @@ EOF
 chmod +x /etc/init.d/tunsafe
 /etc/init.d/tunsafe enabled
 
-# Configure interface
-uci set network.protonvpn=interface
-uci set network.protonvpn.proto='none'
-uci set network.protonvpn.device='tun0'
-uci set network.protonvpn.defaultroute='0'
-uci set network.protonvpn.multipath='off'
-uci del firewall.@zone[1].network
-uci add_list firewall.@zone[1].network='wan'
-uci add_list firewall.@zone[1].network='protonvpn'
-uci commit firewall
+# Configure ProtonVPN interface
+uci -q batch << EOI
+set network.protonvpn=interface
+set network.protonvpn.proto='none'
+set network.protonvpn.device='tun0'
+set network.protonvpn.defaultroute='0'
+set network.protonvpn.multipath='off'
+commit network
+del firewall.@zone[1].network
+add_list firewall.@zone[1].network='wan'
+add_list firewall.@zone[1].network='protonvpn'
+commit firewall
+EOI
 
 # Configure pbr
 cat > /etc/config/pbr << 'EOF'
