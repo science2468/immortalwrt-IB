@@ -113,19 +113,15 @@ jobs:
 
       - name: Build ccache
         run: |
-          cd ${{ matrix.source.name }} && make -j $(nproc) tools/ccache/compile V=s
+          #cd ${{ matrix.source.name }} && make -j $(nproc) tools/ccache/compile V=s
 
       - name: Build
         run: |
           cd ${{ matrix.source.name }} && make -j $(nproc) V=s
-  
-      - name: Set Date and Time
-        id: datetime
-        run: echo "::set-output name=datetime::$(date +'%Y%m%d%H%M%S')"
 
       - name: Upload openwrt firmware
         uses: softprops/action-gh-release@master
         with:
-          tag_name: ${{ matrix.source.tag_prefix }}-${{ steps.datetime.outputs.datetime }}
+          tag_name: ${{ matrix.source.tag_prefix }}
           files: ${{ matrix.source.name }}/bin/targets/airoha/an7581/*
           
