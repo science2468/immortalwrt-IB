@@ -49,11 +49,7 @@ jobs:
         run: |
           cp -af xg-140g-md/.config ${{ matrix.source.name }}/
           
-          if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
-            cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
-          fi
-
-          cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
+          cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network ${{ matrix.source.name }}/target/linux/airoha/an7581/base-files/etc/board.d/02_network
 
