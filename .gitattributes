@@ -1,0 +1,5 @@
+# 让 Git 自动检测文本文件，并强制所有文本文件使用 LF
+* text=auto eol=lf
+
+# 明确指定脚本文件使用 LF
+*.sh text eol=lf
