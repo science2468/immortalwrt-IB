@@ -1,0 +1,252 @@
+# Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
+# Uncomment lines to apply:
+#
+# wlan_name="OpenWrt"
+# wlan_password="12345678"
+#
+# root_password=""
+#
+# For 24.10 and earlier, the 'netmask' will default to '255.255.255.0':
+# lan_ip_address="192.168.1.1"
+#
+# But, make sure to use CIDR notation for 25.12 and later:
+lan_ip_address="192.168.2.1/24"
+#
+pppoe_username="307"
+pppoe_password="307307307"
+
+# log potential errors
+exec >/tmp/setup.log 2>&1
+
+if [ -n "$root_password" ]; then
+  (echo "$root_password"; sleep 1; echo "$root_password") | passwd > /dev/null
+fi
+
+# Configure LAN
+# More options: https://openwrt.org/docs/guide-user/base-system/basic-networking
+if [ -n "$lan_ip_address" ]; then
+  uci -q batch << EOI
+  set network.lan.ipaddr="$lan_ip_address"
+  commit network
+  EOI
+fi
+
+# Configure WLAN
+# More options: https://openwrt.org/docs/guide-user/network/wifi/basic#wi-fi_interfaces
+if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
+  uci -q batch << EOI
+  set wireless.@wifi-device[0].disabled='0'
+  set wireless.@wifi-device[0].channel='auto'
+  set wireless.@wifi-device[0].country='CN'
+  set wireless.@wifi-iface[0].disabled='0'
+  set wireless.@wifi-iface[0].encryption='psk2'
+  set wireless.@wifi-iface[0].ssid="$wlan_name"
+  set wireless.@wifi-iface[0].key="$wlan_password"
+  set wireless.@wifi-device[1].disabled='0'
+  set wireless.@wifi-device[1].htmode='VHT80'
+  set wireless.@wifi-device[1].channel='auto'
+  set wireless.@wifi-device[1].country=''CN
+  set wireless.@wifi-iface[1].disabled='0'
+  set wireless.@wifi-iface[1].encryption='psk2'
+  set wireless.@wifi-iface[1].ssid="$wlan_name"
+  set wireless.@wifi-iface[1].key="$wlan_password"
+  commit wireless
+  EOI
+fi
+
+# Configure PPPoE and route
+# More options: https://openwrt.org/docs/guide-user/network/wan/wan_interface_protocols#protocol_pppoe_ppp_over_ethernet
+if [ -n "$pppoe_username" -a "$pppoe_password" ]; then
+  uci -q batch << EOI
+  set network.wan.proto=pppoe
+  set network.wan.username="$pppoe_username"
+  set network.wan.password="$pppoe_password"
+  add network route
+  set network.@route[-1].interface='protonvpn'
+  set network.@route[-1].target='1.1.1.1/32'
+  commit network
+  EOI
+fi
+
+# Configure dhcp
+cat > /etc/dnsmasq.servers << 'EOF'
+server=/google.com/1.1.1.1
+server=/google.com.hk/1.1.1.1
+server=/googleapis.com/1.1.1.1
+server=/googleusercontent.com/1.1.1.1
+server=/googlevideo.com/1.1.1.1
+server=/youtube.com/1.1.1.1
+server=/youtu.be/1.1.1.1
+server=/ytimg.com/1.1.1.1
+server=/ggpht.com/1.1.1.1
+server=/twitter.com/1.1.1.1
+server=/t.co/1.1.1.1
+server=/twimg.com/1.1.1.1
+server=/facebook.com/1.1.1.1
+server=/fb.com/1.1.1.1
+server=/fbcdn.net/1.1.1.1
+server=/instagram.com/1.1.1.1
+server=/cdninstagram.com/1.1.1.1
+server=/messenger.com/1.1.1.1
+server=/telegram.org/1.1.1.1
+server=/telegra.ph/1.1.1.1
+server=/proton.me/1.1.1.1
+server=/chatgpt.com/1.1.1.1
+server=/x.com/1.1.1.1
+server=/reddit.com/1.1.1.1
+server=/redditmedia.com/1.1.1.1
+server=/redditstatic.com/1.1.1.1
+server=/redd.it/1.1.1.1
+server=/steamcommunity.com/1.1.1.1
+EOF
+
+uci -q batch << EOI
+set dhcp.@dnsmasq[0].serversfile='/etc/dnsmasq.servers'
+commit dhcp
+EOI
+
+# Configure timezone
+uci -q batch << EOI
+set system.@system[0].zonename='Asia/Shanghai'
+set system.@system[0].timezone='CST-8'
+commit system
+EOI
+
+# Configure ProtonVPN interface
+uci -q batch << EOI
+set network.protonvpn=interface
+set network.protonvpn.proto='none'
+set network.protonvpn.device='tun0'
+set network.protonvpn.defaultroute='0'
+set network.protonvpn.multipath='off'
+commit network
+del firewall.@zone[1].network
+add_list firewall.@zone[1].network='wan'
+add_list firewall.@zone[1].network='protonvpn'
+commit firewall
+EOI
+
+# Configure pbr
+cat > /etc/config/pbr << 'EOF'
+config pbr 'config'
+        option enabled '1'
+        option fw_mask '00ff0000'
+        option ipv6_enabled '1'
+        option nft_rule_counter '0'
+        option nft_set_auto_merge '1'
+        option nft_set_counter '0'
+        option nft_set_flags_interval '1'
+        option nft_set_flags_timeout '0'
+        option nft_set_policy 'performance'
+        option nft_warper_set_counter '0'
+        option procd_boot_trigger_delay '5000'
+        option procd_reload_delay '0'
+        option resolver_set 'dnsmasq.nftset'
+        option strict_enforcement '1'
+        option uplink_interface 'wan'
+        option uplink_interface6 'wan6'
+        option uplink_ip_rules_priority '30000'
+        option uplink_mark '00010000'
+        option verbosity '2'
+        list ignored_interface 'vpnserver'
+        list lan_device 'br-lan'
+        list resolver_instance '*'
+        list webui_supported_protocol 'all'
+        list webui_supported_protocol 'tcp'
+        list webui_supported_protocol 'udp'
+        list webui_supported_protocol 'tcp udp'
+        list webui_supported_protocol 'icmp'
+        option config_compat '25'
+        option config_version '1.2.2-r14'
+        option rule_create_option 'add'
+        option webui_show_ignore_target '0'
+
+config include
+        option path '/warpr/share/pbr/pbr.warper.dnsprefetch'
+        option enabled '0'
+
+config include
+        option path '/warpr/share/pbr/pbr.warper.aws'
+        option enabled '0'
+
+config include
+        option path '/warpr/share/pbr/pbr.warper.netflix'
+        option enabled '0'
+
+config dns_policy
+        option name 'Redirect Local IP DNS'
+        option src_addr '192.168.1.5'
+        option dest_dns '1.1.1.1'
+        option dest_dns_port '53'
+        option enabled '0'
+
+config policy
+        option name 'Ignore Local Requests'
+        option interface 'ignore'
+        option dest_addr '10.0.0.0/24 10.0.1.0/24 192.168.100.0/24 192.168.1.0/24'
+        option enabled '0'
+
+config policy
+        option name 'Plex/Emby Local Server'
+        option interface 'wan'
+        option src_port '8096 8920 32400'
+        option enabled '0'
+
+config policy
+        option name 'Plex/Emby Remote Servers'
+        option interface 'wan'
+        option dest_addr 'plex.tv my.plexapp.com emby.media app.emby.media tv.emby.media'
+        option enabled '0'
+
+config policy
+        option name 'telegram'
+        option dest_addr '91.108.56.0/22 91.108.4.0/22 91.108.8.0/22 91.108.16.0/22 91.108.12.0/22 149.154.160.0/20 91.105.192.0/23 91.108.20.0/22 185.76.151.0/24 2001:b28:f23d::/48 2001:b28:f23f::/48 2001:67c:4e8::/48 2001:b28:f23c::/48 2a0a:f280::/32 telegra.ph'
+        option interface 'protonvpn'
+
+config policy
+        option name 'ai'
+        option dest_addr 'mss.office.com m365.cloud.microsoft chatgpt.com openai.com oaistatic.com'
+        option interface 'protonvpn'
+
+config policy
+        option name 'github'
+        option dest_addr 'github.com githubusercontent.com githubassets.com'
+        option interface 'protonvpn'
+
+config policy
+        option name 'google'
+        option dest_addr 'google.com google.com.hk googleapis.com googlewarpercontent.com googlevideo.com youtube.com youtu.be ytimg.com ggpht.com gstatic.com'
+        option interface 'protonvpn'
+
+config policy
+        option name 'x'
+        option dest_addr 'twitter.com t.co twimg.com x.com'
+        option interface 'protonvpn'
+
+config policy
+        option name 'facebook'
+        option dest_addr 'facebook.com fb.com fbcdn.net instagram.com cdninstagram.com messenger.com'
+        option interface 'protonvpn'
+
+config policy
+        option name 'proton'
+        option dest_addr 'proton.me'
+        option interface 'protonvpn'
+
+config policy
+        option name 'fast'
+        option dest_addr 'fast.com netflix.com nflxvideo.net'
+        option interface 'protonvpn'
+
+config policy
+        option name 'reddit'
+        option dest_addr 'reddit.com redditmedia.com redditstatic.com redd.it'
+        option interface 'protonvpn'
+
+config policy
+        option name 'steamcommunity'
+        option dest_addr 'steamcommunity.com'
+        option interface 'protonvpn'
+EOF
+
+echo "All done!"
