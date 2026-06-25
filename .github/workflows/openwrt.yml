@@ -7,9 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    env:
-      TZ: Asia/Shanghai
-      CCACHE_DIR: ${{ github.workspace }}/${{ matrix.source.name }}/.ccache
+
     strategy:
       fail-fast: false
       matrix:
@@ -95,6 +93,8 @@ jobs:
         with:
           path: |
             ${{ matrix.source.name }}/staging_dir
+            ${{ matrix.source.name }}/build_dir
+            ${{ matrix.source.name }}/dl
             ${{ matrix.source.name }}/.ccache
           key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('${{ matrix.source.name }}/.config') }}
           restore-keys: |
