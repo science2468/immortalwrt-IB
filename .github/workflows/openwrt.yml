@@ -85,6 +85,7 @@ jobs:
           touch files/etc/tunsafe/tunsafe.conf
           wget -O files/usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_aarch64-linux
           cp -af $GITHUB_WORKSPACE/tunsafe/files/tunsafe files/etc/init.d/
+          chmod +x files/usr/bin/tunsafe files/etc/init.d/tunsafe
 
           ls -R files/
           
