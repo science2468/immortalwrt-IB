@@ -5,7 +5,7 @@ START=95
 STOP=10
 USE_PROCD=1
 
-PROG=/usr/sbin/tunsafe
+PROG=/usr/bin/tunsafe
 CONFIG_DIR=/etc/tunsafe
 CONFIG_FILE=$CONFIG_DIR/tunsafe.conf
 PID_FILE=/var/run/tunsafe.pid
