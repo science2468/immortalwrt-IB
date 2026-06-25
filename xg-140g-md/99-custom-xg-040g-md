@@ -28,7 +28,7 @@ if [ -n "$lan_ip_address" ]; then
   uci -q batch << EOI
   set network.lan.ipaddr="$lan_ip_address"
   commit network
-  EOI
+EOI
 fi
 
 # Configure WLAN
@@ -51,7 +51,7 @@ if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
   set wireless.@wifi-iface[1].ssid="$wlan_name"
   set wireless.@wifi-iface[1].key="$wlan_password"
   commit wireless
-  EOI
+EOI
 fi
 
 # Configure PPPoE and route
@@ -65,7 +65,7 @@ if [ -n "$pppoe_username" -a "$pppoe_password" ]; then
   set network.@route[-1].interface='protonvpn'
   set network.@route[-1].target='1.1.1.1/32'
   commit network
-  EOI
+EOI
 fi
 
 # Configure dhcp
