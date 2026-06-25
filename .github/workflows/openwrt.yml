@@ -48,6 +48,10 @@ jobs:
       - name: move config
         run: |
           cp -af xg-140g-md/.config ${{ matrix.source.name }}/
+          
+          if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
+            cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
+          fi
 
           cp -af xg-140g-md/patch-main/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/99_fix-airoha-mac
 
@@ -56,7 +60,7 @@ jobs:
           cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts ${{ matrix.source.name }}/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
-
+          
           #if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
           #  cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
           #fi
