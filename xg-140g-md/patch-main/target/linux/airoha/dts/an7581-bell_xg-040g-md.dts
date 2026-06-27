@@ -7,31 +7,40 @@
 #include "an7581.dtsi"
 
 / {
+	/* 设备型号和兼容字符串，用于内核匹配驱动 */
 	model = "Nokia Bell XG-040G-MD";
 	compatible = "bell,xg-040g-md", "airoha,an7581";
 
 	aliases {
+		/* 标签 MAC 地址从 GDM1 网络接口读取 */
 		label-mac-device = &gdm1;
 
+		/* LED 别名，用于引导、恢复、运行、升级等状态指示 */
 		led-boot = &pwr_led;
 		led-failsafe = &pwr_led;
 		led-running = &pwr_led;
 		led-upgrade = &pwr_led;
 
+		/* 串口0 映射到 UART1 */
 		serial0 = &uart1;
 	};
 
 	chosen {
+		/* 内核启动参数：指定 UBI 分区、根文件系统、控制台等 */
 		bootargs = "ubi.mtd=ubi root=ubi0:rootfs rootfstype=squashfs ro rootwait console=ttyS0,115200 earlycon";
+		/* 标准输出路径，对应 serial0 */
 		stdout-path = "serial0:115200n8";
+		/* 限制内核可用的内存范围（从 0x80200000 起 0x1fe00000 大小） */
 		linux,usable-memory-range = <0x0 0x80200000 0x0 0x1fe00000>;
 	};
 
+	/* 系统物理内存：起始地址 0x80000000，大小 512MiB (0x20000000) */
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0x0 0x80000000 0x0 0x20000000>;
 	};
 
+	/* efuse 控制器，用于读取芯片出厂信息（如 MAC 地址等） */
 	efuse-banks {
 		compatible = "airoha,an7581-efuses";
 		#address-cells = <1>;
@@ -46,6 +55,7 @@
 		};
 	};
 
+	/* GPIO LED 定义 */
 	leds {
 		compatible = "gpio-leds";
 
@@ -54,7 +64,7 @@
 			color = <LED_COLOR_ID_GREEN>;
 			function = LED_FUNCTION_POWER;
 			gpios = <&en7581_pinctrl 17 GPIO_ACTIVE_LOW>;
-			linux,default-trigger = "default-on";
+			linux,default-trigger = "default-on";	/* 开机常亮 */
 		};
 
 		pon_led: led-1 {
@@ -79,6 +89,7 @@
 		};
 	};
 
+	/* GPIO 按键定义（复位键） */
 	keys {
 		compatible = "gpio-keys";
 
@@ -86,14 +97,20 @@
 			label = "reset";
 			gpios = <&en7581_pinctrl 0 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_RESTART>;
-			debounce-interval = <60>;
+			debounce-interval = <60>;	/* 去抖动 60ms */
 		};
 	};
 };
 
+/*
+ * 引脚控制器扩展配置
+ * 定义各功能引脚复用及 LED 引脚
+ */
 &en7581_pinctrl {
+	/* GPIO 范围：从 0 开始共 47 个引脚，偏移 13 */
 	gpio-ranges = <&en7581_pinctrl 0 13 47>;
 
+	/* MDIO 引脚复用配置 */
 	mdio_pins: mdio-pins {
 		mux {
 			function = "mdio";
@@ -102,10 +119,11 @@
 
 		conf {
 			pins = "gpio2";
-			output-high;
+			output-high;	/* 初始输出高电平 */
 		};
 	};
 
+	/* 交换机端口2 LED0 引脚 (GPIO34) 复用为 PHY2_LED0 */
 	gswp2_led0_pins: gswp2-led0-pins {
 		mux {
 			pins = "gpio34";
@@ -113,6 +131,7 @@
 		};
 	};
 
+	/* 交换机端口3 LED0 引脚 (GPIO35) 复用为 PHY3_LED0 */
 	gswp3_led0_pins: gswp3-led0-pins {
 		mux {
 			pins = "gpio35";
@@ -120,6 +139,7 @@
 		};
 	};
 
+	/* 交换机端口4 LED0 引脚 (GPIO42) 复用为 PHY4_LED0 */
 	gswp4_led0_pins: gswp4-led0-pins {
 		mux {
 			pins = "gpio42";
@@ -128,51 +148,85 @@
 	};
 };
 
+/* SPI NAND Flash 控制器 */
 &snfi {
 	status = "okay";
 };
 
+/* SPI NAND 分区布局 */
 &spi_nand {
 	partitions {
 		compatible = "fixed-partitions";
 		#address-cells = <1>;
 		#size-cells = <1>;
 
-		partition@0 {
+		/* Bootloader 分区，起始 0，大小 512KB */
+		bootloader: partition@0 {
 			label = "bootloader";
 			reg = <0x00000000 0x00080000>;
 		};
 
-		partition@80000 {
+		/* 环境变量分区，大小 512KB */
+		env: partition@80000 {
 			label = "env";
 			reg = <0x00080000 0x00080000>;
 		};
 
-		partition@100000 {
+		/* factory 读取mac地址 */
+		factory: partition@5200000 {
+			label = "ri";
+			reg = <0x5200000 0x40000>;
+			read-only;
+		};
+
+		/* UBI 分区，存放根文件系统和用户数据，从 1MB 开始到末尾 */
+		ubi: partition@100000 {
 			label = "ubi";
-			reg = <0x00100000 0x0ff00000>;
+			reg = <0x05240000 0x0ADC0000>;
 		};
 	};
 };
 
+/* ========== 定义 NVMEM 布局 ========== */
+&factory {
+	nvmem-layout {
+		compatible = "fixed-layout";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		macaddr_factory_3e: macaddr@3e {
+			compatible = "mac-base";
+			reg = <0x3e 0x6>;          /* MAC 位于偏移 0x3e，6 字节 */
+			#nvmem-cell-cells = <1>;   /* 支持索引偏移 */
+		};
+	};
+};
+
+/* I2C0 控制器启用 */
 &i2c0 {
 	status = "okay";
 };
 
+/* 以太网 MAC 控制器启用 */
 &eth {
 	status = "okay";
 };
 
+/* 以太网 PCS 子模块启用 */
 &eth_pcs {
 	status = "okay";
 };
 
+/* NPU */
 &npu {
 	status = "okay";
 };
 
+/* ========== 引用 NVMEM 单元获取 MAC ========== */
 &gdm1 {
 	status = "okay";
+	nvmem-cell-names = "mac-address";
+	nvmem-cells = <&macaddr_factory_3e 0>;   /* 基址 MAC */
 };
 
 &gdm4 {
@@ -180,14 +234,21 @@
 	phy-handle = <&phy15>;
 	phy-mode = "2500base-x";
 	label = "eth1";
+	nvmem-cell-names = "mac-address";
+	nvmem-cells = <&macaddr_factory_3e 1>;   /* 基址 + 1，避免与 eth0 冲突 */
 };
 
+/*
+ * 内置交换机的配置
+ * 使用 MDIO 引脚，并定义 LAN 端口及外部 PHY
+ */
 &switch {
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&mdio_pins>;
 
 	ports {
+		/* 端口2、3、4 作为 LAN 口（对应标签 lan2, lan3, lan4） */
 		port@2 {
 			status = "okay";
 			label = "lan2";
@@ -204,7 +265,9 @@
 		};
 	};
 
+	/* MDIO 总线上的 PHY 设备 */
 	mdio {
+		/* PHY 地址 0xa (10) 对应端口2，LED 引脚使用 gswp2_led0_pins */
 		ethernet-phy@a {
 			status = "okay";
 			pinctrl-names = "gbe-led";
@@ -220,6 +283,7 @@
 			};
 		};
 
+		/* PHY 地址 0xb (11) 对应端口3 */
 		ethernet-phy@b {
 			status = "okay";
 			pinctrl-names = "gbe-led";
@@ -235,6 +299,7 @@
 			};
 		};
 
+		/* PHY 地址 0xc (12) 对应端口4 */
 		ethernet-phy@c {
 			status = "okay";
 			pinctrl-names = "gbe-led";
@@ -250,10 +315,12 @@
 			};
 		};
 
+		/* 外部 PHY 地址 0xf (15)，支持 IEEE 802.3 C45 标准，用于 2.5G 接口 */
 		phy15: ethernet-phy@f {
 			compatible = "ethernet-phy-ieee802.3-c45";
 			reg = <15>;
 
+			/* 复位引脚 GPIO31，低电平有效，复位时序 10ms 保持低，20ms 恢复 */
 			reset-gpios = <&en7581_pinctrl 31 GPIO_ACTIVE_LOW>;
 			reset-assert-us = <10000>;
 			reset-deassert-us = <20000>;
@@ -272,16 +339,19 @@
 	};
 };
 
+/* USB0 控制器启用 */
 &usb0 {
 	status = "okay";
 };
 
+/* USB1 控制器启用，配置为 USB2 模式，并屏蔽 USB3 功能（mediatek,u3p-dis-msk） */
 &usb1 {
 	status = "okay";
 	phys = <&usb1_phy PHY_TYPE_USB2>;
 	mediatek,u3p-dis-msk = <0x1>;
 };
 
+/* 音频前端 (AFE) 禁用，本设备不使用音频功能 */
 &afe {
 	status = "disabled";
 };
