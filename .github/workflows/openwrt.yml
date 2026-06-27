@@ -54,10 +54,6 @@ jobs:
           cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts ${{ matrix.source.name }}/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
 
           cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
-          
-          #if [ "${{ matrix.source.name }}" = "openwrt-main" ]; then
-          #  cp -af xg-140g-md/patch-main/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch ${{ matrix.source.name }}/target/linux/generic/pending-6.18/401-mtd-spinand-fmsh-add-support-for-FM25G0102B.patch
-          #fi
 
           sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
 
@@ -75,6 +71,7 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_luci-theme-bootstrap is not set/CONFIG_PACKAGE_luci-theme-bootstrap=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_luci-proto-wireguard is not set/CONFIG_PACKAGE_luci-proto-wireguard=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_kmod-wireguard is not set/CONFIG_PACKAGE_kmod-wireguard=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_kmod-tun is not set/CONFIG_PACKAGE_kmod-tun=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_default-settings-chn is not set/CONFIG_PACKAGE_default-settings-chn=y/g' ${{ matrix.source.name }}/.config
@@ -93,13 +90,13 @@ jobs:
         uses: actions/cache@v5
         with:
           path: |
-            ${{ matrix.source.name }}/staging_dir
-            ${{ matrix.source.name }}/build_dir
-            ${{ matrix.source.name }}/dl
-            ${{ matrix.source.name }}/.ccache
-          key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('${{ matrix.source.name }}/.config') }}
-          restore-keys: |
-            ${{ matrix.source.cache_key }}-${{ runner.os }}-
+            #${{ matrix.source.name }}/staging_dir
+            #${{ matrix.source.name }}/build_dir
+            #${{ matrix.source.name }}/dl
+            #${{ matrix.source.name }}/.ccache
+          #key: ${{ matrix.source.cache_key }}-${{ runner.os }}-${{ hashFiles('${{ matrix.source.name }}/.config') }}
+          #restore-keys: |
+            #${{ matrix.source.cache_key }}-${{ runner.os }}-
 
       - name: Show config
         run: cat ${{ matrix.source.name }}/.config
