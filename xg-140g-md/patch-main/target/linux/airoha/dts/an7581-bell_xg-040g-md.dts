@@ -275,6 +275,19 @@
     color = <LED_COLOR_ID_GREEN>;
 };
 
+&gsw_port2 {
+    status = "okay";
+    label = "lan2";
+};
+&gsw_port3 {
+    status = "okay";
+    label = "lan3";
+};
+&gsw_port4 {
+    status = "okay";
+    label = "lan4";
+};
+
 /*
  * 内置交换机的配置
  * 使用 MDIO 引脚，并定义 LAN 端口及外部 PHY
@@ -283,23 +296,6 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&mdio_pins>;
-
-
-	/* 端口2、3、4 作为 LAN 口（对应标签 lan2, lan3, lan4） */
-	&gsw_port2 {
-		status = "okay";
-		label = "lan2";
-	};
-
-	&gsw_port3 {
-		status = "okay";
-		label = "lan3";
-	};
-
-	&gsw_port4 {
-		status = "okay";
-		label = "lan4";
-	};
 
 	/* MDIO 总线上的 PHY 设备 */
 	mdio {
