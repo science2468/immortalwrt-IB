@@ -180,7 +180,7 @@
 		};
 
 		/* UBI 分区，存放根文件系统和用户数据，从 1MB 开始到末尾 */
-		ubi: partition@100000 {
+		ubi: partition@5240000 {
 			label = "ubi";
 			reg = <0x05240000 0x0ADC0000>;
 		};
@@ -238,6 +238,43 @@
 	nvmem-cells = <&macaddr_factory_3e 1>;   /* 基址 + 1，避免与 eth0 冲突 */
 };
 
+/* 引用 DTSI 中已有的内部 PHY 并配置 */
+&gsw_phy2 {
+    status = "okay";
+    pinctrl-names = "gbe-led";
+    pinctrl-0 = <&gswp2_led0_pins>;
+};
+&gsw_phy2_led0 {
+    status = "okay";
+    active-low;
+    function = LED_FUNCTION_LAN;
+    color = <LED_COLOR_ID_GREEN>;
+};
+
+&gsw_phy3 {
+    status = "okay";
+    pinctrl-names = "gbe-led";
+    pinctrl-0 = <&gswp3_led0_pins>;
+};
+&gsw_phy3_led0 {
+    status = "okay";
+    active-low;
+    function = LED_FUNCTION_LAN;
+    color = <LED_COLOR_ID_GREEN>;
+};
+
+&gsw_phy4 {
+    status = "okay";
+    pinctrl-names = "gbe-led";
+    pinctrl-0 = <&gswp4_led0_pins>;
+};
+&gsw_phy4_led0 {
+    status = "okay";
+    active-low;
+    function = LED_FUNCTION_LAN;
+    color = <LED_COLOR_ID_GREEN>;
+};
+
 /*
  * 内置交换机的配置
  * 使用 MDIO 引脚，并定义 LAN 端口及外部 PHY
@@ -247,96 +284,44 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mdio_pins>;
 
-	ports {
-		/* 端口2、3、4 作为 LAN 口（对应标签 lan2, lan3, lan4） */
-		port@2 {
-			status = "okay";
-			label = "lan2";
-		};
 
-		port@3 {
-			status = "okay";
-			label = "lan3";
-		};
+	/* 端口2、3、4 作为 LAN 口（对应标签 lan2, lan3, lan4） */
+	&gsw_port2 {
+		status = "okay";
+		label = "lan2";
+	};
 
-		port@4 {
-			status = "okay";
-			label = "lan4";
-		};
+	&gsw_port3 {
+		status = "okay";
+		label = "lan3";
+	};
+
+	&gsw_port4 {
+		status = "okay";
+		label = "lan4";
 	};
 
 	/* MDIO 总线上的 PHY 设备 */
 	mdio {
-		/* PHY 地址 0xa (10) 对应端口2，LED 引脚使用 gswp2_led0_pins */
-		ethernet-phy@a {
-			status = "okay";
-			pinctrl-names = "gbe-led";
-			pinctrl-0 = <&gswp2_led0_pins>;
+        /* 外部 PHY（新增） */
+        phy15: ethernet-phy@f {
+            compatible = "ethernet-phy-ieee802.3-c45";
+            reg = <15>;
+            reset-gpios = <&en7581_pinctrl 31 GPIO_ACTIVE_LOW>;
+            reset-assert-us = <10000>;
+            reset-deassert-us = <20000>;
 
-			leds {
-				led@0 {
-					status = "okay";
-					active-low;
-					function = LED_FUNCTION_LAN;
-					color = <LED_COLOR_ID_GREEN>;
-				};
-			};
-		};
-
-		/* PHY 地址 0xb (11) 对应端口3 */
-		ethernet-phy@b {
-			status = "okay";
-			pinctrl-names = "gbe-led";
-			pinctrl-0 = <&gswp3_led0_pins>;
-
-			leds {
-				led@0 {
-					status = "okay";
-					active-low;
-					function = LED_FUNCTION_LAN;
-					color = <LED_COLOR_ID_GREEN>;
-				};
-			};
-		};
-
-		/* PHY 地址 0xc (12) 对应端口4 */
-		ethernet-phy@c {
-			status = "okay";
-			pinctrl-names = "gbe-led";
-			pinctrl-0 = <&gswp4_led0_pins>;
-
-			leds {
-				led@0 {
-					status = "okay";
-					active-low;
-					function = LED_FUNCTION_LAN;
-					color = <LED_COLOR_ID_GREEN>;
-				};
-			};
-		};
-
-		/* 外部 PHY 地址 0xf (15)，支持 IEEE 802.3 C45 标准，用于 2.5G 接口 */
-		phy15: ethernet-phy@f {
-			compatible = "ethernet-phy-ieee802.3-c45";
-			reg = <15>;
-
-			/* 复位引脚 GPIO31，低电平有效，复位时序 10ms 保持低，20ms 恢复 */
-			reset-gpios = <&en7581_pinctrl 31 GPIO_ACTIVE_LOW>;
-			reset-assert-us = <10000>;
-			reset-deassert-us = <20000>;
-
-			leds {
-				#address-cells = <1>;
-				#size-cells = <0>;
-
-				led@0 {
-					reg = <0>;
-					function = LED_FUNCTION_LAN;
-					color = <LED_COLOR_ID_GREEN>;
-				};
-			};
-		};
-	};
+            leds {
+                #address-cells = <1>;
+                #size-cells = <0>;
+                led@0 {
+                    reg = <0>;
+                    function = LED_FUNCTION_LAN;
+                    color = <LED_COLOR_ID_GREEN>;
+                };
+            };
+        };
+    };
 };
 
 /* USB0 控制器启用 */
