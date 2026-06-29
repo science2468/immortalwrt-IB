@@ -48,6 +48,7 @@ jobs:
           cp -af xg-140g-md/.config ${{ matrix.source.name }}/
           
           cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
+          cp -af xg-140g-md/402-mtd-spinand-fmsh-add-fm25g0102b.patch ${{ matrix.source.name }}/package/boot/uboot-airoha/patches/
 
           sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
 
