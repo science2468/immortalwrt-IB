@@ -180,9 +180,9 @@
 		};
 
 		/* UBI 分区，存放根文件系统和用户数据，从 1MB 开始到末尾 */
-		ubi: partition@5240000 {
+		ubi: partition@100000 {
 			label = "ubi";
-			reg = <0x05240000 0x0ADC0000>;
+			reg = <0x00100000 0x0FF00000>;
 		};
 	};
 };
