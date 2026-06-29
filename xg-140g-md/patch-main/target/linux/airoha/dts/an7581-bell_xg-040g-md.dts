@@ -170,13 +170,7 @@
 		env: partition@80000 {
 			label = "env";
 			reg = <0x00080000 0x00080000>;
-		};
-
-		/* factory 读取mac地址 */
-		factory: partition@5200000 {
-			label = "ri";
-			reg = <0x5200000 0x40000>;
-			read-only;
+			compatible = "u-boot,env";
 		};
 
 		/* UBI 分区，存放根文件系统和用户数据，从 1MB 开始到末尾 */
@@ -187,17 +181,14 @@
 	};
 };
 
-/* ========== 定义 NVMEM 布局 ========== */
-&factory {
+&env {
 	nvmem-layout {
 		compatible = "fixed-layout";
 		#address-cells = <1>;
 		#size-cells = <1>;
 
-		macaddr_factory_3e: macaddr@3e {
-			compatible = "mac-base";
-			reg = <0x3e 0x6>;          /* MAC 位于偏移 0x3e，6 字节 */
-			#nvmem-cell-cells = <1>;   /* 支持索引偏移 */
+		macaddr_env_ethaddr: ethaddr {
+			#nvmem-cell-cells = <1>;
 		};
 	};
 };
@@ -226,7 +217,7 @@
 &gdm1 {
 	status = "okay";
 	nvmem-cell-names = "mac-address";
-	nvmem-cells = <&macaddr_factory_3e 0>;   /* 基址 MAC */
+	nvmem-cells = <&macaddr_env_ethaddr 0>;   /* 基址 MAC */
 };
 
 &gdm4 {
@@ -235,7 +226,7 @@
 	phy-mode = "2500base-x";
 	label = "eth1";
 	nvmem-cell-names = "mac-address";
-	nvmem-cells = <&macaddr_factory_3e 1>;   /* 基址 + 1，避免与 eth0 冲突 */
+	nvmem-cells = <&macaddr_env_ethaddr 1>;   /* 基址 + 1，避免与 eth0 冲突 */
 };
 
 /* 引用 DTSI 中已有的内部 PHY 并配置 */
