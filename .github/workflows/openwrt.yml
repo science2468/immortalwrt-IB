@@ -43,6 +43,20 @@ jobs:
           git clone --depth 1 ${{ matrix.source.url }} ${{ matrix.source.name }}
           cd ${{ matrix.source.name }} && ./scripts/getver.sh
 
+      - name: move config
+        run: |
+          cp -af xg-140g-md/.config ${{ matrix.source.name }}/
+          
+          cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
+
+          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network ${{ matrix.source.name }}/target/linux/airoha/an7581/base-files/etc/board.d/02_network
+
+          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts ${{ matrix.source.name }}/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
+
+          cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
+
+          sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
+
       - name: feeds
         run: |
             cd ${{ matrix.source.name }} && ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -50,6 +64,7 @@ jobs:
 
       - name: custom configuration
         run: |
+          #sed -i 's/CONFIG_LINUX_6_12=y/CONFIG_LINUX_6_18=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_luci is not set/CONFIG_PACKAGE_luci=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_luci-app-package-manager is not set/CONFIG_PACKAGE_luci-app-package-manager=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_luci-light is not set/CONFIG_PACKAGE_luci-light=y/g' ${{ matrix.source.name }}/.config
@@ -60,6 +75,7 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_wireguard-tools is not set/CONFIG_PACKAGE_wireguard-tools=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_default-settings-chn is not set/CONFIG_PACKAGE_default-settings-chn=y/g' ${{ matrix.source.name }}/.config
+          #sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' ${{ matrix.source.name }}/.config
           cd ${{ matrix.source.name }} && make defconfig
           
           mkdir -p files/usr/bin files/etc/init.d files/etc/tunsafe
