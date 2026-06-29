@@ -49,12 +49,6 @@ jobs:
           
           cp -af xg-140g-md/99-custom-xg-040g-md ${{ matrix.source.name }}/package/base-files/files/etc/uci-defaults/
 
-          cp -af xg-140g-md/patch-main/target/linux/airoha/an7581/base-files/etc/board.d/02_network ${{ matrix.source.name }}/target/linux/airoha/an7581/base-files/etc/board.d/02_network
-
-          cp -af xg-140g-md/patch-main/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts ${{ matrix.source.name }}/target/linux/airoha/dts/an7581-bell_xg-040g-md.dts
-
-          cp -af xg-140g-md/patch-main/target/linux/airoha/image/an7581.mk ${{ matrix.source.name }}/target/linux/airoha/image/an7581.mk
-
           sed -i 's/dnsmasq/dnsmasq-full/g' ${{ matrix.source.name }}/include/target.mk
 
       - name: feeds
