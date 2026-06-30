@@ -2,6 +2,44 @@
 apk-mbedtls base-files ca-bundle dnsmasq-full dropbear firewall4 fstools kmod-crypto-hw-eip93 kmod-gpio-button-hotplug kmod-leds-gpio kmod-nft-offload libc libgcc libustream-mbedtls logd mtd netifd nftables odhcp6c odhcpd-ipv6only ppp ppp-mod-pppoe procd-ujail uboot-envtools uci uclient-fetch urandom-seed urngd wpad-basic-mbedtls kmod-mt7603 kmod-mt7615-firmware kmod-mmc-mtk kmod-usb3 luci luci-i18n-attendedsysupgrade-zh-cn luci-i18n-package-manager-zh-cn luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn luci-i18n-pbr-zh-cn kmod-tun luci-proto-wireguard
 ```
 ```
+mkdir -p /etc/tunsafe && \
+wget -O /usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_aarch64-linux && \
+cat > /etc/init.d/tunsafe << 'EOF'
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2025 OpenWrt.org
+
+START=95
+STOP=10
+USE_PROCD=1
+
+PROG=/usr/bin/tunsafe
+CONFIG_DIR=/etc/tunsafe
+CONFIG_FILE=$CONFIG_DIR/tunsafe.conf
+PID_FILE=/var/run/tunsafe.pid
+
+start_service() {
+    procd_open_instance
+    procd_set_param command "$PROG" start "$CONFIG_FILE"
+    procd_set_param respawn
+    procd_set_param stdout 1
+    procd_set_param stderr 1
+    procd_set_param pidfile "$PID_FILE"
+    procd_close_instance
+}
+
+stop_service() {
+    # procd 会自动停止
+    true
+}
+
+reload_service() {
+    stop
+    start
+}
+EOF
+chmod +x /usr/bin/tunsafe /etc/init.d/tunsafe
+```
+```
 # Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
 # Uncomment lines to apply:
 #

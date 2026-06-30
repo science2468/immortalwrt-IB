@@ -58,7 +58,14 @@ fi
 # More options: https://openwrt.org/docs/guide-user/network/wan/wan_interface_protocols#protocol_pppoe_ppp_over_ethernet
 if [ -n "$pppoe_username" -a "$pppoe_password" ]; then
   uci -q batch << EOI
+  del network.@device[0].ports
+  add_list network.@device[0].ports='lan2'
+  add_list network.@device[0].ports='lan3'
+  add_list network.@device[0].ports='lan4'
+  set network.wan=interface
   set network.wan.proto=pppoe
+  set network.wan.device='lan1'
+  set network.wan.norelease='1'
   set network.wan.username="$pppoe_username"
   set network.wan.password="$pppoe_password"
   add network route
