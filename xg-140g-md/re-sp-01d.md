@@ -1,6 +1,5 @@
 ```
-apk-mbedtls base-files ca-bundle dnsmasq-full dropbear firewall4 fstools kmod-crypto-hw-eip93 kmod-gpio-button-hotplug kmod-leds-gpio kmod-nft-offload libc libgcc libustream-mbedtls logd mtd netifd nftables odhcp6c odhcpd-ipv6only ppp ppp-mod-pppoe procd-ujail uboot-envtools uci uclient-fetch urandom-seed urngd wpad-basic-mbedtls kmod-mt7603 kmod-mt7615-firmware kmod-mmc-mtk kmod-usb3 luci luci-i18n-attendedsysupgrade-zh-cn
-luci-i18n-package-manager-zh-cn luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn luci-i18n-ksmbd-zh-cn luci-i18n-pbr-zh-cn
+apk-mbedtls base-files ca-bundle dnsmasq-full dropbear firewall4 fstools kmod-crypto-hw-eip93 kmod-gpio-button-hotplug kmod-leds-gpio kmod-nft-offload libc libgcc libustream-mbedtls logd mtd netifd nftables odhcp6c odhcpd-ipv6only ppp ppp-mod-pppoe procd-ujail uboot-envtools uci uclient-fetch urandom-seed urngd wpad-basic-mbedtls kmod-mt7603 kmod-mt7615-firmware kmod-mmc-mtk kmod-usb3 luci luci-i18n-attendedsysupgrade-zh-cn luci-i18n-package-manager-zh-cn luci-i18n-base-zh-cn luci-i18n-firewall-zh-cn luci-i18n-pbr-zh-cn kmod-tun luci-proto-wireguard
 ```
 ```
 # Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
