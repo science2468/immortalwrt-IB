@@ -1,5 +1,5 @@
---- drivers/mtd/nand/spi/fmsh.c
-+++ drivers/mtd/nand/spi/fmsh.c
+--- a/drivers/mtd/nand/spi/fmsh.c
++++ b/drivers/mtd/nand/spi/fmsh.c
 @@ -13,6 +13,16 @@
 
  #define SPINAND_MFR_FMSH               0xA1
