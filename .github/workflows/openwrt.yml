@@ -77,9 +77,9 @@ jobs:
           mkdir -p files/usr/bin files/etc/init.d files/etc/tunsafe files/etc/usque
 
           wget -O files/usr/bin/tunsafe https://github.com/lmq8267/tunsafe/releases/download/2025-10-09/tunsafe_aarch64-linux
-          wget https://github.com/Diniboy1123/usque/releases/download/v4.2.0/usque_4.2.0_linux_arm64.zip && unzip usque_4.2.0_linux_arm64.zip -d files/usr/bin/usque && rm -f usque_4.2.0_linux_arm64.zip
+          wget https://github.com/Diniboy1123/usque/releases/download/v4.2.0/usque_4.2.0_linux_arm64.zip && unzip usque_4.2.0_linux_arm64.zip && cp usque files/usr/bin/ && rm -f LICENSE.md README.md usque usque_4.2.0_linux_arm64.zip
           cp -af $GITHUB_WORKSPACE/tunsafe/files/tunsafe files/etc/init.d/
-          cp -af $GITHUB_WORKSPACE/tunsafe/files/usque files/etc/init.d/
+          cp -af $GITHUB_WORKSPACE/usque/files/usque files/etc/init.d/
           chmod +x files/usr/bin/tunsafe files/usr/bin/usque files/etc/init.d/tunsafe files/etc/init.d/usque
 
           ls -R files/
