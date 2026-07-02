@@ -13,7 +13,7 @@ PID_FILE=/var/run/usque.pid
 start_service() {
 
     procd_open_instance
-    procd_set_param command "$PROG" -c "$CONFIG_FILE" nativetun -P 1701
+    procd_set_param command "$PROG" -c "$CONFIG_FILE" nativetun
 
     procd_set_param respawn
     procd_set_param stdout 1
