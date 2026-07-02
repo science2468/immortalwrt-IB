@@ -40,7 +40,7 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone --depth 1 ${{ matrix.source.url }} ${{ matrix.source.name }}
+          git clone ${{ matrix.source.url }} ${{ matrix.source.name }}
           cd ${{ matrix.source.name }} && ./scripts/getver.sh
 
       - name: move config
