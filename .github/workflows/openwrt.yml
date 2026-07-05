@@ -71,7 +71,8 @@ jobs:
           sed -i 's/# CONFIG_PACKAGE_luci-app-pbr is not set/CONFIG_PACKAGE_luci-app-pbr=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_LUCI_LANG_zh_Hans is not set/CONFIG_LUCI_LANG_zh_Hans=y/g' ${{ matrix.source.name }}/.config
           sed -i 's/# CONFIG_PACKAGE_default-settings-chn is not set/CONFIG_PACKAGE_default-settings-chn=y/g' ${{ matrix.source.name }}/.config
-          #sed -i 's/# CONFIG_PACKAGE_tunsafe is not set/CONFIG_PACKAGE_tunsafe=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_autocore is not set/CONFIG_PACKAGE_autocore=y/g' ${{ matrix.source.name }}/.config
+          sed -i 's/# CONFIG_PACKAGE_cpufreq is not set/CONFIG_PACKAGE_cpufreq=y/g' ${{ matrix.source.name }}/.config
           cd ${{ matrix.source.name }} && make defconfig
           
           mkdir -p files/usr/bin files/etc/init.d files/etc/tunsafe files/etc/usque
