@@ -105,6 +105,7 @@ server=/redditmedia.com/1.1.1.1
 server=/redditstatic.com/1.1.1.1
 server=/redd.it/1.1.1.1
 server=/steamcommunity.com/1.1.1.1
+server=/91porn.com/1.1.1.1
 EOF
 
 uci -q batch << EOI
