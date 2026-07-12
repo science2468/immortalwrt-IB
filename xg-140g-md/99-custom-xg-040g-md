@@ -106,6 +106,7 @@ server=/redditstatic.com/1.1.1.1
 server=/redd.it/1.1.1.1
 server=/steamcommunity.com/1.1.1.1
 server=/91porn.com/1.1.1.1
+server=/copilot.microsoft.com/1.1.1.1
 EOF
 
 uci -q batch << EOI
@@ -142,7 +143,7 @@ set.@policy[3].dest_addr='91.108.56.0/22 91.108.4.0/22 91.108.8.0/22 91.108.16.0
 set.@policy[3].interface='protonvpn'
 add pbr policy
 set.@policy[4].name='ai'
-set.@policy[4].dest_addr='mss.office.com m365.cloud.microsoft chatgpt.com openai.com oaistatic.com'
+set.@policy[4].dest_addr='copilot.microsoft.com mss.office.com m365.cloud.microsoft chatgpt.com openai.com oaistatic.com'
 set.@policy[4].interface='protonvpn'
 add pbr policy
 set.@policy[5].name='github'
@@ -169,8 +170,8 @@ set.@policy[10].name='proton'
 set.@policy[10].dest_addr='proton.me'
 set.@policy[10].interface='protonvpn'
 add pbr policy
-set.@policy[11].name='fast'
-set.@policy[11].dest_addr='fast.com netflix.com nflxvideo.net'
+set.@policy[11].name='cloudflare'
+set.@policy[11].dest_addr='speed.cloudflare.com'
 set.@policy[11].interface='protonvpn'
 add pbr policy
 set.@policy[12].name='steam'
