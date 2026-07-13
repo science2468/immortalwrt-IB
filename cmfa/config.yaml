@@ -1,0 +1,142 @@
+mode: rule
+log-level: info
+ipv6: true
+udp: true
+
+dns:
+  enable: true
+  default-nameserver:
+    - system
+    - 1.1.1.1
+
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+
+proxies:
+  - name: "warp" 
+    type: masque
+    server: 162.159.198.2
+    port: 443
+    private-key: 
+    public-key: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIaU7MToJm9NKp8YfGxR6r+/h4mcG7SxI8tsW8OR1A5tv/zCzVbCRRh2t87/kxnP6lAy0lkr7qYwu+ox+k3dr6w==
+    ip: 172.16.0.2/32
+    ipv6: 2606:4700:110:81d8:3a67:11ae:3cbb:43a5/128
+    mtu: 1280
+    udp: true
+    sni: consumer-masque.cloudflareclient.com
+
+  - name : "ccny"
+    type: vmess
+    server: "104.168.1.81"
+    port: 443
+    uuid: ""
+    alterId: 0
+    udp: true
+    network: http
+    http-opts: 
+      path: "/"
+
+  - name: "ccny-ss"
+    type: ss
+    server: "104.168.1.81"
+    port: 11144
+    password: ""
+    cipher: "2022-blake3-aes-256-gcm"
+
+  - name: "direct"
+    type: direct
+
+proxy-groups:
+  - name: "PROXY"
+    type: select
+    proxies:
+      - warp
+      - ccny
+      - ccny-ss
+    default-selected: warp
+
+rules:
+# Telegram
+  - DOMAIN-SUFFIX,t.me,PROXY
+  - DOMAIN-SUFFIX,tdesktop.com,PROXY
+  - DOMAIN-SUFFIX,telegra.ph,PROXY
+  - DOMAIN-SUFFIX,telegram.me,PROXY
+  - DOMAIN-SUFFIX,telegram.org,PROXY
+  - DOMAIN-SUFFIX,telesco.pe,PROXY
+  - IP-CIDR,91.108.4.0/22,PROXY,no-resolve
+  - IP-CIDR,91.108.8.0/22,PROXY,no-resolve
+  - IP-CIDR,91.108.12.0/22,PROXY,no-resolve
+  - IP-CIDR,91.108.16.0/22,PROXY,no-resolve
+  - IP-CIDR,91.108.56.0/22,PROXY,no-resolve
+  - IP-CIDR,109.239.140.0/24,PROXY,no-resolve
+  - IP-CIDR,149.154.160.0/20,PROXY,no-resolve
+  - IP-CIDR,2001:B28:F23D::/48,PROXY,no-resolve
+  - IP-CIDR,2001:B28:F23F::/48,PROXY,no-resolve
+  - IP-CIDR,2001:67C:4E8::/48,PROXY,no-resolve
+
+#GitHub
+  - DOMAIN-SUFFIX,github.com,PROXY
+
+#AI
+  - DOMAIN,copilot.microsoft.com,PROXY
+  - DOMAIN,mss.office.com,PROXY
+  - DOMAIN,m365.cloud.microsoft,PROXY
+  - DOMAIN-SUFFIX,chatgpt.com,PROXY
+  - DOMAIN-SUFFIX,openai.com,PROXY
+  - DOMAIN-SUFFIX,oaistatic.com,PROXY
+
+#Google
+  - DOMAIN-SUFFIX,google.com,PROXY
+  - DOMAIN-SUFFIX,google.com.hk,PROXY
+  - DOMAIN-SUFFIX,googleapis.com,PROXY
+  - DOMAIN-SUFFIX,googlewarpercontent.com,PROXY
+  - DOMAIN-SUFFIX,googleusercontent.com,PROXY
+  - DOMAIN-SUFFIX,googlevideo.com,PROXY
+  - DOMAIN-SUFFIX,youtube.com,PROXY
+  - DOMAIN-SUFFIX,youtu.be,PROXY
+  - DOMAIN-SUFFIX,ytimg.com,PROXY
+  - DOMAIN-SUFFIX,gstatic.com,PROXY
+  - DOMAIN-SUFFIX,ggpht.com,PROXY
+
+# X
+  - DOMAIN-SUFFIX,twitter.com,PROXY
+  - DOMAIN-SUFFIX,t.co,PROXY
+  - DOMAIN-SUFFIX,twimg.com,PROXY
+  - DOMAIN-SUFFIX,x.com,PROXY
+
+# Facebook
+  - DOMAIN-SUFFIX,facebook.com,PROXY
+  - DOMAIN-SUFFIX,fb.com,PROXY
+  - DOMAIN-SUFFIX,fbcdn.net,PROXY
+  - DOMAIN-SUFFIX,instagram.com,PROXY
+  - DOMAIN-SUFFIX,cdninstagram.com,PROXY
+  - DOMAIN-SUFFIX,messenger.com,PROXY
+
+# Proton
+  - DOMAIN-SUFFIX,proton.me,PROXY
+
+# Cloudflare
+  - DOMAIN,speed.cloudflare.com,PROXY
+
+# Reddit
+  - DOMAIN-SUFFIX,reddit.com,PROXY
+  - DOMAIN-SUFFIX,redd.it,PROXY
+  - DOMAIN-SUFFIX,redditmedia.com,PROXY
+  - DOMAIN-SUFFIX,redditstatic.com,PROXY
+
+# Porhub
+  - DOMAIN-SUFFIX,91porn.com,PROXY
+
+# LAN
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+
+# Final
+  - MATCH,DIRECT
