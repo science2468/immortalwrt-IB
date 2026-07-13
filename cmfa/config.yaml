@@ -32,21 +32,21 @@ proxies:
 
   - name : "ccny"
     type: vmess
-    server: "104.168.1.81"
+    server: 104.168.1.81
     port: 443
-    uuid: ""
+    uuid: 
     alterId: 0
     udp: true
     network: http
     http-opts: 
-      path: "/"
+      path: '/'
 
   - name: "ccny-ss"
     type: ss
-    server: "104.168.1.81"
+    server: 104.168.1.81
     port: 11144
     password: ""
-    cipher: "2022-blake3-aes-256-gcm"
+    cipher: 2022-blake3-aes-256-gcm
 
   - name: "direct"
     type: direct
