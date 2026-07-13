@@ -22,7 +22,7 @@ proxies:
     type: masque
     server: 162.159.198.2
     port: 443
-    private-key: 
+    private-key: xxx
     public-key: MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIaU7MToJm9NKp8YfGxR6r+/h4mcG7SxI8tsW8OR1A5tv/zCzVbCRRh2t87/kxnP6lAy0lkr7qYwu+ox+k3dr6w==
     ip: 172.16.0.2/32
     ipv6: 2606:4700:110:81d8:3a67:11ae:3cbb:43a5/128
@@ -34,7 +34,7 @@ proxies:
     type: vmess
     server: 104.168.1.81
     port: 443
-    uuid: 
+    uuid: xxx
     alterId: 0
     udp: true
     network: http
@@ -45,7 +45,7 @@ proxies:
     type: ss
     server: 104.168.1.81
     port: 11144
-    password: ""
+    password: "xxx"
     cipher: 2022-blake3-aes-256-gcm
 
   - name: "direct"
