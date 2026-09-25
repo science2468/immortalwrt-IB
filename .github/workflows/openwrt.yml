@@ -95,7 +95,7 @@ jobs:
       
       - name: run uboot-airoha patch
         run: |
-          cd ${{ matrix.source.name }} && make -j $(nproc) target/package/boot/uboot-airoha/{clean,prepare} V=s
+          cd ${{ matrix.source.name }} && make -j $(nproc) package/boot/uboot-airoha/{clean,prepare} V=s
 
       - name: target/linux prepare
         run: |
