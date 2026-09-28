@@ -1,12 +1,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=usque
-PKG_VERSION:=3.0.0
+PKG_VERSION:=4.2.1
 PKG_RELEASE:=1
 
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/Diniboy1123/usque
-PKG_SOURCE_VERSION:=47c1b1bf2c8675d906bc8026515585ced27beef7
+PKG_SOURCE:=usque-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://github.com/Diniboy1123/usque/archive/refs/tags/v$(PKG_VERSION).tar.gz
 PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=MIT
@@ -38,8 +37,8 @@ define Package/usque/description
 endef
 
 define Package/usque/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/usque $(1)/usr/sbin/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(GO_PKG_BUILD_BIN_DIR)/usque $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/usque.init $(1)/etc/init.d/usque
 	$(INSTALL_DIR) $(1)/etc/usque

@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Projects
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       
     - name: Installation depends
       run: |
@@ -17,13 +17,12 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://github.com/science2468/immortalwrt-IB/releases/download/immortalwrt-xg-140g-md-20260527232731/immortalwrt-sdk-airoha-an7581_gcc-14.3.0_musl.Linux-x86_64.tar.zst
+        wget https://immortalwrt.kyarucloud.moe/releases/25.12.2/targets/ramips/mt7621/immortalwrt-sdk-25.12.2-ramips-mt7621_gcc-14.3.0_musl.Linux-x86_64.tar.zst
         tar -I zstd -xf immortalwrt-sdk-*.zst && rm -r immortalwrt-sdk-*.zst
         ls
 
     - name: add custom package
       run: |
-        cp -r tunsafe immortalwrt-sdk*/package
         cp -r usque immortalwrt-sdk*/package
         cd immortalwrt-sdk*
         ls package
@@ -44,13 +43,11 @@ jobs:
         EOF
 
         make defconfig
-        make package/tunsafe/download
         make package/usque/download
         
     - name: build
       run: |
         cd immortalwrt-sdk*
-        make -j$(nproc) package/tunsafe/{clean,compile} V=s
         make -j$(nproc) package/usque/{clean,compile} V=s
         
     - name: Upload openwrt firmware
@@ -58,5 +55,4 @@ jobs:
       with:
         name: immortalwrt-sdk
         path: |
-          immortalwrt-sdk*/bin/**/*tunsafe*
           immortalwrt-sdk*/bin/**/*usque*
