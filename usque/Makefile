@@ -4,8 +4,8 @@ PKG_NAME:=usque
 PKG_VERSION:=4.2.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=usque-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/Diniboy1123/usque/archive/refs/tags/v$(PKG_VERSION).tar.gz
+PKG_SOURCE:=v$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://github.com/Diniboy1123/usque/archive/refs/tags/
 PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=MIT
