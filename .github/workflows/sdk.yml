@@ -43,7 +43,7 @@ jobs:
         EOF
 
         make defconfig
-        make package/usque/download
+        make package/usque/download V=s
         
     - name: build
       run: |
