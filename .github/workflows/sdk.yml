@@ -25,7 +25,7 @@ jobs:
       run: |
         cd immortalwrt-sdk*/package
         git clone https://github.com/science2468/luci-app-usque.git
-        ls package
+        ls
 
     - name: update feed
       run: |
