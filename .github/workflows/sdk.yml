@@ -23,8 +23,8 @@ jobs:
 
     - name: add custom package
       run: |
-        cp -r usque immortalwrt-sdk*/package
-        cd immortalwrt-sdk*
+        cd immortalwrt-sdk*/package
+        git clone https://github.com/science2468/luci-app-usque.git
         ls package
 
     - name: update feed
@@ -43,12 +43,12 @@ jobs:
         EOF
 
         make defconfig
-        make package/usque/download V=s
+        make package/luci-app-usque/download V=s
         
     - name: build
       run: |
         cd immortalwrt-sdk*
-        make -j$(nproc) package/usque/{clean,compile} V=s
+        make -j$(nproc) package/luci-app-usque/{clean,compile} V=s
         
     - name: Upload openwrt firmware
       uses: actions/upload-artifact@master
