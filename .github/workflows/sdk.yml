@@ -17,25 +17,25 @@ jobs:
         
     - name: Clone source code
       run: |
-        wget https://immortalwrt.kyarucloud.moe/releases/25.12.2/targets/ramips/mt7621/immortalwrt-sdk-25.12.2-ramips-mt7621_gcc-14.3.0_musl.Linux-x86_64.tar.zst
-        tar -I zstd -xf immortalwrt-sdk-*.zst && rm -r immortalwrt-sdk-*.zst
+        wget https://downloads.openwrt.org/snapshots/targets/airoha/an7581/openwrt-sdk-airoha-an7581_gcc-14.4.0_musl.Linux-x86_64.tar.zst
+        tar -I zstd -xf openwrt-sdk-*.zst && rm -r openwrt-sdk-*.zst
         ls
 
     - name: add custom package
       run: |
-        cd immortalwrt-sdk*/package
+        cd openwrt-sdk*/package
         git clone https://github.com/science2468/luci-app-usque.git
         ls
 
     - name: update feed
       run: |
-        cd immortalwrt-sdk*
+        cd openwrt-sdk*
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
     - name: download
       run: |
-        cd immortalwrt-sdk*
+        cd openwrt-sdk*
         cat > .config <<EOF
         CONFIG_USE_APK=y
         CONFIG_PACKAGE_apk-mbedtls=y
@@ -47,12 +47,11 @@ jobs:
         
     - name: build
       run: |
-        cd immortalwrt-sdk*
+        cd openwrt-sdk*
         make -j$(nproc) package/luci-app-usque/{clean,compile} V=s
         
     - name: Upload openwrt firmware
-      uses: actions/upload-artifact@master
+      uses: softprops/action-gh-release@master
       with:
-        name: immortalwrt-sdk
-        path: |
-          immortalwrt-sdk*/bin/**/*usque*
+        tag_name: luci-app-usque
+        files: openwrt-sdk*/bin/**/*usque*
